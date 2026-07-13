@@ -1,0 +1,89 @@
+---
+import type { Lang, ProjectCase } from '../data/content';
+import { projects } from '../data/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+
+interface Props { lang: Lang; project: ProjectCase }
+const { lang, project } = Astro.props;
+const isZh = lang === 'zh';
+const projectBase = isZh ? '/projects' : '/en/projects';
+const home = isZh ? '/' : '/en/';
+const canonicalPath = `${projectBase}/${project.slug}/`;
+const alternatePath = `${isZh ? '/en/projects' : '/projects'}/${project.slug}/`;
+const projectIndex = projects.findIndex((item) => item.slug === project.slug);
+const nextProject = projects[(projectIndex + 1) % projects.length];
+---
+
+<BaseLayout lang={lang} title={`${project.title} — Kylian`} description={project.summary[lang]} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="page-shell">
+    <SiteHeader lang={lang} alternatePath={alternatePath} compact />
+    <main id="content" class="case-page">
+      <header class="case-hero">
+        <div class="case-ordinal"><span>{project.number}</span><span>{project.year}</span></div>
+        <div class="case-title">
+          <p class="kicker">{project.eyebrow[lang]}</p>
+          <h1>{project.title}</h1>
+          <p>{project.summary[lang]}</p>
+        </div>
+        <ul class="tag-list">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
+      </header>
+
+      {project.images?.[0] && (
+        <figure class:list={['case-lead-image', { 'case-lead-image--interface': project.slug === 'fomo-firewall' }]}>
+          <img src={project.images[0].src} alt={project.images[0].alt[lang]} width="1600" height="900" />
+        </figure>
+      )}
+
+      <div class="case-body">
+        <aside class="case-sidebar">
+          <p class="kicker">{isZh ? '我的角色' : 'My role'}</p>
+          <p>{project.role[lang]}</p>
+          {project.link && <a class="text-link" href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} ↗</a>}
+        </aside>
+
+        <div class="case-narrative">
+          <section>
+            <p class="case-section-number">01 / {isZh ? '问题' : 'Question'}</p>
+            <h2>{project.question[lang]}</h2>
+          </section>
+
+          <section>
+            <p class="case-section-number">02 / {isZh ? '关键决策' : 'Key decisions'}</p>
+            <ol class="decision-list">
+              {project.decisions[lang].map((decision, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{decision}</p></li>)}
+            </ol>
+          </section>
+
+          <section>
+            <p class="case-section-number">03 / {isZh ? '工作流' : 'Workflow'}</p>
+            <div class="process-grid">
+              {project.process[lang].map((step, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.text}</p></article>)}
+            </div>
+          </section>
+
+          {project.images && project.images.length > 1 && (
+            <div class="case-gallery">
+              {project.images.slice(1).map((image) => <img src={image.src} alt={image.alt[lang]} width="1600" height="900" loading="lazy" />)}
+            </div>
+          )}
+
+          <section>
+            <p class="case-section-number">04 / {isZh ? '证据' : 'Evidence'}</p>
+            <ul class="evidence-list">{project.evidence[lang].map((item) => <li>{item}</li>)}</ul>
+          </section>
+
+          <section class="boundary-section">
+            <div><p class="case-section-number">05 / {isZh ? '边界' : 'Boundary'}</p><p>{project.boundary[lang]}</p></div>
+            <div><p class="case-section-number">06 / {isZh ? '下一步' : 'Next'}</p><p>{project.next[lang]}</p></div>
+          </section>
+        </div>
+      </div>
+
+      <nav class="case-next" aria-label={isZh ? '案例导航' : 'Case study navigation'}>
+        <a href={`${home}#work`}>← {isZh ? '全部案例' : 'All work'}</a>
+        <a href={`${projectBase}/${nextProject.slug}/`}><span>{isZh ? '下一个案例' : 'Next case'}</span>{nextProject.title} →</a>
+      </nav>
+    </main>
+  </div>
+</BaseLayout>

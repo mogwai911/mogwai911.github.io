@@ -1,0 +1,50 @@
+---
+import '../styles/global.css';
+import type { Lang } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  canonicalPath: string;
+  alternatePath: string;
+  ogImage?: string;
+}
+
+const { lang, title, description, canonicalPath, alternatePath, ogImage = '/images/social-card.webp' } = Astro.props;
+const site = Astro.site ?? new URL('https://mogwai911.github.io');
+const canonical = new URL(canonicalPath, site);
+const alternate = new URL(alternatePath, site);
+const absoluteOg = new URL(ogImage, site);
+---
+
+<!doctype html>
+<html lang={lang === 'zh' ? 'zh-CN' : 'en'}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#f7f7f4" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang={lang === 'zh' ? 'en' : 'zh-CN'} href={alternate} />
+    <link rel="alternate" hreflang="x-default" href={new URL('/', site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Kylian" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={absoluteOg} />
+    <meta property="og:locale" content={lang === 'zh' ? 'zh_CN' : 'en_US'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={absoluteOg} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">{lang === 'zh' ? '跳到正文' : 'Skip to content'}</a>
+    <slot />
+  </body>
+</html>

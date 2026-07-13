@@ -1,0 +1,25 @@
+---
+import type { Lang } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  alternatePath: string;
+  compact?: boolean;
+}
+
+const { lang, alternatePath, compact = false } = Astro.props;
+const home = lang === 'zh' ? '/' : '/en/';
+---
+
+<header class:list={['site-header', { 'site-header--compact': compact }]}>
+  <a class="wordmark" href={home} aria-label={lang === 'zh' ? 'Kylian 首页' : 'Kylian home'}>Kylian<span>.</span></a>
+  <nav aria-label={lang === 'zh' ? '主导航' : 'Primary navigation'}>
+    <a href={`${home}#work`}>{lang === 'zh' ? '项目' : 'Work'}</a>
+    <a href={lang === 'zh' ? '/f1/' : '/en/f1/'}>F1 Notes</a>
+    <a href={`${home}#about`}>{lang === 'zh' ? '经历' : 'About'}</a>
+    <a href={`${home}#contact`}>{lang === 'zh' ? '联系' : 'Contact'}</a>
+    <a class="language-switch" href={alternatePath} lang={lang === 'zh' ? 'en' : 'zh-CN'} hreflang={lang === 'zh' ? 'en' : 'zh-CN'}>
+      {lang === 'zh' ? 'EN' : '中文'}
+    </a>
+  </nav>
+</header>
