@@ -5,6 +5,7 @@ export type ProjectCase = {
   number: string;
   year: string;
   title: string;
+  displayTitle: Record<Lang, string>;
   eyebrow: Record<Lang, string>;
   summary: Record<Lang, string>;
   why: Record<Lang, string>;
@@ -36,6 +37,7 @@ export const projects: ProjectCase[] = [
     number: '01',
     year: '2026',
     title: 'FOMO Firewall',
+    displayTitle: { zh: '信息分诊与学习助手', en: 'Information Triage & Learning Assistant' },
     eyebrow: { zh: '信息分诊 · 产品判断', en: 'Information triage · Product judgment' },
     summary: {
       zh: '为知识工作者做的信息分诊原型：把不断收藏，变成“现在学、稍后看、忽略”三个可执行选择。',
@@ -156,6 +158,7 @@ export const projects: ProjectCase[] = [
     number: '02',
     year: '2025–26',
     title: 'TB2 Diagnostics',
+    displayTitle: { zh: 'Agent 失败诊断系统', en: 'Agent Failure Diagnostics' },
     eyebrow: { zh: 'Agent 诊断 · 评估系统', en: 'Agent diagnostics · Evaluation system' },
     summary: {
       zh: '把冗长的 Agent 失败轨迹，转成带证据的错误类型和修复优先级，降低人工复盘成本。',
@@ -270,6 +273,7 @@ export const projects: ProjectCase[] = [
     number: '03',
     year: '2025',
     title: 'GeoAgent',
+    displayTitle: { zh: '可验证的 GIS 代码助手', en: 'Verifiable GIS Code Assistant' },
     eyebrow: { zh: 'GIS · RAG · Multi-Agent', en: 'GIS · RAG · Multi-Agent' },
     summary: {
       zh: '把 GIS 代码生成从“一次性回答”，改造成检索文档、生成、执行、报错修复和评测的闭环。',
@@ -384,6 +388,7 @@ export const projects: ProjectCase[] = [
     number: '04',
     year: '2025–26',
     title: 'AIGC POV',
+    displayTitle: { zh: '多镜头 AIGC 创作工作流', en: 'Multi-shot AIGC Creation Workflow' },
     eyebrow: { zh: '创作工具 · Prompt DSL', en: 'Creative tools · Prompt DSL' },
     summary: {
       zh: '为多镜头 AIGC 视频建立角色、视角和约束模板，减少盲目重试，让失败原因可以复用。',

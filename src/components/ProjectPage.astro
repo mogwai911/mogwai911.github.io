@@ -16,7 +16,7 @@ const projectIndex = projects.findIndex((item) => item.slug === project.slug);
 const nextProject = projects[(projectIndex + 1) % projects.length];
 ---
 
-<BaseLayout lang={lang} title={`${project.title} — Kylian`} description={project.summary[lang]} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+<BaseLayout lang={lang} title={`${project.displayTitle[lang]} | ${project.title} — Kylian`} description={project.summary[lang]} canonicalPath={canonicalPath} alternatePath={alternatePath}>
   <div class="page-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content" class="case-page">
@@ -24,7 +24,8 @@ const nextProject = projects[(projectIndex + 1) % projects.length];
         <div class="case-ordinal"><span>{project.number}</span><span>{project.year}</span></div>
         <div class="case-title">
           <p class="kicker">{project.eyebrow[lang]}</p>
-          <h1>{project.title}</h1>
+          <h1>{project.displayTitle[lang]}</h1>
+          <p class="case-codename">{project.title}</p>
           <p>{project.summary[lang]}</p>
         </div>
         <ul class="tag-list">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
@@ -102,7 +103,7 @@ const nextProject = projects[(projectIndex + 1) % projects.length];
 
       <nav class="case-next" aria-label={isZh ? '案例导航' : 'Case study navigation'}>
         <a href={workPath}>← {isZh ? '全部案例' : 'All work'}</a>
-        <a href={`${projectBase}/${nextProject.slug}/`}><span>{isZh ? '下一个案例' : 'Next case'}</span>{nextProject.title} →</a>
+        <a href={`${projectBase}/${nextProject.slug}/`}><span>{isZh ? '下一个案例' : 'Next case'}</span>{nextProject.displayTitle[lang]}<small>{nextProject.title}</small> →</a>
       </nav>
     </main>
   </div>

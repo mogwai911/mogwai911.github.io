@@ -64,7 +64,8 @@ const selected = projects.slice(0, 2);
             <a href={`${projectBase}/${project.slug}/`}>
               <span>{project.number} / {project.year}</span>
               <p>{project.eyebrow[lang]}</p>
-              <h3>{project.title}</h3>
+              <h3>{project.displayTitle[lang]}</h3>
+              <p class="project-codename">{project.title}</p>
               <div><p>{project.summary[lang]}</p><b>↗</b></div>
             </a>
           ))}

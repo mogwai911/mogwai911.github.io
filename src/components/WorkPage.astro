@@ -39,9 +39,9 @@ const lenses = isZh
           {projects.map((project) => (
             <article class="project-row">
               <p class="project-number">{project.number}</p>
-              <div class="project-main"><p class="project-meta">{project.eyebrow[lang]} · {project.year}</p><h3><a href={`${projectBase}/${project.slug}/`}>{project.title}</a></h3><p>{project.summary[lang]}</p></div>
+              <div class="project-main"><p class="project-meta">{project.eyebrow[lang]} · {project.year}</p><h3><a href={`${projectBase}/${project.slug}/`}>{project.displayTitle[lang]}</a></h3><p class="project-codename">{project.title}</p><p>{project.summary[lang]}</p></div>
               <ul class="tag-list" aria-label={isZh ? '主题标签' : 'Topics'}>{project.tags.slice(0, 2).map((tag) => <li>{tag}</li>)}</ul>
-              <a class="arrow-link" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case study'}: ${project.title}`}>↗</a>
+              <a class="arrow-link" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case study'}: ${project.displayTitle[lang]}`}>↗</a>
             </article>
           ))}
         </div>
