@@ -9,17 +9,28 @@ interface Props {
 
 const { lang, alternatePath, compact = false } = Astro.props;
 const home = lang === 'zh' ? '/' : '/en/';
+const work = lang === 'zh' ? '/work/' : '/en/work/';
+const about = lang === 'zh' ? '/about/' : '/en/about/';
+const f1 = lang === 'zh' ? '/f1/' : '/en/f1/';
+const path = Astro.url.pathname;
+const section = path.includes('/projects/') || path.includes('/work/') ? 'work' : path.includes('/about/') ? 'about' : path.includes('/f1/') ? 'f1' : 'home';
 ---
 
 <header class:list={['site-header', { 'site-header--compact': compact }]}>
-  <a class="wordmark" href={home} aria-label={lang === 'zh' ? 'Kylian 首页' : 'Kylian home'}>Kylian<span>.</span></a>
+  <a class="brand-lockup" href={home} aria-label={lang === 'zh' ? 'Kylian 首页' : 'Kylian home'}>
+    <span class="brand-mark">K</span>
+    <span class="brand-copy"><strong>Kylian</strong><small>{lang === 'zh' ? '系统 · 故事 · 证据' : 'Systems · Stories · Evidence'}</small></span>
+  </a>
   <nav aria-label={lang === 'zh' ? '主导航' : 'Primary navigation'}>
-    <a href={`${home}#work`}>{lang === 'zh' ? '项目' : 'Work'}</a>
-    <a href={lang === 'zh' ? '/f1/' : '/en/f1/'}>F1 Notes</a>
-    <a href={`${home}#about`}>{lang === 'zh' ? '经历' : 'About'}</a>
-    <a href={`${home}#contact`}>{lang === 'zh' ? '联系' : 'Contact'}</a>
+    <a href={home} aria-current={section === 'home' ? 'page' : undefined}>{lang === 'zh' ? '首页' : 'Overview'}</a>
+    <a href={work} aria-current={section === 'work' ? 'page' : undefined}>{lang === 'zh' ? '工作' : 'Work'}</a>
+    <a href={about} aria-current={section === 'about' ? 'page' : undefined}>{lang === 'zh' ? '关于' : 'About'}</a>
+    <a href={f1} aria-current={section === 'f1' ? 'page' : undefined}>F1 Notes</a>
+  </nav>
+  <div class="header-actions">
+    <a class="header-contact" href="mailto:icewaterdundundun@gmail.com">{lang === 'zh' ? '写信' : 'Email'}</a>
     <a class="language-switch" href={alternatePath} lang={lang === 'zh' ? 'en' : 'zh-CN'} hreflang={lang === 'zh' ? 'en' : 'zh-CN'}>
       {lang === 'zh' ? 'EN' : '中文'}
     </a>
-  </nav>
+  </div>
 </header>

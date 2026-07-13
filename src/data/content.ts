@@ -255,6 +255,7 @@ export const projects: ProjectCase[] = [
 
 export const profile = {
   email: 'icewaterdundundun@gmail.com',
+  x: undefined as undefined | { label: string; url: string },
   intro: {
     zh: '从 GIS、Agent 到创作工具，我持续探索如何让复杂系统变得自然、可理解、可验证。',
     en: 'From GIS and agents to creative tools, I explore how complex systems can become intuitive, understandable, and verifiable.',

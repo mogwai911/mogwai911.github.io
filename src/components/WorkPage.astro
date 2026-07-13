@@ -1,0 +1,58 @@
+---
+import type { Lang } from '../data/content';
+import { projects } from '../data/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const canonicalPath = isZh ? '/work/' : '/en/work/';
+const alternatePath = isZh ? '/en/work/' : '/work/';
+const projectBase = isZh ? '/projects' : '/en/projects';
+const description = isZh ? 'Kylian 的产品判断、Agent 评估、空间计算与生成式创作案例。' : 'Kylian’s work across product judgment, agent evaluation, spatial computing, and generative creation.';
+const lenses = isZh
+  ? [['01', '判断', '先问什么值得被解决，再决定系统需要生成什么。'], ['02', '证据', '把成功率、改判和失败轨迹变成可以复核的信号。'], ['03', '边界', '主动说明尚未验证的部分，避免把原型写成结论。']]
+  : [['01', 'Judgment', 'Ask what deserves to be solved before deciding what the system should generate.'], ['02', 'Evidence', 'Turn success rates, overrides, and failure traces into reviewable signals.'], ['03', 'Boundaries', 'State what remains unverified instead of presenting prototypes as conclusions.']];
+---
+
+<BaseLayout lang={lang} title={`${isZh ? '工作' : 'Work'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="page-shell">
+    <SiteHeader lang={lang} alternatePath={alternatePath} compact />
+    <main id="content" class="work-page">
+      <header class="page-hero page-hero--work">
+        <div class="page-hero-index"><span>01</span><i></i><small>Work</small></div>
+        <div>
+          <p class="kicker">Selected systems & experiments</p>
+          <h1>{isZh ? <>不是功能清单，<br /><em>是判断如何形成。</em></> : <>Not a feature list,<br /><em>but how judgment forms.</em></>}</h1>
+        </div>
+        <p>{isZh ? '四个项目对应四种复杂性：信息该如何分流，Agent 为什么失败，自然语言怎样进入空间工作流，生成式创作如何保持连续。' : 'Four projects, four forms of complexity: triaging information, diagnosing agent failure, bringing language into spatial workflows, and preserving continuity in generative creation.'}</p>
+      </header>
+
+      <section class="work-lenses" aria-label={isZh ? '工作原则' : 'Working principles'}>
+        {lenses.map(([number, title, text]) => <article><span>{number}</span><h2>{title}</h2><p>{text}</p></article>)}
+      </section>
+
+      <section class="work-catalog" aria-labelledby="catalog-title">
+        <header><p class="section-index">Cases / 04</p><h2 id="catalog-title">{isZh ? '案例目录' : 'Case index'}</h2><p>{isZh ? '每个案例都保留问题、角色、决策、证据、边界和下一步。' : 'Each case preserves the question, role, decisions, evidence, boundaries, and next step.'}</p></header>
+        <div class="project-index">
+          {projects.map((project) => (
+            <article class="project-row">
+              <p class="project-number">{project.number}</p>
+              <div class="project-main"><p class="project-meta">{project.eyebrow[lang]} · {project.year}</p><h3><a href={`${projectBase}/${project.slug}/`}>{project.title}</a></h3><p>{project.summary[lang]}</p></div>
+              <ul class="tag-list" aria-label={isZh ? '主题标签' : 'Topics'}>{project.tags.slice(0, 2).map((tag) => <li>{tag}</li>)}</ul>
+              <a class="arrow-link" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case study'}: ${project.title}`}>↗</a>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section class="work-bridge">
+        <p class="kicker">Next chapter / 02</p>
+        <h2>{isZh ? '这些判断从哪里来？' : 'Where do these judgments come from?'}</h2>
+        <a href={isZh ? '/about/' : '/en/about/'}>{isZh ? '阅读经历与工作方式' : 'Read about my background and approach'} →</a>
+      </section>
+    </main>
+    <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>Work / 01</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>
+  </div>
+</BaseLayout>
