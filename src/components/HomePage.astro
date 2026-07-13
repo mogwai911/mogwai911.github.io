@@ -10,7 +10,7 @@ const isZh = lang === 'zh';
 const home = isZh ? '/' : '/en/';
 const workPath = isZh ? '/work/' : '/en/work/';
 const aboutPath = isZh ? '/about/' : '/en/about/';
-const f1Path = isZh ? '/f1/' : '/en/f1/';
+const hobbiesPath = isZh ? '/hobbies/' : '/en/hobbies/';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const alternate = isZh ? '/en/' : '/';
 const title = isZh ? 'Kylian — 复杂系统的探索者' : 'Kylian — Explorer of complex systems';
@@ -50,7 +50,7 @@ const selected = projects.slice(0, 2);
         <div class="chapter-links">
           <a href={workPath}><span>01</span><div><p>{isZh ? '工作' : 'Work'}</p><h3>{isZh ? '复杂问题如何被拆解和验证' : 'How complex problems are framed and verified'}</h3></div><b>↗</b></a>
           <a href={aboutPath}><span>02</span><div><p>{isZh ? '关于' : 'About'}</p><h3>{isZh ? '经历、教育与我的工作方式' : 'Experience, education, and how I work'}</h3></div><b>↗</b></a>
-          <a href={f1Path}><span>03</span><div><p>F1 Notes</p><h3>{isZh ? '赛事、产业与技术的长期短札' : 'Durable notes on sport, business, and technology'}</h3></div><b>↗</b></a>
+          <a href={hobbiesPath}><span>03</span><div><p>{isZh ? '爱好' : 'Hobbies'}</p><h3>{isZh ? 'F1、摄影，以及工作之外持续投入的注意力' : 'F1, photography, and attention beyond work'}</h3></div><b>↗</b></a>
         </div>
       </section>
 

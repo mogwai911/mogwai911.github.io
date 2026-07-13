@@ -1,0 +1,67 @@
+---
+import type { Lang } from '../data/content';
+import { f1Notes } from '../data/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const canonicalPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const alternatePath = isZh ? '/en/hobbies/' : '/hobbies/';
+const f1Path = isZh ? '/f1/' : '/en/f1/';
+const description = isZh
+  ? 'Kylian 的个人兴趣：从 F1 的赛事、产业与技术，到旅途中的个人摄影。'
+  : 'Kylian’s interests, from F1 as sport, business, and technology to personal photography while travelling.';
+---
+
+<BaseLayout lang={lang} title={`${isZh ? '爱好' : 'Hobbies'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="page-shell">
+    <SiteHeader lang={lang} alternatePath={alternatePath} compact />
+    <main id="content" class="hobbies-page">
+      <header class="page-hero hobbies-hero">
+        <div class="page-hero-index"><span>03</span><i></i><small>Hobbies</small></div>
+        <div>
+          <p class="kicker">Attention beyond work</p>
+          <h1>{isZh ? <>工作之外，<br /><em>兴趣保持敏感。</em></> : <>Beyond work,<br /><em>curiosity stays awake.</em></>}</h1>
+        </div>
+        <p>{isZh ? '爱好不是另一份项目清单，而是我会自然投入注意力的地方。它们让我从速度、工程、产业与真实光线中，继续观察系统如何运转。' : 'Hobbies are not another project list. They are where attention flows naturally—toward speed, engineering, industry, and the way real light frames a story.'}</p>
+      </header>
+
+      <section class="hobby-feature" aria-labelledby="f1-feature-title">
+        <figure class="hobby-feature-image">
+          <picture>
+            <source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" />
+            <img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian'} width="1800" height="1200" />
+          </picture>
+          <figcaption>{isZh ? '个人摄影 · 德国 · 车型暂不标注' : 'Personal photograph · Germany · model intentionally unlabeled'}</figcaption>
+        </figure>
+        <div class="hobby-feature-copy">
+          <div class="baroque-divider" aria-hidden="true"><span>✦</span></div>
+          <p class="kicker">Hobbies / 01</p>
+          <h2 id="f1-feature-title">F1 Notes</h2>
+          <p class="hobby-thesis">{isZh ? '我关注 F1，不只是因为速度，也因为它把车手天赋、车队工程、商业利益与规则政治压缩在同一条赛道上。' : 'I follow F1 not only for speed, but because it compresses driver talent, team engineering, commercial interests, and regulatory politics onto the same track.'}</p>
+          <p>{isZh ? '这里收录对赛事、产业与技术的长期短札；不追逐实时新闻，也不把兴趣包装成工作成果。' : 'This is a collection of durable notes on sport, business, and technology—not a live news feed, and not work dressed up as leisure.'}</p>
+          <a class="text-link" href={f1Path}>{isZh ? '进入 F1 Notes' : 'Enter F1 Notes'} →</a>
+        </div>
+      </section>
+
+      <section class="hobby-notes" aria-labelledby="hobby-notes-title">
+        <header>
+          <p class="section-index">Notes / 03</p>
+          <div><p class="kicker">A continuing notebook</p><h2 id="hobby-notes-title">{isZh ? '从三个视角看同一条赛道' : 'One track, three lenses'}</h2></div>
+        </header>
+        <div class="hobby-note-list">
+          {f1Notes.map((note, index) => (
+            <a href={`${f1Path}#${note.id}`}>
+              <span>{String(index + 1).padStart(2, '0')} / {note.category[lang]}</span>
+              <h3>{note.title[lang]}</h3>
+              <b>↗</b>
+            </a>
+          ))}
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>Hobbies / 03</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>
+  </div>
+</BaseLayout>

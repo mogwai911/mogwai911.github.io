@@ -1,5 +1,5 @@
 :root {
-  --paper: #f7f7f4;
+  --paper: #f8faff;
   --white: #ffffff;
   --platinum: #cfd1e0;
   --platinum-light: #e9e9ee;
@@ -11,6 +11,8 @@
   --violet: #6f7bc0;
   --champagne: #d5c38e;
   --gold: #a18c59;
+  --blue-mist: #eef3ff;
+  --gold-metal: linear-gradient(112deg, #6f5320 0%, #b99039 14%, #f7e3a2 30%, #9b7428 47%, #ecd17e 66%, #806023 82%, #d8b85e 100%);
   --plum: #564c58;
   --radius-lg: 28px;
   --radius-md: 18px;
@@ -466,4 +468,171 @@ button, input, textarea, select { font: inherit; }
   .chapter-links { gap: .8rem; }
   .chapter-links > a, .chapter-links > a:last-child { border: 1px solid rgba(14,13,43,.18); }
   .f1-page-image { width: calc(100% - 32px); }
+}
+
+/* White-blue marble theme with restrained metallic Baroque details */
+html,
+body {
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse at 12% 18%, rgba(147, 163, 223, .13) 0, rgba(147, 163, 223, 0) 31%),
+    linear-gradient(121deg, transparent 0 39%, rgba(112, 132, 190, .055) 39.25%, transparent 39.75% 100%),
+    linear-gradient(152deg, transparent 0 67%, rgba(33, 143, 228, .045) 67.2%, transparent 67.65% 100%),
+    linear-gradient(96deg, #ffffff 0%, #f8faff 48%, #f0f4fb 100%);
+  background-attachment: fixed;
+}
+
+.site-header { position: relative; border-top: 0; }
+.site-header::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 3px;
+  background: var(--gold-metal);
+  box-shadow: 0 1px 5px rgba(111, 83, 32, .22);
+}
+.brand-mark {
+  background: var(--gold-metal);
+  color: #0b1744;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.72), inset 0 -1px 2px rgba(73,48,10,.25), 0 5px 14px rgba(77,57,20,.13);
+}
+.brand-copy small,
+.header-contact { color: #806323; }
+.site-header nav a[aria-current="page"] { background: var(--blue-mist); box-shadow: inset 0 0 0 1px rgba(32,54,188,.08); }
+.f1-page-shell .site-header nav a[aria-current="page"] { background: rgba(147,163,223,.16); }
+
+.gold-rule::before,
+.page-hero-index i { background: var(--gold-metal); box-shadow: 0 1px 4px rgba(111,83,32,.24); }
+.gold-rule::after {
+  content: "✦";
+  background: var(--gold-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-size: .7rem;
+  filter: drop-shadow(0 1px 1px rgba(75,50,10,.2));
+}
+.home-hero-copy h1 em,
+.page-hero h1 em,
+.about-intro h1 em { color: var(--royal); }
+.page-hero { position: relative; }
+.page-hero::after {
+  content: "❦";
+  position: absolute;
+  right: .25rem;
+  top: clamp(3.5rem, 7vw, 7rem);
+  background: var(--gold-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font: 400 clamp(1.4rem, 2.2vw, 2.2rem)/1 var(--serif);
+  filter: drop-shadow(0 1px 1px rgba(75,50,10,.28));
+}
+.page-hero-index span,
+.page-hero-index small,
+.chapter-links > a > span,
+.chapter-links b {
+  background: var(--gold-metal);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.home-hero-photo::before,
+.about-portrait::after {
+  opacity: 1;
+  background:
+    linear-gradient(132deg, transparent 0 56%, rgba(111,123,192,.13) 56.3%, transparent 57% 100%),
+    linear-gradient(155deg, #ffffff 0%, #eef3ff 100%);
+  border: 1px solid rgba(32,54,188,.16);
+  box-shadow: inset 0 0 0 5px rgba(255,255,255,.5), 0 16px 40px rgba(32,54,188,.08);
+}
+.home-hero-photo img,
+.about-portrait img { box-shadow: 0 18px 55px rgba(14,13,43,.15); }
+.hero-direction { border-top-color: rgba(32,54,188,.23); }
+
+.chapter-links > a,
+.home-projects > a,
+.work-lenses article {
+  background:
+    linear-gradient(139deg, transparent 0 61%, rgba(111,123,192,.055) 61.25%, transparent 61.8% 100%),
+    rgba(255,255,255,.72);
+  border-color: rgba(32,54,188,.16);
+  box-shadow: 0 12px 35px rgba(32,54,188,.045);
+}
+.chapter-links > a:last-child { border-color: rgba(32,54,188,.16); }
+.chapter-links > a:hover,
+.home-projects > a:hover { background: #eef3ff; }
+.work-lenses article { border-color: rgba(32,54,188,.18); }
+
+.home-contact,
+.about-contact {
+  background:
+    radial-gradient(circle at 91% 6%, rgba(147,163,223,.22), transparent 28%),
+    linear-gradient(135deg, transparent 0 48%, rgba(111,123,192,.07) 48.25%, transparent 48.8% 100%),
+    linear-gradient(105deg, rgba(255,255,255,.96), rgba(238,243,255,.9));
+  border: 1px solid rgba(32,54,188,.16);
+  border-top: 3px solid transparent;
+  background-clip: padding-box;
+  box-shadow: 0 20px 55px rgba(32,54,188,.07);
+}
+.gold-orbit { border-color: #a78232; opacity: .72; box-shadow: inset 0 0 10px rgba(245,220,139,.22), 0 0 8px rgba(111,83,32,.12); }
+.gold-orbit::after { border-color: #d9bc69; box-shadow: 0 0 6px rgba(111,83,32,.12); }
+
+/* Hobbies is a parent chapter; F1 remains a focused notebook beneath it. */
+.hobbies-hero { border-bottom: 1px solid rgba(32,54,188,.14); }
+.hobby-feature {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(390px, .85fr);
+  gap: clamp(2rem, 6vw, 7rem);
+  align-items: center;
+  padding: clamp(5rem, 10vw, 10rem) 0;
+}
+.hobby-feature-image { position: relative; margin: 0; padding: 1rem; background: #0e194b; border-radius: var(--radius-lg); box-shadow: 0 24px 70px rgba(14,25,75,.16); }
+.hobby-feature-image img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center 61%; border-radius: calc(var(--radius-lg) - 8px); filter: saturate(.84) contrast(1.04); }
+.hobby-feature-image figcaption { position: absolute; right: 1.8rem; bottom: 1.7rem; padding: .35rem .55rem; background: rgba(14,13,43,.74); color: rgba(255,255,255,.78); border-radius: var(--radius-sm); font-size: .62rem; letter-spacing: .08em; text-transform: uppercase; }
+.hobby-feature-copy {
+  padding: clamp(2rem, 4vw, 4rem);
+  background:
+    linear-gradient(128deg, transparent 0 58%, rgba(111,123,192,.08) 58.3%, transparent 59% 100%),
+    rgba(255,255,255,.82);
+  border: 1px solid rgba(32,54,188,.16);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 18px 50px rgba(32,54,188,.06);
+}
+.hobby-feature-copy h2 { margin: 0; color: var(--royal); font: 400 clamp(3.4rem, 7vw, 7.5rem)/.9 var(--serif); letter-spacing: -.065em; }
+.hobby-thesis { margin: 2.5rem 0 1.2rem; font: 400 clamp(1.25rem, 2vw, 1.9rem)/1.6 var(--serif); }
+.hobby-feature-copy > p:not(.kicker):not(.hobby-thesis) { color: var(--ink-soft); font-size: .88rem; }
+.hobby-feature-copy .text-link { margin-top: 1.5rem; }
+.baroque-divider { display: flex; align-items: center; gap: .65rem; width: 150px; margin-bottom: 2rem; }
+.baroque-divider::before,
+.baroque-divider::after { content: ""; flex: 1; height: 1px; background: var(--gold-metal); box-shadow: 0 1px 3px rgba(111,83,32,.28); }
+.baroque-divider span { background: var(--gold-metal); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 1px 1px rgba(75,50,10,.25)); }
+.hobby-notes { padding: clamp(5rem, 9vw, 9rem) 0; border-top: 1px solid rgba(32,54,188,.18); }
+.hobby-notes > header { display: grid; grid-template-columns: 80px 1fr; gap: clamp(1rem, 4vw, 5rem); margin-bottom: 3.5rem; }
+.hobby-notes h2 { margin: 0; font: 400 clamp(2.2rem, 4vw, 4.5rem)/1.1 var(--serif); letter-spacing: -.045em; }
+.hobby-note-list { display: grid; gap: 1rem; }
+.hobby-note-list a { display: grid; grid-template-columns: 190px 1fr auto; gap: 2rem; align-items: center; padding: 1.7rem 1.8rem; background: rgba(255,255,255,.7); border: 1px solid rgba(32,54,188,.16); border-radius: var(--radius-md); transition: background .2s ease, transform .2s ease; }
+.hobby-note-list a:hover { background: var(--blue-mist); transform: translateY(-2px); }
+.hobby-note-list span { color: var(--royal); font-size: .66rem; font-weight: 650; letter-spacing: .09em; text-transform: uppercase; }
+.hobby-note-list h3 { margin: 0; font: 400 clamp(1.15rem, 2vw, 1.75rem)/1.4 var(--serif); }
+.hobby-note-list b { background: var(--gold-metal); -webkit-background-clip: text; background-clip: text; color: transparent; font-weight: 400; }
+
+@media (max-width: 980px) {
+  .hobby-feature { grid-template-columns: 1fr; }
+  .hobby-feature-copy { max-width: 780px; margin-left: auto; }
+}
+
+@media (max-width: 720px) {
+  html,
+  body { background-attachment: scroll; }
+  .page-hero::after { top: 2.5rem; font-size: 1.3rem; }
+  .hobby-feature { padding: 4rem 0 5rem; }
+  .hobby-feature-image { padding: .6rem; }
+  .hobby-feature-copy { padding: 2rem; }
+  .hobby-notes > header { grid-template-columns: 35px 1fr; gap: 1rem; }
+  .hobby-note-list a { grid-template-columns: 1fr auto; gap: 1rem; padding: 1.4rem; }
+  .hobby-note-list span { grid-column: 1 / -1; }
 }

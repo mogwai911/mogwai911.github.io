@@ -11,9 +11,9 @@ const { lang, alternatePath, compact = false } = Astro.props;
 const home = lang === 'zh' ? '/' : '/en/';
 const work = lang === 'zh' ? '/work/' : '/en/work/';
 const about = lang === 'zh' ? '/about/' : '/en/about/';
-const f1 = lang === 'zh' ? '/f1/' : '/en/f1/';
+const hobbies = lang === 'zh' ? '/hobbies/' : '/en/hobbies/';
 const path = Astro.url.pathname;
-const section = path.includes('/projects/') || path.includes('/work/') ? 'work' : path.includes('/about/') ? 'about' : path.includes('/f1/') ? 'f1' : 'home';
+const section = path.includes('/projects/') || path.includes('/work/') ? 'work' : path.includes('/about/') ? 'about' : path.includes('/hobbies/') || path.includes('/f1/') ? 'hobbies' : 'home';
 ---
 
 <header class:list={['site-header', { 'site-header--compact': compact }]}>
@@ -25,7 +25,7 @@ const section = path.includes('/projects/') || path.includes('/work/') ? 'work' 
     <a href={home} aria-current={section === 'home' ? 'page' : undefined}>{lang === 'zh' ? '首页' : 'Overview'}</a>
     <a href={work} aria-current={section === 'work' ? 'page' : undefined}>{lang === 'zh' ? '工作' : 'Work'}</a>
     <a href={about} aria-current={section === 'about' ? 'page' : undefined}>{lang === 'zh' ? '关于' : 'About'}</a>
-    <a href={f1} aria-current={section === 'f1' ? 'page' : undefined}>F1 Notes</a>
+    <a href={hobbies} aria-current={section === 'hobbies' ? 'page' : undefined}>{lang === 'zh' ? '爱好' : 'Hobbies'}</a>
   </nav>
   <div class="header-actions">
     <a class="header-contact" href="https://x.com/icewaterdundun" target="_blank" rel="noreferrer">X</a>
