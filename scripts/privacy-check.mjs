@@ -1,4 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
 import { extname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -44,9 +45,18 @@ for (const file of files) {
   }
 }
 
+try {
+  const history = execFileSync('git', ['log', '-p', '--all', '--no-ext-diff'], { cwd: root, encoding: 'utf8', maxBuffer: 20 * 1024 * 1024 });
+  for (const [label, needle] of forbidden) {
+    if (history.toLowerCase().includes(needle.toLowerCase())) violations.push(`git history: ${label}`);
+  }
+} catch {
+  // The source scan still works before the repository is initialized.
+}
+
 if (violations.length) {
   console.error(`Privacy check failed:\n${violations.join('\n')}`);
   process.exit(1);
 }
 
-console.log(`Privacy check passed (${files.length} text files scanned).`);
+console.log(`Privacy check passed (${files.length} text files plus Git history scanned).`);
