@@ -13,6 +13,14 @@ export type ProjectCase = {
   role: Record<Lang, string>;
   decisions: Record<Lang, { action: string; reason: string }[]>;
   system: Record<Lang, { title: string; text: string }[]>;
+  workflow: Record<Lang, {
+    heading: string;
+    summary: string;
+    stages: { actor: string; title: string; text: string }[];
+    decision: { actor: string; title: string; text: string };
+    branches: { condition: string; title: string; text: string }[];
+    feedback: { actor: string; title: string; text: string };
+  }>;
   process: Record<Lang, { title: string; text: string }[]>;
   evidence: Record<Lang, string[]>;
   boundary: Record<Lang, string>;
@@ -76,6 +84,40 @@ export const projects: ProjectCase[] = [
         { title: 'Learning', text: 'Questions, insights, and memory support later use.' },
         { title: 'Feedback', text: 'Acceptance and overrides adjust later preferences.' },
       ],
+    },
+    workflow: {
+      zh: {
+        heading: '一条内容如何从“待处理”，变成明确行动',
+        summary: '产品价值不在于替用户读完内容，而在于减少重复判断，并让每一次接受或改判都能改善下一次分诊。',
+        stages: [
+          { actor: '内容源', title: '内容进入收件箱', text: 'RSS 条目与来源信息进入待处理队列。' },
+          { actor: '系统', title: '补充判断上下文', text: '结合主题、来源、用户目标与历史偏好。' },
+          { actor: 'Agent', title: '给出建议与理由', text: '输出可撤回的动作建议，而不是只生成摘要。' },
+        ],
+        decision: { actor: '用户', title: '这条内容下一步怎么处理？', text: '用户可以接受建议，也可以改判；最终选择决定内容去向。' },
+        branches: [
+          { condition: '现在学', title: '进入学习会话', text: '用递进问题形成可复述的理解，并沉淀关键洞察。' },
+          { condition: '稍后看', title: '进入延期队列', text: '保留理由与优先级，避免重新从零筛选。' },
+          { condition: '忽略', title: '结束本次处理', text: '不再占用注意力，但保留本次判断记录。' },
+        ],
+        feedback: { actor: '反馈闭环', title: '接受与改判回写偏好', text: '系统记录建议是否被采纳、用户改成了什么，并在下一轮调整分诊依据。' },
+      },
+      en: {
+        heading: 'How an item moves from backlog to a clear action',
+        summary: 'The product does not create value by reading on the user’s behalf. It reduces repeated judgment and uses every acceptance or override to improve the next triage decision.',
+        stages: [
+          { actor: 'Source', title: 'Item enters the inbox', text: 'An RSS item and its source metadata enter the triage queue.' },
+          { actor: 'System', title: 'Add decision context', text: 'Combine topic, source, user intent, and durable preferences.' },
+          { actor: 'Agent', title: 'Recommend with reasons', text: 'Return a reversible action rather than another summary.' },
+        ],
+        decision: { actor: 'User', title: 'What should happen next?', text: 'The user can accept or override the suggestion; the final choice determines the item’s path.' },
+        branches: [
+          { condition: 'Learn now', title: 'Start a learning session', text: 'Progressive questions turn reading into recallable understanding.' },
+          { condition: 'Later', title: 'Move to a deferred queue', text: 'Keep rationale and priority so the user does not screen from zero.' },
+          { condition: 'Ignore', title: 'End this item’s journey', text: 'Remove it from attention while preserving the decision record.' },
+        ],
+        feedback: { actor: 'Feedback loop', title: 'Write acceptance and overrides to memory', text: 'The next triage decision uses what was accepted, what changed, and why.' },
+      },
     },
     process: {
       zh: [
@@ -163,6 +205,40 @@ export const projects: ProjectCase[] = [
         { title: 'Human arbitration', text: 'Review conflicts and set repair priority.' },
       ],
     },
+    workflow: {
+      zh: {
+        heading: '一次 Agent 失败如何变成可执行的修复优先级',
+        summary: '诊断的业务价值，是让研发不再从整段日志里猜原因：高置信样本快速归档，争议样本交给人，所有结果最终指向下一轮修复。',
+        stages: [
+          { actor: '运行环境', title: '采集失败轨迹', text: '汇总命令、日志、报错、耗时与模型决策。' },
+          { actor: '诊断管线', title: '抽取证据与转折点', text: '区分最终报错、上游异常和真正根因。' },
+          { actor: 'LLM Judge', title: '按固定分类归因', text: '输出 L1/L2 标签、引用证据、解释和置信度。' },
+        ],
+        decision: { actor: '质量控制', title: '证据与置信度足以支持结论吗？', text: '系统检查证据完整性、标签覆盖和不同判断之间是否冲突。' },
+        branches: [
+          { condition: '一致且高置信', title: '进入结构化诊断库', text: '直接用于批次统计、问题聚类和修复排序。' },
+          { condition: '低置信 / 冲突', title: '提交人工仲裁', text: '复核原始轨迹，确认标签或纠正根因。' },
+          { condition: '新失败模式', title: '扩充分类边界', text: '把无法覆盖的案例加入 taxonomy 迭代样本。' },
+        ],
+        feedback: { actor: '研发闭环', title: '诊断结果转成修复与回归测试', text: '按影响与频率确定优先级；修复后重新运行任务，新的轨迹再次进入诊断。' },
+      },
+      en: {
+        heading: 'How an agent failure becomes an actionable repair priority',
+        summary: 'The business value of diagnosis is removing guesswork from long traces: confident cases move quickly, disputed cases go to people, and every result points to the next repair cycle.',
+        stages: [
+          { actor: 'Runtime', title: 'Capture the failure trace', text: 'Collect commands, logs, errors, timing, and model decisions.' },
+          { actor: 'Pipeline', title: 'Extract evidence and turning points', text: 'Separate the final symptom, upstream anomaly, and root cause.' },
+          { actor: 'LLM judge', title: 'Attribute with a fixed taxonomy', text: 'Return L1/L2 label, cited evidence, explanation, and confidence.' },
+        ],
+        decision: { actor: 'Quality control', title: 'Does the evidence support the diagnosis?', text: 'Check evidence completeness, taxonomy coverage, confidence, and conflicts.' },
+        branches: [
+          { condition: 'Consistent + high confidence', title: 'Store a structured diagnosis', text: 'Use it for batch statistics, issue clustering, and repair ranking.' },
+          { condition: 'Low confidence / conflict', title: 'Send to human arbitration', text: 'Review the original trace and confirm or correct the root cause.' },
+          { condition: 'New failure pattern', title: 'Expand taxonomy boundaries', text: 'Add uncovered cases to the next taxonomy iteration.' },
+        ],
+        feedback: { actor: 'Engineering loop', title: 'Turn diagnosis into repair and regression tests', text: 'Prioritize by frequency and impact, rerun the task after repair, and feed the new trace back into diagnosis.' },
+      },
+    },
     process: {
       zh: [
         { title: '归因', text: '从轨迹中定位关键转折，将表象错误与根因分开。' },
@@ -243,6 +319,40 @@ export const projects: ProjectCase[] = [
         { title: 'Evaluate', text: 'Use CodeBLEU, AST, and execution results to judge quality.' },
       ],
     },
+    workflow: {
+      zh: {
+        heading: '一个 GIS 需求如何走到可运行、可验证的结果',
+        summary: '核心不是“生成代码”，而是把知识依据、数据选择、执行反馈和空间结果验证接成闭环，减少看似正确却无法交付的答案。',
+        stages: [
+          { actor: '用户', title: '提出空间任务', text: '说明目标、输入数据、空间关系和期望交付物。' },
+          { actor: 'RAG + 数据层', title: '检索知识并确认数据', text: '召回官方 API、示例与可用文件，检查坐标系和字段。' },
+          { actor: '规划 / 生成 Agent', title: '形成计划并生成代码', text: '选择工具、处理顺序与参数，产出可执行脚本。' },
+        ],
+        decision: { actor: '执行环境', title: '代码能运行，并产生可信的空间结果吗？', text: '同时检查运行状态、产物存在性、空间逻辑和质量指标。' },
+        branches: [
+          { condition: '运行且验证通过', title: '交付代码与空间产物', text: '同时保留数据、参数和评测依据，便于复现。' },
+          { condition: '运行报错', title: '错误进入修复 Agent', text: '把依赖、路径、API 或参数错误反馈给生成环节。' },
+          { condition: '需求 / 数据不完整', title: '返回用户澄清', text: '补充文件、坐标系、字段含义或期望输出。' },
+        ],
+        feedback: { actor: '验证闭环', title: '失败原因回流到检索与规划', text: '错误不被隐藏在最终答案里，而是定位到知识、数据、计划、执行或评测环节后重新运行。' },
+      },
+      en: {
+        heading: 'How a GIS request becomes a runnable, verifiable result',
+        summary: 'The core is not code generation alone. It is a loop that connects grounding, data selection, execution feedback, and spatial validation so plausible but undeliverable answers are exposed.',
+        stages: [
+          { actor: 'User', title: 'Describe a spatial task', text: 'State the goal, input data, spatial relationships, and expected artifact.' },
+          { actor: 'RAG + data layer', title: 'Retrieve knowledge and confirm data', text: 'Recall official APIs and examples, then inspect files, projections, and fields.' },
+          { actor: 'Planning / generation agent', title: 'Plan and generate code', text: 'Choose tools, sequence, and parameters, then produce an executable script.' },
+        ],
+        decision: { actor: 'Execution environment', title: 'Does it run and produce a trustworthy spatial result?', text: 'Check runtime status, artifact existence, spatial logic, and quality metrics together.' },
+        branches: [
+          { condition: 'Runs + passes validation', title: 'Deliver code and spatial artifacts', text: 'Preserve data, parameters, and evaluation evidence for reproducibility.' },
+          { condition: 'Runtime error', title: 'Route error to the repair agent', text: 'Feed dependency, path, API, or parameter failures back into generation.' },
+          { condition: 'Missing requirement / data', title: 'Return to the user for clarification', text: 'Request files, projection, field meaning, or a clearer expected output.' },
+        ],
+        feedback: { actor: 'Validation loop', title: 'Route failure causes back to retrieval and planning', text: 'Locate the failure in knowledge, data, planning, execution, or evaluation, then rerun instead of hiding it in the final answer.' },
+      },
+    },
     process: {
       zh: [
         { title: '理解', text: '解析空间任务、输入数据和期望产物。' },
@@ -322,6 +432,40 @@ export const projects: ProjectCase[] = [
         { title: 'Generate candidates', text: 'Record model and parameters, then create comparable clips.' },
         { title: 'Review & retry', text: 'Revise constraints by failure type and retain the reason.' },
       ],
+    },
+    workflow: {
+      zh: {
+        heading: '一个镜头如何从创作意图进入可控的迭代',
+        summary: '流程把“多抽几次卡”改成有依据的创作决策：通过的镜头固化为下一镜资产，失败的镜头明确改哪个变量、为什么改。',
+        stages: [
+          { actor: '创作者', title: '定义镜头的叙事任务', text: '先说清这一镜要推进什么信息、情绪或动作。' },
+          { actor: '约束层', title: '锁定全局不变量', text: '固定角色身份、第一视角、世界规则与连续性要求。' },
+          { actor: 'Prompt DSL + 模型', title: '组织变量并生成候选', text: '拆分镜头、主体、环境和负面约束，记录模型与参数。' },
+        ],
+        decision: { actor: '创作评审', title: '候选镜头同时满足连续性与叙事作用吗？', text: '不只判断“好不好看”，还检查角色、视角、运动、构图和前后镜关系。' },
+        branches: [
+          { condition: '通过', title: '锁定镜头与参考资产', text: '保留角色、构图和参数，作为下一镜的连续性输入。' },
+          { condition: '身份 / 连续性失败', title: '修订全局约束', text: '调整角色参考、世界规则和不可变化项后重试。' },
+          { condition: '运动 / 叙事失败', title: '修订局部镜头变量', text: '调整机位、动作、节奏或负面约束后重新生成。' },
+        ],
+        feedback: { actor: '创作闭环', title: '把失败原因沉淀为下一轮规则', text: '记录为何淘汰、修改了什么、结果是否改善；已通过镜头继续进入下一镜或最终剪辑。' },
+      },
+      en: {
+        heading: 'How a shot moves from creative intent into controlled iteration',
+        summary: 'The flow replaces blind retries with explicit creative decisions: accepted shots become assets for the next scene, while failed shots identify which variable should change and why.',
+        stages: [
+          { actor: 'Creator', title: 'Define the shot’s narrative job', text: 'State what information, emotion, or action this shot must advance.' },
+          { actor: 'Constraint layer', title: 'Lock global invariants', text: 'Fix character identity, first-person viewpoint, world rules, and continuity.' },
+          { actor: 'Prompt DSL + model', title: 'Organize variables and generate', text: 'Separate camera, subject, environment, and negative constraints while recording model parameters.' },
+        ],
+        decision: { actor: 'Creative review', title: 'Does the shot satisfy continuity and narrative purpose?', text: 'Review character, viewpoint, motion, composition, and relation to adjacent shots—not beauty alone.' },
+        branches: [
+          { condition: 'Pass', title: 'Lock the shot and reference assets', text: 'Carry identity, composition, and parameters into the next shot.' },
+          { condition: 'Identity / continuity failure', title: 'Revise global constraints', text: 'Adjust character references, world rules, and invariants before retrying.' },
+          { condition: 'Motion / narrative failure', title: 'Revise local shot variables', text: 'Change camera, action, pacing, or negative constraints and regenerate.' },
+        ],
+        feedback: { actor: 'Creative loop', title: 'Turn failure reasons into rules for the next round', text: 'Record why a candidate failed, what changed, and whether it improved; accepted shots continue to the next scene or final edit.' },
+      },
     },
     process: {
       zh: [

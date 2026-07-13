@@ -1,0 +1,60 @@
+---
+import type { Lang, ProjectCase } from '../data/content';
+
+interface Props {
+  lang: Lang;
+  flow: ProjectCase['workflow'][Lang];
+}
+
+const { lang, flow } = Astro.props;
+const isZh = lang === 'zh';
+---
+
+<div class="business-flow" aria-label={flow.heading}>
+  <div class="flow-legend" aria-label={isZh ? '流程图图例' : 'Flowchart legend'}>
+    <span><i class="flow-legend-start"></i>{isZh ? '开始 / 输入' : 'Start / input'}</span>
+    <span><i class="flow-legend-process"></i>{isZh ? '处理' : 'Process'}</span>
+    <span><i class="flow-legend-decision"></i>{isZh ? '判断' : 'Decision'}</span>
+    <span><i class="flow-legend-result"></i>{isZh ? '结果' : 'Outcome'}</span>
+  </div>
+
+  <ol class="flow-main">
+    {flow.stages.map((stage, index) => (
+      <li class:list={{ 'flow-node': true, 'flow-node--start': index === 0 }}>
+        <span class="flow-actor">{stage.actor}</span>
+        <h3>{stage.title}</h3>
+        <p>{stage.text}</p>
+      </li>
+    ))}
+  </ol>
+
+  <div class="flow-decision">
+    <span class="flow-decision-mark" aria-hidden="true"><i>?</i></span>
+    <article>
+      <span class="flow-actor">{flow.decision.actor}</span>
+      <h3>{flow.decision.title}</h3>
+      <p>{flow.decision.text}</p>
+    </article>
+  </div>
+
+  <div class="flow-branches">
+    {flow.branches.map((branch, index) => (
+      <article class:list={{ 'flow-branch': true, 'flow-branch--primary': index === 0 }}>
+        <span class="flow-condition">{branch.condition}</span>
+        <h3>{branch.title}</h3>
+        <p>{branch.text}</p>
+      </article>
+    ))}
+  </div>
+
+  <article class="flow-feedback">
+    <span class="flow-loop" aria-hidden="true">↻</span>
+    <div>
+      <span class="flow-actor">{flow.feedback.actor}</span>
+      <h3>{flow.feedback.title}</h3>
+      <p>{flow.feedback.text}</p>
+    </div>
+  </article>
+
+  <p class="flow-caption"><span>{isZh ? '业务含义' : 'Business meaning'}</span>{flow.summary}</p>
+</div>

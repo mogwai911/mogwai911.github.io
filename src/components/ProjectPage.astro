@@ -2,6 +2,7 @@
 import type { Lang, ProjectCase } from '../data/content';
 import { projects } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BusinessFlow from './BusinessFlow.astro';
 import SiteHeader from './SiteHeader.astro';
 
 interface Props { lang: Lang; project: ProjectCase }
@@ -66,11 +67,9 @@ const nextProject = projects[(projectIndex + 1) % projects.length];
           </section>
 
           <section>
-            <p class="case-section-number">03 / {isZh ? '系统结构' : 'System map'}</p>
-            <h2>{isZh ? '从输入到结果，系统如何穿过每一层' : 'How the system moves from input to outcome'}</h2>
-            <div class="system-map">
-              {project.system[lang].map((step, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.text}</p></article>)}
-            </div>
+            <p class="case-section-number">03 / {isZh ? '业务流程图' : 'Business flow'}</p>
+            <h2>{project.workflow[lang].heading}</h2>
+            <BusinessFlow lang={lang} flow={project.workflow[lang]} />
           </section>
 
           <section>
