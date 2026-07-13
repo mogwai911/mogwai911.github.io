@@ -74,7 +74,10 @@ const selected = projects.slice(0, 2);
       <section class="home-contact" aria-labelledby="contact-title">
         <span class="gold-orbit" aria-hidden="true"></span>
         <div><p class="kicker">Contact</p><h2 id="contact-title">{isZh ? '有一个复杂问题？我们可以从一封邮件开始。' : 'Have a complex problem? We can start with an email.'}</h2></div>
-        <a href={`mailto:${profile.email}`}>{profile.email} ↗</a>
+        <div class="home-contact-links">
+          <a href={`mailto:${profile.email}`}><span>Email</span>{profile.email} ↗</a>
+          <a href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span>{profile.x.label} ↗</a>
+        </div>
       </section>
     </main>
     <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>{isZh ? '以好奇心构建，以证据校正。' : 'Built with curiosity, corrected by evidence.'}</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>

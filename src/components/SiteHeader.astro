@@ -28,6 +28,7 @@ const section = path.includes('/projects/') || path.includes('/work/') ? 'work' 
     <a href={f1} aria-current={section === 'f1' ? 'page' : undefined}>F1 Notes</a>
   </nav>
   <div class="header-actions">
+    <a class="header-contact" href="https://x.com/icewaterdundun" target="_blank" rel="noreferrer">X</a>
     <a class="header-contact" href="mailto:icewaterdundundun@gmail.com">{lang === 'zh' ? '写信' : 'Email'}</a>
     <a class="language-switch" href={alternatePath} lang={lang === 'zh' ? 'en' : 'zh-CN'} hreflang={lang === 'zh' ? 'en' : 'zh-CN'}>
       {lang === 'zh' ? 'EN' : '中文'}
