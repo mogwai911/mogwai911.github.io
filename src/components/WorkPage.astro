@@ -12,8 +12,8 @@ const alternatePath = isZh ? '/en/work/' : '/work/';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const description = isZh ? 'Kylian 的产品判断、Agent 评估、空间计算与生成式创作案例。' : 'Kylian’s work across product judgment, agent evaluation, spatial computing, and generative creation.';
 const lenses = isZh
-  ? [['01', '判断', '先问什么值得被解决，再决定系统需要生成什么。'], ['02', '证据', '把成功率、改判和失败轨迹变成可以复核的信号。'], ['03', '边界', '主动说明尚未验证的部分，避免把原型写成结论。']]
-  : [['01', 'Judgment', 'Ask what deserves to be solved before deciding what the system should generate.'], ['02', 'Evidence', 'Turn success rates, overrides, and failure traces into reviewable signals.'], ['03', 'Boundaries', 'State what remains unverified instead of presenting prototypes as conclusions.']];
+  ? [['01', '价值判断', '先说清影响谁、影响什么结果，再决定是否投入技术资源。'], ['02', '流程拆解', '把输入、判断、执行、反馈与异常拆成可定位的环节。'], ['03', '结果验证', '用行为、效率、质量指标和明确边界判断方案是否成立。']]
+  : [['01', 'Value', 'Clarify who is affected and which outcome changes before investing in technology.'], ['02', 'Workflow', 'Separate inputs, decisions, execution, feedback, and exceptions into diagnosable stages.'], ['03', 'Validation', 'Use behavior, efficiency, quality metrics, and explicit boundaries to judge whether a solution works.']];
 ---
 
 <BaseLayout lang={lang} title={`${isZh ? '工作' : 'Work'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
@@ -23,10 +23,10 @@ const lenses = isZh
       <header class="page-hero page-hero--work">
         <div class="page-hero-index"><span>01</span><i></i><small>Work</small></div>
         <div>
-          <p class="kicker">Selected systems & experiments</p>
-          <h1>{isZh ? <>不是功能清单，<br /><em>是判断如何形成。</em></> : <>Not a feature list,<br /><em>but how judgment forms.</em></>}</h1>
+          <p class="kicker">Four case studies</p>
+          <h1>{isZh ? <>先讲为什么值得做，<br /><em>再讲我怎么做。</em></> : <>Why it matters first.<br /><em>Then how I built it.</em></>}</h1>
         </div>
-        <p>{isZh ? '四个项目对应四种复杂性：信息该如何分流，Agent 为什么失败，自然语言怎样进入空间工作流，生成式创作如何保持连续。' : 'Four projects, four forms of complexity: triaging information, diagnosing agent failure, bringing language into spatial workflows, and preserving continuity in generative creation.'}</p>
+        <p>{isZh ? '四个案例分别处理信息过载、Agent 失败归因、GIS 代码交付和 AIGC 多镜头一致性。每个案例都说明背景、价值、角色、决策理由、系统结构、证据与边界。' : 'The four cases cover information overload, agent-failure attribution, deliverable GIS code, and multi-shot consistency in generative video. Each explains context, value, role, reasoning, system structure, evidence, and limits.'}</p>
       </header>
 
       <section class="work-lenses" aria-label={isZh ? '工作原则' : 'Working principles'}>
@@ -49,7 +49,7 @@ const lenses = isZh
 
       <section class="work-bridge">
         <p class="kicker">Next chapter / 02</p>
-        <h2>{isZh ? '这些判断从哪里来？' : 'Where do these judgments come from?'}</h2>
+        <h2>{isZh ? '想了解我的经历和教育背景？' : 'Want the background behind this work?'}</h2>
         <a href={isZh ? '/about/' : '/en/about/'}>{isZh ? '阅读经历与工作方式' : 'Read about my background and approach'} →</a>
       </section>
     </main>

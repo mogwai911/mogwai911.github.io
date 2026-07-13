@@ -7,9 +7,12 @@ export type ProjectCase = {
   title: string;
   eyebrow: Record<Lang, string>;
   summary: Record<Lang, string>;
+  why: Record<Lang, string>;
+  value: Record<Lang, string>;
   question: Record<Lang, string>;
   role: Record<Lang, string>;
-  decisions: Record<Lang, string[]>;
+  decisions: Record<Lang, { action: string; reason: string }[]>;
+  system: Record<Lang, { title: string; text: string }[]>;
   process: Record<Lang, { title: string; text: string }[]>;
   evidence: Record<Lang, string[]>;
   boundary: Record<Lang, string>;
@@ -27,12 +30,20 @@ export const projects: ProjectCase[] = [
     title: 'FOMO Firewall',
     eyebrow: { zh: '信息分诊 · 产品判断', en: 'Information triage · Product judgment' },
     summary: {
-      zh: '把“我应该读什么”从无底洞式收藏，改写成一次可解释、可改判的分诊。',
-      en: 'Turning the endless backlog of “what should I read?” into an explainable triage decision that can be revised.',
+      zh: '为知识工作者做的信息分诊原型：把不断收藏，变成“现在学、稍后看、忽略”三个可执行选择。',
+      en: 'An information-triage prototype for knowledge workers that turns endless saving into three executable choices: Learn now, Later, or Ignore.',
+    },
+    why: {
+      zh: '信息过载会让人把注意力耗在反复筛选上：内容越多，收藏越多，但真正进入学习和工作的内容并没有增加。值得解决的不是“缺少摘要”，而是用户缺少一个低成本、可撤回的处置方式。',
+      en: 'Information overload pushes people to spend attention on repeated screening. More content creates more saves, but not more material that enters learning or work. The missing piece is not another summary—it is a low-cost, reversible way to decide what to do next.',
+    },
+    value: {
+      zh: '如果分诊有效，用户会减少无效收藏，更快进入学习；系统也能从接受和改判中校正偏好，而不是替用户永久做决定。',
+      en: 'If triage works, users save less without acting and reach learning faster. The system can also learn from acceptance and overrides instead of permanently deciding on the user’s behalf.',
     },
     question: {
-      zh: '信息过载真正消耗的不是阅读时间，而是每一次“这值得我现在投入吗”的判断成本。怎样让系统帮助决策，同时保留人的最终裁量？',
-      en: 'Information overload is less about reading time than the repeated cost of deciding what deserves attention now. How can a system assist that decision while leaving final judgment with the reader?',
+      zh: '怎样让系统先给出有理由的行动建议，同时让用户能轻松接受、改判，并用这些行为继续校正系统？',
+      en: 'How can a system recommend a next action with reasons, while making it easy for users to accept or override—and use those actions to improve later recommendations?',
     },
     role: {
       zh: '独立完成问题定义、交互路径、分诊逻辑、记忆分层与验证设计。',
@@ -40,14 +51,30 @@ export const projects: ProjectCase[] = [
     },
     decisions: {
       zh: [
-        '选择 RSS 作为稳定入口，避免把精力耗在脆弱的抓取能力上。',
-        '将结果限制为“去学习 / 稍后看 / 忽略”三种动作，让输出直接进入下一步。',
-        '把改判率设为核心信号：系统的价值不是猜中，而是减少无意义判断。',
+        { action: '先用 RSS 接入稳定内容源。', reason: '首版要验证的是“分诊是否改变行为”，不是爬虫覆盖率；稳定入口能把时间留给核心链路。' },
+        { action: '把输出限制为“去学习 / 稍后看 / 忽略”。', reason: '三个选项直接对应下一步动作，避免系统给出一段摘要后仍把判断成本留给用户。' },
+        { action: '记录接受与改判，而不把模型命中率当唯一指标。', reason: '用户是否采纳更接近真实价值；改判还能暴露理由、偏好或分类边界哪里出了问题。' },
       ],
       en: [
-        'Used RSS as a stable input instead of investing in brittle scraping.',
-        'Constrained output to Learn / Later / Ignore so every result leads to an action.',
-        'Made override rate the core signal: value comes from reducing pointless decisions, not pretending to be infallible.',
+        { action: 'Start with RSS as a stable content input.', reason: 'The first version needed to test whether triage changes behavior—not crawler coverage—so a stable input kept effort on the core journey.' },
+        { action: 'Constrain output to Learn / Later / Ignore.', reason: 'Each option maps to a next action, rather than returning a summary and leaving the original decision cost untouched.' },
+        { action: 'Record acceptance and overrides instead of treating model accuracy as the only metric.', reason: 'Adoption is closer to product value, while overrides reveal failures in rationale, preference, or category boundaries.' },
+      ],
+    },
+    system: {
+      zh: [
+        { title: '内容输入', text: 'RSS 与用户目标提供待处理内容和判断上下文。' },
+        { title: '分诊建议', text: '系统给出三类动作，并说明为什么。' },
+        { title: '用户处置', text: '接受、改判或进入学习会话。' },
+        { title: '学习沉淀', text: '问题引导、洞察与记忆进入后续使用。' },
+        { title: '反馈校正', text: '接受率与改判记录反向调整偏好。' },
+      ],
+      en: [
+        { title: 'Content input', text: 'RSS and user goals provide items and decision context.' },
+        { title: 'Triage', text: 'The system proposes one of three actions and explains why.' },
+        { title: 'User action', text: 'Accept, override, or enter a learning session.' },
+        { title: 'Learning', text: 'Questions, insights, and memory support later use.' },
+        { title: 'Feedback', text: 'Acceptance and overrides adjust later preferences.' },
       ],
     },
     process: {
@@ -89,12 +116,20 @@ export const projects: ProjectCase[] = [
     title: 'TB2 Diagnostics',
     eyebrow: { zh: 'Agent 诊断 · 评估系统', en: 'Agent diagnostics · Evaluation system' },
     summary: {
-      zh: '当 Agent 只完成了 35% 的任务，比“再试一次”更重要的是知道它究竟在哪里失败。',
-      en: 'When an agent completes only 35% of tasks, knowing where it failed matters more than simply trying again.',
+      zh: '把冗长的 Agent 失败轨迹，转成带证据的错误类型和修复优先级，降低人工复盘成本。',
+      en: 'Turning long agent-failure traces into evidence-backed error types and repair priorities, reducing the cost of manual review.',
+    },
+    why: {
+      zh: '团队只看到“任务失败”，就无法判断下一轮该改规划、工具调用、环境理解还是执行策略。人工逐条看日志平均需要 770 秒，而且不同人可能给出不同结论，评测结果很难稳定地指导迭代。',
+      en: 'A team that only sees “task failed” cannot tell whether to improve planning, tool use, environment understanding, or execution. Manual trace review averaged 770 seconds and reviewers could disagree, making evaluation an unstable guide for iteration.',
+    },
+    value: {
+      zh: '结构化诊断把“感觉这个 Agent 不行”变成“哪一层失败、证据是什么、先修什么”，让研发和评测人员能基于同一套口径复盘。',
+      en: 'Structured diagnosis turns “this agent feels unreliable” into “which layer failed, what evidence supports it, and what to fix first,” giving researchers and evaluators a shared review language.',
     },
     question: {
-      zh: '终端任务的失败轨迹冗长、原因交叠，单一成功率无法指导下一轮优化。怎样把失败变成可以复核、聚合和行动的诊断证据？',
-      en: 'Terminal-task traces are long and failure causes overlap. A single success rate cannot guide improvement. How can failures become reviewable, aggregatable, actionable evidence?',
+      zh: '怎样在不让模型自由猜原因的前提下，把轨迹转成可复核、可统计、可指导修复的诊断结果？',
+      en: 'How can traces become reviewable, aggregatable diagnoses that guide repair—without letting a model freely invent causes?',
     },
     role: {
       zh: '负责失败样本分析、分类框架、证据链设计、LLM-as-Judge 流程与人机一致性验证。',
@@ -102,14 +137,30 @@ export const projects: ProjectCase[] = [
     },
     decisions: {
       zh: [
-        '先人工拆解 46 条失败轨迹，再形成 L1/L2 分类，而不是让模型直接发明标签。',
-        '每个结论必须绑定轨迹证据和置信度，避免“看起来合理”的空诊断。',
-        '对低置信度和冲突结果设置仲裁，使自动化承担筛选而不是假装替代人。',
+        { action: '先人工分析 46 条失败轨迹，再建立 L1/L2 分类。', reason: '分类必须来自真实失败模式；如果直接让模型生成标签，口径会漂移，也难以比较不同批次。' },
+        { action: '强制每个判断绑定日志、命令、报错或耗时证据。', reason: '证据链让结论可以被复核，减少“解释听起来合理，但轨迹并不支持”的空诊断。' },
+        { action: '把低置信度与冲突样本交回人工仲裁。', reason: '自动化最适合先筛选和统一格式；保留人工兜底能控制误判风险，并继续补全分类边界。' },
       ],
       en: [
-        'Manually decomposed 46 failed traces before deriving an L1/L2 taxonomy instead of asking a model to invent labels.',
-        'Bound every conclusion to trace evidence and confidence to prevent plausible but empty diagnoses.',
-        'Escalated low-confidence and conflicting results so automation filters work rather than impersonating final judgment.',
+        { action: 'Manually analyze 46 failed traces before building an L1/L2 taxonomy.', reason: 'Categories need to come from observed failures; model-invented labels drift and make batches difficult to compare.' },
+        { action: 'Require every judgment to cite logs, commands, errors, or timing evidence.', reason: 'An evidence chain keeps diagnoses reviewable and prevents explanations that sound plausible but are unsupported by the trace.' },
+        { action: 'Return low-confidence and conflicting cases to human arbitration.', reason: 'Automation is best used for triage and consistent formatting; human fallback controls misclassification risk and expands taxonomy boundaries.' },
+      ],
+    },
+    system: {
+      zh: [
+        { title: '失败轨迹', text: '命令、日志、报错、耗时与模型决策。' },
+        { title: '证据抽取', text: '定位关键转折，分离表象错误与根因。' },
+        { title: '层级归因', text: '按固定 L1/L2 口径给出错误类型。' },
+        { title: 'LLM 裁判', text: '输出标签、证据、解释与置信度。' },
+        { title: '人工仲裁', text: '复核冲突样本并形成修复优先级。' },
+      ],
+      en: [
+        { title: 'Failure trace', text: 'Commands, logs, errors, timing, and model decisions.' },
+        { title: 'Evidence extraction', text: 'Locate turning points and separate symptoms from root causes.' },
+        { title: 'Taxonomy', text: 'Assign a fixed L1/L2 failure category.' },
+        { title: 'LLM judge', text: 'Return label, evidence, explanation, and confidence.' },
+        { title: 'Human arbitration', text: 'Review conflicts and set repair priority.' },
       ],
     },
     process: {
@@ -145,12 +196,20 @@ export const projects: ProjectCase[] = [
     title: 'GeoAgent',
     eyebrow: { zh: 'GIS · RAG · Multi-Agent', en: 'GIS · RAG · Multi-Agent' },
     summary: {
-      zh: '让自然语言进入 GIS 工作流，但把数据选择、代码生成、执行与验证拆成可追踪的步骤。',
-      en: 'Bringing natural language into GIS workflows while keeping data selection, code generation, execution, and validation traceable.',
+      zh: '把 GIS 代码生成从“一次性回答”，改造成检索文档、生成、执行、报错修复和评测的闭环。',
+      en: 'Turning GIS code generation from a one-shot answer into a loop of document retrieval, generation, execution, repair, and evaluation.',
+    },
+    why: {
+      zh: '通用模型生成的 GIS 代码经常“看起来合理但跑不通”：API、参数、坐标系或数据文件选错，都会让答案无法交付。用户真正需要的不是一段漂亮代码，而是减少查文档和反复调试的时间。',
+      en: 'General models often produce GIS code that looks reasonable but does not run. A wrong API, parameter, projection, or file can make an answer unusable. Users need less documentation hunting and debugging—not merely attractive code.',
+    },
+    value: {
+      zh: '把外部知识、执行反馈和评测接进生成链路后，错误能回流到具体环节，用户也能判断结果是否真的可运行、可修复、可交付。',
+      en: 'Connecting external knowledge, execution feedback, and evaluation makes errors traceable to a specific stage and lets users judge whether output is runnable, repairable, and deliverable.',
     },
     question: {
-      zh: 'GIS 自动化不只需要生成代码：错误的数据、坐标系和工具选择都可能让“能运行”变成“答案错误”。怎样让 Agent 理解任务边界并留下验证路径？',
-      en: 'GIS automation is not only code generation. Wrong data, projections, or tools can turn runnable code into a wrong answer. How can an agent understand task boundaries and leave a validation trail?',
+      zh: '怎样让自然语言需求经过可靠知识、数据选择和执行反馈，最终变成可以验证的 GIS 任务结果？',
+      en: 'How can a natural-language request move through reliable knowledge, data selection, and execution feedback to become a verifiable GIS result?',
     },
     role: {
       zh: '聚焦 RAG 知识库、任务数据、评估分析，以及从自然语言到代码生成的路径设计；项目为协作研究。',
@@ -158,14 +217,30 @@ export const projects: ProjectCase[] = [
     },
     decisions: {
       zh: [
-        '把文件与工具选择独立出来，降低模型直接猜测数据语义的风险。',
-        '用 RAG 提供任务相关的 GIS 知识和代码上下文，而不是无限扩大 Prompt。',
-        '保留执行、报错、修复与结果评估链路，让失败可以被定位。',
+        { action: '先构建 6k+ GIS QA 与 320 条 Query-Code 样本。', reason: '垂类任务需要稳定的数据边界和示例覆盖，不能只依赖模型已有知识或零散 Prompt。' },
+        { action: '用 RAG 检索官方文档和代码示例。', reason: 'GIS API 更新快、参数细，检索能给生成阶段提供可追溯依据，比继续加长 Prompt 更可维护。' },
+        { action: '把执行、报错、修复和评测接成循环。', reason: '早期复盘发现“代码像答案”不等于“任务能交付”；执行反馈才能暴露依赖、路径、工具调用和异常处理问题。' },
       ],
       en: [
-        'Separated file and tool selection to reduce the risk of guessing data semantics.',
-        'Used RAG for task-relevant GIS knowledge and code context rather than expanding prompts indefinitely.',
-        'Preserved execution, error, repair, and evaluation stages so failures remain diagnosable.',
+        { action: 'Build 6k+ GIS QA pairs and 320 Query-Code examples first.', reason: 'A vertical task needs stable data boundaries and example coverage; it cannot rely only on model memory or scattered prompts.' },
+        { action: 'Use RAG to retrieve official documentation and code examples.', reason: 'GIS APIs change and parameters are specific. Retrieval provides traceable grounding and is more maintainable than an ever-longer prompt.' },
+        { action: 'Connect execution, error, repair, and evaluation in a loop.', reason: 'Early review showed that code resembling an answer is not the same as a deliverable task. Execution feedback exposes dependencies, paths, tool use, and exception handling.' },
+      ],
+    },
+    system: {
+      zh: [
+        { title: '自然语言任务', text: '识别目标、输入数据、空间关系和交付物。' },
+        { title: '知识检索', text: '从官方文档与示例中召回相关 API。' },
+        { title: '规划与生成', text: '选择文件、工具和处理顺序，生成代码。' },
+        { title: '执行与修复', text: '运行代码，把报错反馈给修复环节。' },
+        { title: '结果评测', text: '结合 CodeBLEU、AST 与执行结果判断质量。' },
+      ],
+      en: [
+        { title: 'Task request', text: 'Identify the goal, inputs, spatial relationships, and artifact.' },
+        { title: 'Knowledge retrieval', text: 'Recall relevant APIs from official docs and examples.' },
+        { title: 'Plan & generate', text: 'Select files, tools, and sequence, then generate code.' },
+        { title: 'Execute & repair', text: 'Run code and route errors back into repair.' },
+        { title: 'Evaluate', text: 'Use CodeBLEU, AST, and execution results to judge quality.' },
       ],
     },
     process: {
@@ -181,8 +256,8 @@ export const projects: ProjectCase[] = [
       ],
     },
     evidence: {
-      zh: ['35 个 GIS 任务用于评估', '相对基线 CodeBLEU 提升 78.3%', '平均约 5 分钟完成一个任务'],
-      en: ['Evaluated on 35 GIS tasks', '78.3% CodeBLEU improvement over baseline', 'About five minutes per task on average'],
+      zh: ['构建 6k+ GIS QA 与 320 条 Query-Code 数据', '相对基线 CodeBLEU 提升 78.3%', '35 个 GIS 任务平均约 5 分钟完成', '防御性代码写法提升 50%'],
+      en: ['Built 6k+ GIS QA pairs and 320 Query-Code examples', '78.3% CodeBLEU improvement over baseline', '35 GIS tasks completed in about five minutes on average', '50% improvement in defensive coding patterns'],
     },
     boundary: {
       zh: '代码相似度和小规模任务集不能代表真实生产可靠性；首版网站不链接含本机路径的研究仓库。',
@@ -201,12 +276,20 @@ export const projects: ProjectCase[] = [
     title: 'AIGC POV',
     eyebrow: { zh: '创作工具 · Prompt DSL', en: 'Creative tools · Prompt DSL' },
     summary: {
-      zh: '把一支多场景 POV 视频从“不断抽卡”，转化为角色、镜头与约束都可追踪的创作流程。',
-      en: 'Turning a multi-scene POV video from repeated random generation into a traceable workflow of character, camera, and constraints.',
+      zh: '为多镜头 AIGC 视频建立角色、视角和约束模板，减少盲目重试，让失败原因可以复用。',
+      en: 'A character, viewpoint, and constraint framework for multi-shot generative video that reduces blind retries and makes failure reasons reusable.',
+    },
+    why: {
+      zh: '生成一个好看的镜头并不难，难的是跨镜头保持同一个人、同一视角和同一世界规则。没有结构化记录时，每次失败都只能重新“抽卡”，时间和模型成本不断累积。',
+      en: 'Generating one attractive shot is not the hardest part. Preserving the same person, viewpoint, and world rules across shots is. Without structured records, every failure becomes another blind retry and costs keep accumulating.',
+    },
+    value: {
+      zh: '把审美判断拆成可记录的约束和评审项后，创作者能知道为什么重试、下一轮改什么，也能把有效方法复用到后续镜头。',
+      en: 'Turning aesthetic judgment into recorded constraints and review criteria lets a creator know why a retry is needed, what to change next, and which successful patterns can carry into later shots.',
     },
     question: {
-      zh: '生成式视频的困难不是得到一段漂亮画面，而是在跨镜头叙事中维持角色、视角与世界规则。怎样让审美判断变成可复用的创作结构？',
-      en: 'The hard part of generative video is not producing one beautiful clip, but preserving character, viewpoint, and world rules across scenes. How can aesthetic judgment become a reusable creative structure?',
+      zh: '怎样把“这个镜头不对”的主观感受，拆成角色、镜头、连续性和叙事功能等可以修改的具体问题？',
+      en: 'How can the subjective feeling that “this shot is wrong” become specific, editable issues in character, camera, continuity, and narrative function?',
     },
     role: {
       zh: '独立完成叙事拆解、Prompt DSL、角色参考体系、生成评审与迭代编排。',
@@ -214,14 +297,30 @@ export const projects: ProjectCase[] = [
     },
     decisions: {
       zh: [
-        '先固定人物身份、视角与不可变化项，再描述单镜头动作。',
-        '将 Prompt 拆成镜头、主体、环境、连续性和负面约束，减少隐含假设。',
-        '把失败片段按一致性、运动、构图和叙事功能复盘，而不是只凭“像不像”。',
+        { action: '先固定身份、视角和不可变化项，再写单镜头动作。', reason: '把全局规则与局部变化分开，可以减少模型在每个镜头里重新解释角色。' },
+        { action: '把 Prompt 拆成镜头、主体、环境、连续性和负面约束。', reason: '模块化结构让修改对应到具体变量，也方便追踪哪一类改动真正改善了结果。' },
+        { action: '按一致性、运动、构图和叙事功能记录失败。', reason: '“像不像”无法指导下一轮；明确失败类型后，重试才有目标，并能沉淀为后续镜头的规则。' },
       ],
       en: [
-        'Locked identity, viewpoint, and invariants before describing scene-specific action.',
-        'Split prompts into camera, subject, environment, continuity, and negative constraints to reduce hidden assumptions.',
-        'Reviewed failed clips by consistency, motion, composition, and narrative function instead of a single similarity judgment.',
+        { action: 'Lock identity, viewpoint, and invariants before scene-specific action.', reason: 'Separating global rules from local change reduces the need for the model to reinterpret the character in every shot.' },
+        { action: 'Split prompts into camera, subject, environment, continuity, and negative constraints.', reason: 'A modular structure maps revisions to specific variables and makes it possible to track which changes improve results.' },
+        { action: 'Record failures by consistency, motion, composition, and narrative function.', reason: 'A vague similarity judgment cannot guide the next round. Failure types make retries purposeful and reusable as rules for later shots.' },
+      ],
+    },
+    system: {
+      zh: [
+        { title: '叙事目标', text: '明确这一镜在故事中必须完成什么。' },
+        { title: '全局约束', text: '锁定角色身份、第一视角与世界规则。' },
+        { title: '镜头 DSL', text: '组织镜头、动作、环境与负面约束。' },
+        { title: '候选生成', text: '记录模型与参数，生成可比较片段。' },
+        { title: '评审与重试', text: '按失败类型修改约束并保留原因。' },
+      ],
+      en: [
+        { title: 'Narrative goal', text: 'Define what the shot must accomplish in the story.' },
+        { title: 'Global constraints', text: 'Lock character identity, first-person viewpoint, and world rules.' },
+        { title: 'Shot DSL', text: 'Organize camera, action, environment, and negative constraints.' },
+        { title: 'Generate candidates', text: 'Record model and parameters, then create comparable clips.' },
+        { title: 'Review & retry', text: 'Revise constraints by failure type and retain the reason.' },
       ],
     },
     process: {
@@ -257,12 +356,12 @@ export const profile = {
   email: 'icewaterdundundun@gmail.com',
   x: { label: '@icewaterdundun', url: 'https://x.com/icewaterdundun' },
   intro: {
-    zh: '从 GIS、Agent 到创作工具，我持续探索如何让复杂系统变得自然、可理解、可验证。',
-    en: 'From GIS and agents to creative tools, I explore how complex systems can become intuitive, understandable, and verifiable.',
+    zh: '我是 Kylian。我做过 GIS 代码助手、Agent 失败诊断、信息分诊和 AIGC 创作流程，重点关注问题定义、流程拆解和结果验证。',
+    en: 'I’m Kylian. I have worked on GIS code assistance, agent-failure diagnosis, information triage, and generative creative workflows, with a focus on problem framing, workflow design, and result validation.',
   },
   aside: {
-    zh: '我关心工具怎样帮助人形成判断，而不是只替人生成答案。',
-    en: 'I care about tools that help people form judgment, not merely generate answers for them.',
+    zh: '我更关心工具是否减少真实成本、改善人的下一步行动，而不只是能不能生成一个答案。',
+    en: 'I care less about whether a tool can produce an answer than whether it reduces real cost and improves what someone can do next.',
   },
 };
 
@@ -273,8 +372,8 @@ export const timeline = {
       title: { zh: '高精地图实习生', en: 'High-Definition Map Intern' },
       place: { zh: '天翼交通科技 · 苏州', en: 'Tianyi Transportation Technology · Suzhou' },
       detail: {
-        zh: '使用 GeoJSON、OpenDRIVE 与 QGIS 处理道路变化核查和平台替换测试；将一次现场变更在三天内完成修正与验证，并制作 QGIS 插件演示与文档。',
-        en: 'Worked with GeoJSON, OpenDRIVE, and QGIS on road-change verification and platform replacement tests; corrected and validated one field change within three days, and produced a QGIS plugin demo and documentation.',
+        zh: '调研 GeoJSON、OpenDRIVE 等格式边界，实际交付以 SHP/QGIS 道路要素处理、现场变化核验和平台替换测试为主；一次道路变化在三天内完成修正与验证，并制作 QGIS 插件演示与操作文档。',
+        en: 'Researched the boundaries of formats including GeoJSON and OpenDRIVE; delivery focused on SHP/QGIS road-element work, field-change verification, and platform replacement tests. One road change was corrected and validated within three days, followed by a QGIS plugin demo and operating guide.',
       },
     },
   ],

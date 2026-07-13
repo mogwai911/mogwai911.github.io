@@ -13,7 +13,7 @@ const aboutPath = isZh ? '/about/' : '/en/about/';
 const hobbiesPath = isZh ? '/hobbies/' : '/en/hobbies/';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const alternate = isZh ? '/en/' : '/';
-const title = isZh ? 'Kylian — 复杂系统的探索者' : 'Kylian — Explorer of complex systems';
+const title = isZh ? 'Kylian — AI 应用、评测与 GIS 项目' : 'Kylian — AI applications, evaluation, and GIS';
 const description = profile.intro[lang];
 const selected = projects.slice(0, 2);
 ---
@@ -32,12 +32,12 @@ const selected = projects.slice(0, 2);
         </div>
         <div class="home-hero-copy">
           <div class="gold-rule"><span>Portfolio / 2026</span></div>
-          <p class="kicker">Quiet Explorer</p>
-          <h1 id="hero-title">{isZh ? <>让复杂系统<br /><em>自然发生。</em></> : <>Making complex systems<br /><em>feel natural.</em></>}</h1>
+          <p class="kicker">Product · AI workflows · GIS</p>
+          <h1 id="hero-title">{isZh ? <>把复杂问题，<br /><em>做成可验证的工具。</em></> : <>Turn complex problems<br /><em>into verifiable tools.</em></>}</h1>
           <p class="home-hero-intro">{profile.intro[lang]}</p>
           <div class="hero-direction">
-            <span>{isZh ? '当前关注' : 'Current focus'}</span>
-            <p>{isZh ? '产品判断 · Agent 可靠性 · 创作流程' : 'Product judgment · Agent reliability · Creative workflows'}</p>
+            <span>{isZh ? '我的方法' : 'My approach'}</span>
+            <p>{isZh ? '先说明问题为什么值得做，再拆流程、做验证、讲清边界。' : 'Explain why the problem matters, then design the workflow, validate the result, and state the boundary.'}</p>
           </div>
         </div>
       </section>
@@ -45,18 +45,18 @@ const selected = projects.slice(0, 2);
       <section class="chapter-index" aria-labelledby="chapters-title">
         <header>
           <p class="section-index">Index</p>
-          <div><p class="kicker">Three chapters</p><h2 id="chapters-title">{isZh ? '从这里选择一条路径' : 'Choose a path from here'}</h2></div>
+          <div><p class="kicker">Three sections</p><h2 id="chapters-title">{isZh ? '网站内容导航' : 'Explore the site'}</h2></div>
         </header>
         <div class="chapter-links">
-          <a href={workPath}><span>01</span><div><p>{isZh ? '工作' : 'Work'}</p><h3>{isZh ? '复杂问题如何被拆解和验证' : 'How complex problems are framed and verified'}</h3></div><b>↗</b></a>
-          <a href={aboutPath}><span>02</span><div><p>{isZh ? '关于' : 'About'}</p><h3>{isZh ? '经历、教育与我的工作方式' : 'Experience, education, and how I work'}</h3></div><b>↗</b></a>
-          <a href={hobbiesPath}><span>03</span><div><p>{isZh ? '爱好' : 'Hobbies'}</p><h3>{isZh ? 'F1、摄影，以及工作之外持续投入的注意力' : 'F1, photography, and attention beyond work'}</h3></div><b>↗</b></a>
+          <a href={workPath}><span>01</span><div><p>{isZh ? '工作' : 'Work'}</p><h3>{isZh ? '四个案例：问题价值、关键决策、具体动作与结果证据' : 'Four cases: problem value, key decisions, actions, and evidence'}</h3></div><b>↗</b></a>
+          <a href={aboutPath}><span>02</span><div><p>{isZh ? '关于' : 'About'}</p><h3>{isZh ? '实习、教育背景、奖项与联系方式' : 'Experience, education, awards, and contact details'}</h3></div><b>↗</b></a>
+          <a href={hobbiesPath}><span>03</span><div><p>{isZh ? '爱好' : 'Hobbies'}</p><h3>{isZh ? 'F1 赛事、产业与技术短札，以及个人摄影' : 'Notes on F1 sport, business, and technology, plus personal photography'}</h3></div><b>↗</b></a>
         </div>
       </section>
 
       <section class="home-selected" aria-labelledby="selected-title">
         <div class="home-section-title">
-          <div><p class="kicker">Selected Work</p><h2 id="selected-title">{isZh ? '最近的两个判断' : 'Two recent judgments'}</h2></div>
+          <div><p class="kicker">Selected Work</p><h2 id="selected-title">{isZh ? '重点案例' : 'Featured cases'}</h2></div>
           <a class="text-link" href={workPath}>{isZh ? '查看全部工作' : 'View all work'} →</a>
         </div>
         <div class="home-projects">
@@ -73,13 +73,13 @@ const selected = projects.slice(0, 2);
 
       <section class="home-contact" aria-labelledby="contact-title">
         <span class="gold-orbit" aria-hidden="true"></span>
-        <div><p class="kicker">Contact</p><h2 id="contact-title">{isZh ? '有一个复杂问题？我们可以从一封邮件开始。' : 'Have a complex problem? We can start with an email.'}</h2></div>
+        <div><p class="kicker">Contact</p><h2 id="contact-title">{isZh ? '想聊 AI 工作流、数据质量或产品验证，欢迎联系我。' : 'For conversations about AI workflows, data quality, or product validation, get in touch.'}</h2></div>
         <div class="home-contact-links">
           <a href={`mailto:${profile.email}`}><span>Email</span>{profile.email} ↗</a>
           <a href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span>{profile.x.label} ↗</a>
         </div>
       </section>
     </main>
-    <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>{isZh ? '以好奇心构建，以证据校正。' : 'Built with curiosity, corrected by evidence.'}</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>
+    <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>{isZh ? '问题定义 · 流程拆解 · 结果验证' : 'Problem framing · Workflow design · Result validation'}</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>
   </div>
 </BaseLayout>

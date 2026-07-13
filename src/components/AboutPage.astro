@@ -23,14 +23,14 @@ const description = isZh ? '关于 Kylian：从 GIS 到 Agent 与创作工具的
         </div>
         <div class="about-intro">
           <div class="gold-rule"><span>{isZh ? '关于这个人' : 'About this person'}</span></div>
-          <p class="kicker">GIS → Agents → Creative tools</p>
-          <h1>{isZh ? <>我习惯从坐标开始，<br /><em>最后回到人的判断。</em></> : <>I start with coordinates,<br /><em>and return to human judgment.</em></>}</h1>
-          <p>{isZh ? 'GIS 训练我尊重数据边界、空间关系和验证路径。Agent 让我面对更模糊的问题：系统如何解释失败，怎样在不确定中留下证据，以及工具应该替人回答，还是帮助人形成判断。' : 'GIS trained me to respect data boundaries, spatial relationships, and validation paths. Agents brought fuzzier questions: how systems explain failure, preserve evidence under uncertainty, and whether tools should answer for people or help them form judgment.'}</p>
+          <p class="kicker">GIS · AI applications · Evaluation</p>
+          <h1>{isZh ? <>GIS 背景，<br /><em>AI 应用与评测实践。</em></> : <>A GIS background,<br /><em>with AI application and evaluation work.</em></>}</h1>
+          <p>{isZh ? '我的项目集中在三类工作：把专业数据组织成可用输入，把 AI 输出接入可执行流程，以及用证据和指标定位失败。相比堆叠模型名，我更愿意说明每项技术解决什么问题、如何验证。' : 'My work centers on three tasks: organizing specialist data into usable inputs, connecting AI output to executable workflows, and diagnosing failure with evidence and metrics. I would rather explain what each technology solves and how it is validated than list model names.'}</p>
         </div>
       </header>
 
       <section class="about-timeline" aria-labelledby="journey-title">
-        <header><p class="section-index">Journey</p><h2 id="journey-title">{isZh ? '经历与教育' : 'Experience & education'}</h2><p>{isZh ? '不按职位堆砌，而按我如何逐步靠近复杂系统来排列。' : 'Organized by how I moved closer to complex systems, rather than as a stack of titles.'}</p></header>
+        <header><p class="section-index">Journey</p><h2 id="journey-title">{isZh ? '经历与教育' : 'Experience & education'}</h2><p>{isZh ? '这里保留公开所需的经历、教育和可核验成果，不提供完整简历下载。' : 'This page keeps the public background, education, and verifiable outcomes needed here; no full résumé download is provided.'}</p></header>
         <div class="timeline-grid">
           <div><h3>{isZh ? '经历' : 'Experience'}</h3>{timeline.experience.map((item) => <article class="timeline-item"><time>{item.date}</time><div><h4>{item.title[lang]}</h4><p class="place">{item.place[lang]}</p><p>{item.detail[lang]}</p></div></article>)}</div>
           <div><h3>{isZh ? '教育' : 'Education'}</h3>{timeline.education.map((item) => <article class="timeline-item timeline-item--compact"><time>{item.date}</time><div><h4>{item.title[lang]}</h4><p class="place">{item.place[lang]}</p></div></article>)}</div>
@@ -38,7 +38,7 @@ const description = isZh ? '关于 Kylian：从 GIS 到 Agent 与创作工具的
       </section>
 
       <section class="about-notes" aria-labelledby="notes-title">
-        <header><p class="section-index">Footnotes</p><h2 id="notes-title">{isZh ? '补充坐标' : 'Additional coordinates'}</h2></header>
+        <header><p class="section-index">Additional</p><h2 id="notes-title">{isZh ? '其他信息' : 'Other details'}</h2></header>
         <ul>{timeline.notes.map((note, index) => <li><span>{String(index + 1).padStart(2, '0')}</span>{note.link ? <a href={note.link} target="_blank" rel="noreferrer">{note[lang]} ↗</a> : <p>{note[lang]}</p>}</li>)}</ul>
       </section>
 

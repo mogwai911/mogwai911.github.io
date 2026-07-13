@@ -29,53 +29,74 @@ const nextProject = projects[(projectIndex + 1) % projects.length];
         <ul class="tag-list">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
       </header>
 
+      <section class="case-overview" aria-labelledby="overview-title">
+        <header>
+          <p class="case-section-number">{isZh ? '先看结论' : 'Start here'}</p>
+          <h2 id="overview-title">{isZh ? '这件事为什么值得做' : 'Why this was worth doing'}</h2>
+        </header>
+        <div class="case-overview-grid">
+          <article><span>01 / {isZh ? '背景' : 'Context'}</span><p>{project.why[lang]}</p></article>
+          <article><span>02 / {isZh ? '价值' : 'Value'}</span><p>{project.value[lang]}</p></article>
+          <article><span>03 / {isZh ? '我的角色' : 'My role'}</span><p>{project.role[lang]}</p>{project.link && <a href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} ↗</a>}</article>
+          <article><span>04 / {isZh ? '关键证据' : 'Key proof'}</span><ul>{project.evidence[lang].slice(0, 2).map((item) => <li>{item}</li>)}</ul></article>
+        </div>
+      </section>
+
       {project.images?.[0] && (
-        <figure class:list={['case-lead-image', { 'case-lead-image--interface': project.slug === 'fomo-firewall' }]}>
-          <img src={project.images[0].src} alt={project.images[0].alt[lang]} width="1600" height="900" />
+        <figure class="case-lead-image">
+          <a href={project.images[0].src} target="_blank" rel="noreferrer" aria-label={`${isZh ? '打开原尺寸图片' : 'Open full-size image'}: ${project.images[0].alt[lang]}`}>
+            <img src={project.images[0].src} alt={project.images[0].alt[lang]} width="1600" height="900" />
+          </a>
+          <figcaption><span>{isZh ? '界面证据 / 点击查看原图' : 'Interface evidence / open full size'}</span>{project.images[0].alt[lang]}</figcaption>
         </figure>
       )}
 
       <div class="case-body">
-        <aside class="case-sidebar">
-          <p class="kicker">{isZh ? '我的角色' : 'My role'}</p>
-          <p>{project.role[lang]}</p>
-          {project.link && <a class="text-link" href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} ↗</a>}
-        </aside>
-
         <div class="case-narrative">
           <section>
-            <p class="case-section-number">01 / {isZh ? '问题' : 'Question'}</p>
+            <p class="case-section-number">01 / {isZh ? '真正要解决的问题' : 'The real problem'}</p>
             <h2>{project.question[lang]}</h2>
           </section>
 
           <section>
-            <p class="case-section-number">02 / {isZh ? '关键决策' : 'Key decisions'}</p>
+            <p class="case-section-number">02 / {isZh ? '关键决策，以及为什么' : 'Key decisions—and why'}</p>
             <ol class="decision-list">
-              {project.decisions[lang].map((decision, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><p>{decision}</p></li>)}
+              {project.decisions[lang].map((decision, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{decision.action}</h3><p>{decision.reason}</p></div></li>)}
             </ol>
           </section>
 
           <section>
-            <p class="case-section-number">03 / {isZh ? '工作流' : 'Workflow'}</p>
+            <p class="case-section-number">03 / {isZh ? '系统结构' : 'System map'}</p>
+            <h2>{isZh ? '从输入到结果，系统如何穿过每一层' : 'How the system moves from input to outcome'}</h2>
+            <div class="system-map">
+              {project.system[lang].map((step, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.text}</p></article>)}
+            </div>
+          </section>
+
+          <section>
+            <p class="case-section-number">04 / {isZh ? '我具体做了什么' : 'What I did'}</p>
             <div class="process-grid">
               {project.process[lang].map((step, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.text}</p></article>)}
             </div>
           </section>
 
           {project.images && project.images.length > 1 && (
-            <div class="case-gallery">
-              {project.images.slice(1).map((image) => <img src={image.src} alt={image.alt[lang]} width="1600" height="900" loading="lazy" />)}
-            </div>
+            <section class="case-media-section">
+              <p class="case-section-number">05 / {isZh ? '界面如何承接流程' : 'How the interface supports the flow'}</p>
+              <div class="case-gallery">
+                {project.images.slice(1).map((image) => <figure><a href={image.src} target="_blank" rel="noreferrer" aria-label={`${isZh ? '打开原尺寸图片' : 'Open full-size image'}: ${image.alt[lang]}`}><img src={image.src} alt={image.alt[lang]} width="1600" height="900" loading="lazy" /></a><figcaption><span>{isZh ? '点击查看原图' : 'Open full size'}</span>{image.alt[lang]}</figcaption></figure>)}
+              </div>
+            </section>
           )}
 
           <section>
-            <p class="case-section-number">04 / {isZh ? '证据' : 'Evidence'}</p>
+            <p class="case-section-number">{project.images && project.images.length > 1 ? '06' : '05'} / {isZh ? '结果与证据' : 'Results & evidence'}</p>
             <ul class="evidence-list">{project.evidence[lang].map((item) => <li>{item}</li>)}</ul>
           </section>
 
           <section class="boundary-section">
-            <div><p class="case-section-number">05 / {isZh ? '边界' : 'Boundary'}</p><p>{project.boundary[lang]}</p></div>
-            <div><p class="case-section-number">06 / {isZh ? '下一步' : 'Next'}</p><p>{project.next[lang]}</p></div>
+            <div><p class="case-section-number">{project.images && project.images.length > 1 ? '07' : '06'} / {isZh ? '当前边界' : 'Current boundary'}</p><p>{project.boundary[lang]}</p></div>
+            <div><p class="case-section-number">{project.images && project.images.length > 1 ? '08' : '07'} / {isZh ? '下一步验证' : 'Next validation'}</p><p>{project.next[lang]}</p></div>
           </section>
         </div>
       </div>
