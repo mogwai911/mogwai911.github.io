@@ -18,15 +18,15 @@
   --radius-md: 18px;
   --radius-sm: 12px;
   --radius-pill: 999px;
-  --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", Georgia, serif;
-  --sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --serif: "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, sans-serif;
+  --sans: "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans CJK SC", "Source Han Sans SC", system-ui, sans-serif;
   --max: 1480px;
   color-scheme: light;
 }
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--paper); }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; text-rendering: optimizeLegibility; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 16px; line-height: 1.65; text-rendering: optimizeLegibility; -webkit-font-smoothing: antialiased; }
 img { display: block; max-width: 100%; height: auto; }
 a { color: inherit; text-decoration: none; }
 button, input, textarea, select { font: inherit; }
@@ -1211,4 +1211,45 @@ body {
   .home-projects h3 { font-size: clamp(2rem, 10vw, 3rem); }
   .project-main h3 { font-size: 2rem; }
   .case-title h1 { font-size: clamp(2.6rem, 11.5vw, 3.8rem); }
+}
+
+/* Modern sans-serif typography */
+.home-hero-copy h1,
+.page-hero h1,
+.about-intro h1,
+.case-title h1,
+.f1-page-hero h1,
+.hobby-feature-copy h2,
+.not-found h1 {
+  font-weight: 600;
+  letter-spacing: -.03em;
+}
+.chapter-index h2,
+.home-section-title h2,
+.work-catalog > header h2,
+.about-timeline > header h2,
+.about-notes > header h2,
+.hobby-notes h2,
+.home-contact h2,
+.about-contact h2,
+.work-bridge h2,
+.contact-section h2,
+.f1-article h2 {
+  font-weight: 600;
+  letter-spacing: -.02em;
+}
+.chapter-links h3,
+.home-projects h3,
+.project-main h3,
+.case-overview > header h2,
+.case-narrative h2,
+.decision-list h3,
+.process-grid h3,
+.flow-node h3,
+.flow-decision h3,
+.flow-branch h3,
+.flow-feedback h3,
+.hobby-note-list h3,
+.timeline-item h4 {
+  letter-spacing: -.012em;
 }
