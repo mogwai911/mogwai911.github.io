@@ -774,3 +774,116 @@ body {
   .boundary-section { grid-template-columns: 1fr; }
   .boundary-section > div:last-child { padding-left: 2rem; }
 }
+
+/* Density and type-scale calibration */
+.kicker,
+.section-index,
+.case-section-number,
+.article-index { font-size: .78rem; }
+
+.chapter-links > a div p,
+.home-projects > a > span,
+.home-projects > a > p,
+.page-hero-index,
+.timeline-item time,
+.hobby-note-list span { font-size: .74rem; }
+
+.home-hero {
+  min-height: min(650px, calc(100vh - 104px));
+  padding: clamp(2.5rem, 4.5vw, 4.5rem) 0;
+}
+.home-hero-copy h1 { font-size: clamp(3.1rem, 5.4vw, 6.4rem); }
+
+.page-hero {
+  min-height: 420px;
+  padding: clamp(3.5rem, 6vw, 6rem) 0;
+}
+.page-hero h1 { font-size: clamp(3rem, 5.5vw, 6.2rem); }
+.about-hero { padding: clamp(3rem, 6vw, 6rem) 0; }
+.about-intro h1 { font-size: clamp(2.8rem, 4.5vw, 5.2rem); }
+
+.chapter-index,
+.home-selected,
+.work-catalog,
+.about-timeline,
+.about-notes,
+.hobby-notes { padding-top: clamp(4rem, 6.5vw, 6.5rem); padding-bottom: clamp(4rem, 6.5vw, 6.5rem); }
+
+.chapter-index h2,
+.home-section-title h2,
+.work-catalog > header h2,
+.about-timeline > header h2,
+.about-notes > header h2,
+.hobby-notes h2 { font-size: clamp(2rem, 3.2vw, 3.5rem); }
+
+.chapter-links > a { min-height: 235px; }
+.home-projects > a { min-height: 320px; }
+.home-projects > a > p { margin-top: 2.2rem; }
+.home-projects > a > div { padding-top: 2rem; }
+.work-lenses article { min-height: 210px; }
+.work-lenses h2 { margin-top: 2.2rem; }
+.project-row { padding-top: 2rem; padding-bottom: 2rem; }
+.home-contact,
+.about-contact { padding: clamp(2.5rem, 4.5vw, 4.5rem); }
+.home-contact h2,
+.about-contact h2 { font-size: clamp(2rem, 3.2vw, 3.5rem); }
+
+.hobby-feature { padding: clamp(4rem, 7vw, 7rem) 0; }
+.hobby-feature-copy { padding: clamp(2rem, 3vw, 3rem); }
+.hobby-feature-copy h2 { font-size: clamp(3rem, 5vw, 5.5rem); }
+.hobby-feature-image figcaption,
+.f1-photo-band figcaption,
+.f1-page-image figcaption { font-size: .72rem; }
+
+.case-hero { padding: clamp(3rem, 5vw, 5rem) 0 clamp(3.5rem, 6vw, 5.5rem); }
+.case-title h1 { font-size: clamp(3.8rem, 6.8vw, 7.2rem); }
+.case-overview { padding: clamp(3.5rem, 6vw, 6rem) 0; }
+.case-overview > header h2 { font-size: clamp(2rem, 3.2vw, 3.4rem); }
+.case-overview-grid article { min-height: 215px; }
+.case-overview-grid article > p { margin-top: 1.9rem; }
+.case-overview-grid ul { margin-top: 1.9rem; }
+.case-lead-image { margin-bottom: clamp(4rem, 7vw, 7rem); }
+.case-body { padding-bottom: clamp(4rem, 7vw, 7rem); }
+.case-narrative > section { padding-bottom: clamp(4rem, 6vw, 6rem); }
+.case-narrative h2 { font-size: clamp(1.8rem, 2.7vw, 2.9rem); }
+.system-map article { min-height: 195px; }
+.system-map h3 { margin-top: 2rem; }
+.process-grid article { min-height: 215px; }
+.process-grid h3 { margin-top: 2.2rem; }
+.evidence-list li { min-height: 140px; }
+.evidence-list li::before { margin-bottom: 1.5rem; }
+
+.f1-page-hero { padding: clamp(4rem, 7vw, 7rem) 0 4rem; }
+.f1-page-hero h1 { font-size: clamp(4.2rem, 8.5vw, 7.5rem); }
+.f1-page-thesis { margin-top: 2.5rem; }
+.f1-toc { padding: 4rem 0 6rem; }
+.f1-article { padding: 5.5rem 0; }
+.f1-article h2 { font-size: clamp(2.2rem, 4vw, 4rem); }
+.article-body { margin-top: 3rem; }
+
+@media (max-width: 720px) {
+  .home-hero { padding: 2.5rem 0 4rem; }
+  .chapter-index,
+  .home-selected,
+  .work-catalog,
+  .about-timeline,
+  .about-notes,
+  .hobby-notes { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+  .chapter-index > header,
+  .home-section-title,
+  .work-catalog > header,
+  .about-timeline > header,
+  .hobby-notes > header { margin-bottom: 2.5rem; }
+  .chapter-links > a { min-height: 180px; }
+  .home-projects > a { min-height: 290px; }
+  .work-lenses article { min-height: 185px; }
+  .page-hero { padding: 4rem 0; }
+  .case-title h1 { font-size: clamp(2.9rem, 13vw, 4.4rem); }
+  .case-overview-grid article,
+  .system-map article,
+  .process-grid article,
+  .evidence-list li { min-height: 0; }
+  .f1-page-hero { padding: 4rem 0 3rem; }
+  .f1-page-hero h1 { font-size: clamp(4rem, 17vw, 4.8rem); }
+  .f1-article { padding: 4.5rem 0; }
+}
