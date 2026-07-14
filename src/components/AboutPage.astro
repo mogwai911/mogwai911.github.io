@@ -54,17 +54,11 @@ const description = isZh ? '关于 Kylian：空间数据背景、正在做的事
       </section>
 
       <section class="about-f1 content-width" data-reveal>
-        <figure class="about-f1__media">
-          <div class="about-f1__photo">
-            <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
-            <span>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</span>
-          </div>
-          <div class="about-f1__aigc">
-            <picture><source media="(max-width: 720px)" srcset="/images/f1-aigc-grid-720.webp" /><img src="/images/f1-aigc-grid-1200.webp" alt={isZh ? '将动漫角色与方程式赛车围场结合的 AIGC 视觉实验' : 'An AIGC visual experiment combining anime characters with formula racing garages'} width="1200" height="2150" loading="lazy" /></picture>
-            <span>{isZh ? 'AIGC 视觉实验 · 非真实赛事影像' : 'AIGC visual study · Not real race imagery'}</span>
-          </div>
+        <figure>
+          <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
+          <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
         </figure>
-        <div class="about-f1__copy">
+        <div>
           <p class="section-label">F1 / Notes</p>
           <h2>{isZh ? '我看 F1，不只是在看速度。' : 'I do not watch F1 only for speed.'}</h2>
           <p>{isZh ? '车手、工程、资本与规则在一条赛道上彼此牵制。这是兴趣，不是职业能力证明；我只是把一些值得长期想的问题写下来。' : 'Drivers, engineering, capital, and rules constrain one another on the same track. This is an interest, not professional proof; I simply write down questions worth thinking about over time.'}</p>
