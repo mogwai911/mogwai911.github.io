@@ -505,12 +505,12 @@ export const profile = {
   email: 'icewaterdundundun@gmail.com',
   x: { label: '@icewaterdundun', url: 'https://x.com/icewaterdundun' },
   intro: {
-    zh: '我是 Kylian。我做过 GIS 代码助手、Agent 失败诊断、信息分诊和 AIGC 创作流程，重点关注问题定义、流程拆解和结果验证。',
-    en: 'I’m Kylian. I have worked on GIS code assistance, agent-failure diagnosis, information triage, and generative creative workflows, with a focus on problem framing, workflow design, and result validation.',
+    zh: '我是 Kylian，GIS 与空间数据背景，正在做 AI 应用落地、Agent 评测与工作流产品。我关注什么问题值得做，也会把判断变成流程、原型和可验证的结果。',
+    en: 'I’m Kylian, with a background in GIS and spatial data. I work on AI applications, agent evaluation, and workflow products—deciding what is worth doing, then turning that judgment into processes, prototypes, and verifiable results.',
   },
   aside: {
-    zh: '我更关心工具是否减少真实成本、改善人的下一步行动，而不只是能不能生成一个答案。',
-    en: 'I care less about whether a tool can produce an answer than whether it reduces real cost and improves what someone can do next.',
+    zh: '是否值得做 = 预期影响 × 可干预性。',
+    en: 'Worth doing = expected impact × ability to intervene.',
   },
 };
 

@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../data/content';
-import { profile, timeline } from '../data/content';
+import { f1Notes, profile, timeline } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from './SiteHeader.astro';
 
@@ -9,44 +9,72 @@ const { lang } = Astro.props;
 const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/about/' : '/en/about/';
 const alternatePath = isZh ? '/en/about/' : '/about/';
-const description = isZh ? '关于 Kylian：从 GIS 到 Agent 与创作工具的经历、教育和工作方式。' : 'About Kylian: background, education, and approach from GIS to agents and creative tools.';
+const f1Path = isZh ? '/f1/' : '/en/f1/';
+const description = isZh ? '关于 Kylian：判断、执行、教育背景与 F1 观察。' : 'About Kylian: judgment, execution, education, and F1 notes.';
+const schoolMarks = ['LU', 'NWAFU'];
 ---
 
 <BaseLayout lang={lang} title={`${isZh ? '关于' : 'About'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="page-shell">
+  <div class="v3-page-shell v3-about-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
-    <main id="content" class="about-page">
-      <header class="about-hero">
-        <div class="about-portrait">
-          <picture><source media="(max-width: 720px)" srcset="/images/vienna-hero-960.webp" /><img src="/images/vienna-hero-1800.webp" alt={isZh ? 'Kylian 在维也纳一座金色大厅中' : 'Kylian inside a golden hall in Vienna'} width="1800" height="1200" /></picture>
-          <p>02 / About · Vienna</p>
-        </div>
-        <div class="about-intro">
-          <div class="gold-rule"><span>{isZh ? '关于这个人' : 'About this person'}</span></div>
-          <p class="kicker">GIS · AI applications · Evaluation</p>
-          <h1>{isZh ? <>GIS 背景，<br /><em>AI 应用与评测实践。</em></> : <>A GIS background,<br /><em>with AI application and evaluation work.</em></>}</h1>
-          <p>{isZh ? '我的项目集中在三类工作：把专业数据组织成可用输入，把 AI 输出接入可执行流程，以及用证据和指标定位失败。相比堆叠模型名，我更愿意说明每项技术解决什么问题、如何验证。' : 'My work centers on three tasks: organizing specialist data into usable inputs, connecting AI output to executable workflows, and diagnosing failure with evidence and metrics. I would rather explain what each technology solves and how it is validated than list model names.'}</p>
+    <main id="content">
+      <header class="v3-about-hero" data-reveal>
+        <figure>
+          <picture><source media="(max-width: 720px)" srcset="/images/vienna-hero-960.webp" /><img src="/images/vienna-hero-1800.webp" alt={isZh ? 'Kylian 在金色大厅中侧身看向右方' : 'Kylian looking to the right inside a golden hall'} width="1800" height="1200" /></picture>
+          <figcaption>04 / About · Kylian</figcaption>
+        </figure>
+        <div>
+          <p class="v3-kicker">Judgment · Execution · Curiosity</p>
+          <h1>{isZh ? <>我在意判断力，<br /><em>也在意把判断落地。</em></> : <>I value judgment,<br /><em>and making it real.</em></>}</h1>
+          <p>{isZh ? '我会被创造新事物和发现未知点燃。AI 是一个强力杠杆，但真正困难的部分，是让它在约束中收敛，找出系统不稳定或低效的位置，并判断改动是否产生了真实影响。' : 'Creating something new and discovering the unknown are what energize me. AI is a powerful lever, but the harder work is making it converge under constraints, locating where systems are unstable or inefficient, and judging whether an intervention has a real effect.'}</p>
         </div>
       </header>
 
-      <section class="about-timeline" aria-labelledby="journey-title">
-        <header><p class="section-index">Journey</p><h2 id="journey-title">{isZh ? '经历与教育' : 'Experience & education'}</h2><p>{isZh ? '这里保留公开所需的经历、教育和可核验成果，不提供完整简历下载。' : 'This page keeps the public background, education, and verifiable outcomes needed here; no full résumé download is provided.'}</p></header>
-        <div class="timeline-grid">
-          <div><h3>{isZh ? '经历' : 'Experience'}</h3>{timeline.experience.map((item) => <article class="timeline-item"><time>{item.date}</time><div><h4>{item.title[lang]}</h4><p class="place">{item.place[lang]}</p><p>{item.detail[lang]}</p></div></article>)}</div>
-          <div><h3>{isZh ? '教育' : 'Education'}</h3>{timeline.education.map((item) => <article class="timeline-item timeline-item--compact"><time>{item.date}</time><div><h4>{item.title[lang]}</h4><p class="place">{item.place[lang]}</p></div></article>)}</div>
+      <section class="v3-beliefs" aria-labelledby="beliefs-title" data-reveal>
+        <header><p>01 / Point of view</p><h2 id="beliefs-title">{isZh ? '为什么是判断与执行' : 'Why judgment and execution'}</h2></header>
+        <article><span>{isZh ? '判断' : 'Judgment'}</span><p>{isZh ? '判断代表主体性：知道应该关注什么、什么值得投入、哪种证据足以改变原来的看法。这是不能简单外包给 AI 的部分。' : 'Judgment is agency: knowing what deserves attention, what is worth investing in, and which evidence should change the original view. That part cannot simply be delegated to AI.'}</p></article>
+        <article><span>{isZh ? '执行' : 'Execution'}</span><p>{isZh ? '执行让判断接受现实检验。把想法做成流程、原型或交付物，才能暴露 80 分之后那些真正困难的细节。' : 'Execution exposes judgment to reality. Turning an idea into a workflow, prototype, or deliverable reveals the difficult details that appear after the first 80 percent.'}</p></article>
+      </section>
+
+      <section class="v3-education" aria-labelledby="education-title">
+        <header class="v3-section-heading" data-reveal>
+          <div><span>02</span><p>Education</p></div>
+          <h2 id="education-title">{isZh ? '空间数据是我的起点' : 'Spatial data was my starting point'}</h2>
+          <p>{isZh ? '只保留专业、学位与学校；教育解释知识背景，不替代项目证据。' : 'Only field, degree, and university are shown. Education explains context; it does not replace project evidence.'}</p>
+        </header>
+        <div class="v3-school-list">
+          {timeline.education.map((item, index) => (
+            <article data-reveal>
+              <div class="v3-school-mark" aria-hidden="true"><span>{schoolMarks[index]}</span><i></i></div>
+              <time>{item.date}</time>
+              <div><h3>{item.title[lang]}</h3><p>{item.place[lang]}</p></div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section class="about-notes" aria-labelledby="notes-title">
-        <header><p class="section-index">Additional</p><h2 id="notes-title">{isZh ? '其他信息' : 'Other details'}</h2></header>
-        <ul>{timeline.notes.map((note, index) => <li><span>{String(index + 1).padStart(2, '0')}</span>{note.link ? <a href={note.link} target="_blank" rel="noreferrer">{note[lang]} ↗</a> : <p>{note[lang]}</p>}</li>)}</ul>
+      <section class="v3-f1-notes-preview" aria-labelledby="f1-preview-title" data-reveal>
+        <figure>
+          <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
+          <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
+        </figure>
+        <div>
+          <p class="v3-kicker">Notes / F1</p>
+          <h2 id="f1-preview-title">{isZh ? '同样理性，只是观察对象不同' : 'The same analytical lens, applied elsewhere'}</h2>
+          <p>{isZh ? '我关注 F1 的赛事、产业和技术，但不把兴趣拔高成工作方法。它只是我持续观察规则、利益与工程如何共同塑造结果的地方。' : 'I follow F1 as sport, business, and technology without turning a personal interest into a professional claim. It is simply where I keep observing how rules, incentives, and engineering shape outcomes.'}</p>
+          <ol>{f1Notes.map((note, index) => <li><a href={`${f1Path}#${note.id}`}><span>0{index + 1}</span>{note.title[lang]} <b>↗</b></a></li>)}</ol>
+          <a class="v3-inline-link" href={f1Path}>{isZh ? '阅读 F1 Notes' : 'Read F1 Notes'} <span>→</span></a>
+        </div>
       </section>
 
-      <section class="about-contact" aria-labelledby="about-contact-title">
-        <div><p class="kicker">Contact</p><h2 id="about-contact-title">{isZh ? '如果你正在处理一个难以说清的问题，欢迎来信。' : 'If you are working on a problem that is hard to articulate, write to me.'}</h2></div>
-        <div class="contact-list"><a href={`mailto:${profile.email}`}><span>Email</span>{profile.email} ↗</a>{profile.x && <a href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span>{profile.x.label} ↗</a>}</div>
+      <section class="v3-contact" aria-labelledby="about-contact-title" data-reveal>
+        <div><p class="v3-kicker">Contact</p><h2 id="about-contact-title">{isZh ? '如果你想了解我正在做什么，欢迎简单聊聊。' : 'If you want to know what I am working on, feel free to say hello.'}</h2></div>
+        <div class="v3-contact-links">
+          <a href={`mailto:${profile.email}`}><span>Email</span><strong>{profile.email}</strong><b>↗</b></a>
+          <a href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span><strong>{profile.x.label}</strong><b>↗</b></a>
+        </div>
       </section>
     </main>
-    <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>About / 02</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>
+    <footer class="v3-footer"><p>© {new Date().getFullYear()} Kylian</p><p>About / 04</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

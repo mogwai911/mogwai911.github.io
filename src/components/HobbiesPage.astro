@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../data/content';
-import { f1Notes } from '../data/content';
+import { projects } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from './SiteHeader.astro';
 
@@ -9,59 +9,61 @@ const { lang } = Astro.props;
 const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/hobbies/' : '/en/hobbies/';
 const alternatePath = isZh ? '/en/hobbies/' : '/hobbies/';
-const f1Path = isZh ? '/f1/' : '/en/f1/';
+const projectBase = isZh ? '/projects' : '/en/projects';
+const aigc = projects.find((project) => project.slug === 'aigc-pov')!;
 const description = isZh
-  ? 'Kylian 的个人兴趣：从 F1 的赛事、产业与技术，到旅途中的个人摄影。'
-  : 'Kylian’s interests, from F1 as sport, business, and technology to personal photography while travelling.';
+  ? 'Kylian 的兴趣作品：AIGC 多镜头创作工作流与 Codex 桌宠。'
+  : 'Kylian’s side projects: a multi-shot AIGC workflow and a Codex desktop pet.';
 ---
 
-<BaseLayout lang={lang} title={`${isZh ? '爱好' : 'Hobbies'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="page-shell">
+<BaseLayout lang={lang} title={`${isZh ? '兴趣作品' : 'Side Projects'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="v3-page-shell v3-interests-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
-    <main id="content" class="hobbies-page">
-      <header class="page-hero hobbies-hero">
-        <div class="page-hero-index"><span>03</span><i></i><small>Hobbies</small></div>
+    <main id="content">
+      <header class="v3-page-hero v3-page-hero--interests" data-reveal>
+        <div class="v3-page-number"><span>03</span><i></i><small>Side Projects</small></div>
         <div>
-          <p class="kicker">F1 · Photography</p>
-          <h1>{isZh ? <>工作之外：<br /><em>F1 与个人摄影。</em></> : <>Beyond work:<br /><em>F1 and personal photography.</em></>}</h1>
+          <p class="v3-kicker">Made by curiosity</p>
+          <h1>{isZh ? <>主线之外，<br /><em>我也亲手做东西。</em></> : <>Outside the main line,<br /><em>I still make things.</em></>}</h1>
         </div>
-        <p>{isZh ? '我会长期记录 F1 的赛事公平、商业结构和技术规则，也会在旅行中拍摄人物、建筑和赛车。这里是个人兴趣，不与工作案例同级。' : 'I keep long-term notes on F1 sporting fairness, business structure, and technical rules, and photograph people, architecture, and cars while travelling. This is a personal interest, separate from my work cases.'}</p>
+        <p>{isZh ? '这里不是另一组职业案例，而是由兴趣驱动的制作：把一个好奇的问题变成能够运行、观看或陪伴的东西。' : 'These are not additional career cases. They are curiosity-driven builds that turn a question into something runnable, watchable, or companionable.'}</p>
       </header>
 
-      <section class="hobby-feature" aria-labelledby="f1-feature-title">
-        <figure class="hobby-feature-image">
-          <picture>
-            <source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" />
-            <img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian'} width="1800" height="1200" />
-          </picture>
-          <figcaption>{isZh ? '个人摄影 · 德国 · 车型暂不标注' : 'Personal photograph · Germany · model intentionally unlabeled'}</figcaption>
+      <section class="v3-side-project v3-side-project--film" aria-labelledby="aigc-title" data-reveal>
+        <figure>
+          <img src="/images/aigc-pov.webp" alt={aigc.images?.[0]?.alt[lang]} width="1600" height="900" />
+          <figcaption>01 / AIGC POV · 2025–26</figcaption>
         </figure>
-        <div class="hobby-feature-copy">
-          <div class="baroque-divider" aria-hidden="true"><span>✦</span></div>
-          <p class="kicker">Hobbies / 01</p>
-          <h2 id="f1-feature-title">F1 Notes</h2>
-          <p class="hobby-thesis">{isZh ? '我关注 F1，不只是因为速度，也因为它把车手天赋、车队工程、商业利益与规则政治压缩在同一条赛道上。' : 'I follow F1 not only for speed, but because it compresses driver talent, team engineering, commercial interests, and regulatory politics onto the same track.'}</p>
-          <p>{isZh ? '这里收录对赛事、产业与技术的长期短札；不追逐实时新闻，也不把兴趣包装成工作成果。' : 'This is a collection of durable notes on sport, business, and technology—not a live news feed, and not work dressed up as leisure.'}</p>
-          <a class="text-link" href={f1Path}>{isZh ? '进入 F1 Notes' : 'Enter F1 Notes'} →</a>
+        <div>
+          <p class="v3-kicker">AIGC film experiment</p>
+          <h2 id="aigc-title">{aigc.displayTitle[lang]}</h2>
+          <p>{aigc.why[lang]}</p>
+          <blockquote>{isZh ? '不是让模型多抽几次卡，而是知道为什么失败、下一轮改什么。' : 'Not more blind retries, but knowing why a shot failed and what to change next.'}</blockquote>
+          <ul>{aigc.evidence[lang].map((item) => <li>{item}</li>)}</ul>
+          <a class="v3-primary-action" href={`${projectBase}/${aigc.slug}/`}>{isZh ? '查看制作过程' : 'See the making process'} <span>↗</span></a>
         </div>
       </section>
 
-      <section class="hobby-notes" aria-labelledby="hobby-notes-title">
-        <header>
-          <p class="section-index">Notes / 03</p>
-          <div><p class="kicker">A continuing notebook</p><h2 id="hobby-notes-title">{isZh ? '从三个视角看同一条赛道' : 'One track, three lenses'}</h2></div>
-        </header>
-        <div class="hobby-note-list">
-          {f1Notes.map((note, index) => (
-            <a href={`${f1Path}#${note.id}`}>
-              <span>{String(index + 1).padStart(2, '0')} / {note.category[lang]}</span>
-              <h3>{note.title[lang]}</h3>
-              <b>↗</b>
-            </a>
-          ))}
+      <section class="v3-side-project v3-side-project--pet" aria-labelledby="pet-title" data-reveal>
+        <div class="v3-pet-stage" aria-hidden="true">
+          <span class="v3-pet-grid"></span>
+          <div class="v3-pet-egg"><i></i><b></b></div>
+          <p>HATCH / WAIT / GROW</p>
+        </div>
+        <div>
+          <p class="v3-kicker">Codex companion experiment</p>
+          <h2 id="pet-title">{isZh ? '一只可以孵化的 Codex 桌宠' : 'A hatchable desktop pet for Codex'}</h2>
+          <p>{isZh ? '我把任务状态、等待时间和陪伴感做成一个桌面角色：它不是效率工具的核心功能，而是一次关于“工具是否也能有情绪反馈”的小实验。' : 'I turned task state, waiting time, and companionship into a desktop character. It is not a core productivity feature, but a small experiment in whether tools can also communicate emotional feedback.'}</p>
+          <blockquote>{isZh ? '有些东西不必先证明市场规模，先做出来，才能知道它为什么让人喜欢。' : 'Some ideas do not need a market-size argument first. Building them is how you discover why people may care.'}</blockquote>
+          <a class="v3-primary-action" href="https://github.com/mogwai911/chen-qianyu-codex-pet" target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View repository'} <span>↗</span></a>
         </div>
       </section>
+
+      <section class="v3-next-chapter" data-reveal>
+        <p>{isZh ? '关于我的教育背景、判断方式与 F1 观察，放在 About。' : 'Education, point of view, and F1 notes live in About.'}</p>
+        <a href={isZh ? '/about/' : '/en/about/'}>{isZh ? '进入关于' : 'Go to About'} <span>↗</span></a>
+      </section>
     </main>
-    <footer class="site-footer"><p>© {new Date().getFullYear()} Kylian</p><p>Hobbies / 03</p><a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a></footer>
+    <footer class="v3-footer"><p>© {new Date().getFullYear()} Kylian</p><p>Side Projects / 03</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>
