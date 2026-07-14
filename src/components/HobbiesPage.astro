@@ -38,16 +38,22 @@ const description = isZh ? 'Kylian 的兴趣制作：AIGC 多镜头影像与 Cod
       </section>
 
       <section class="side-feature side-feature--pet content-width" data-reveal>
-        <div class="pet-window" aria-hidden="true">
-          <span class="pet-moon"></span>
-          <div class="pet-egg"><i></i><b></b></div>
-          <p>HATCH · WAIT · GROW</p>
+        <div class="pet-window">
+          <div
+            class="pet-avatar"
+            role="img"
+            aria-label={isZh ? '陈千语桌宠的待机动画' : 'Chen Qianyu desktop pet idle animation'}
+          ></div>
+          <p class="pet-window__meta"><span>CHEN QIANYU · IDLE</span><span>PETDEX NO. 3379</span></p>
         </div>
         <div>
           <p class="section-label">A small companion</p>
-          <h2>{isZh ? '一只可以孵化的 Codex 桌宠' : 'A hatchable desktop pet for Codex'}</h2>
+          <h2>{isZh ? '陈千语，一只陪 Agent 等待的 Codex 桌宠' : 'Chen Qianyu, a Codex pet for the moments between tasks'}</h2>
           <p>{isZh ? '等待 Agent 完成任务通常只剩一个进度状态。我想让这段时间多一点生命感，于是把任务状态、等待和反馈做成一只会变化的桌面角色。它没有宏大价值，只是确实让我想把它做出来。' : 'Waiting for an agent usually collapses into a progress state. I wanted that time to feel a little more alive, so I turned task status, waiting, and feedback into a changing desktop character. It has no grand value claim; I simply wanted it to exist.'}</p>
-          <a class="button-link" href="https://github.com/mogwai911/chen-qianyu-codex-pet" target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View repository'} <span>↗</span></a>
+          <div class="side-feature__actions">
+            <a class="button-link" href="https://github.com/mogwai911/chen-qianyu-codex-pet" target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View repository'} <span>↗</span></a>
+            <a class="quiet-link" href="https://petdex.dev/pets/chen-qianyu-3" target="_blank" rel="noreferrer">{isZh ? '在 PetDex 看她' : 'Meet her on PetDex'} <span>→</span></a>
+          </div>
         </div>
       </section>
 
