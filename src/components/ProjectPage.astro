@@ -40,7 +40,10 @@ const parentPath = isSideProject ? sidePath : workPath;
         <aside>
           <span>{isZh ? '我负责的部分' : 'My part'}</span>
           <p>{project.role[lang]}</p>
-          {project.link && <a class="quiet-link" href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} <span>↗</span></a>}
+          {(project.link || project.video) && <div class="case-external-links">
+            {project.video && <a class="button-link" href={project.video.url} target="_blank" rel="noreferrer" title={project.video.title[lang]}>{isZh ? '在 Bilibili 看成片' : 'Watch the finished film'} <span>↗</span></a>}
+            {project.link && <a class="quiet-link" href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} <span>↗</span></a>}
+          </div>}
         </aside>
       </section>
 

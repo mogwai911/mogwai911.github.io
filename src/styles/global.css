@@ -215,6 +215,7 @@ h1 em, h2 em { color: var(--royal); font-style: normal; }
 .work-entry__copy > p:not(.entry-meta):not(.entry-codename):not(.entry-role) { margin: 0 0 1.5rem; color: var(--ink-soft); }
 .entry-role { margin: 0 0 2rem; padding-left: 1rem; border-left: 3px solid var(--gold); color: var(--ink-soft); font-size: .88rem; }
 .entry-role span { display: block; margin-bottom: .2rem; color: var(--ink); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
+.case-external-links { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.3rem; margin-top: 1.4rem; }
 .experience-note { display: grid; grid-template-columns: 180px minmax(260px,.7fr) minmax(0,1fr); gap: clamp(2rem,5vw,5rem); padding: clamp(5rem,8vw,7rem) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
 .experience-note > .section-label { margin: 0; }
 .experience-note time { color: var(--ink-soft); font-size: .72rem; }

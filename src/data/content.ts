@@ -28,6 +28,7 @@ export type ProjectCase = {
   next: Record<Lang, string>;
   tags: string[];
   link?: string;
+  video?: { url: string; title: Record<Lang, string> };
   images?: { src: string; alt: Record<Lang, string> }[];
 };
 
@@ -497,6 +498,10 @@ export const projects: ProjectCase[] = [
       en: 'Turn review criteria into shot-level records so future work can reuse why a retry happened, not just the prompt text.',
     },
     tags: ['Generative Video', 'Creative Workflow', 'Consistency'],
+    video: {
+      url: 'https://www.bilibili.com/video/BV1zPJK6YENK/',
+      title: { zh: '“山田小姐今天休息，不在店里哦~”', en: '“Miss Yamada is off today and not in the shop~”' },
+    },
     images: [{ src: '/images/aigc-pov.webp', alt: { zh: 'AIGC POV 视频封面画面', en: 'Cover frame from the AIGC POV film' } }],
   },
 ];

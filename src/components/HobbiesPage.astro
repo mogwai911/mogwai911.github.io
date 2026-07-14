@@ -34,7 +34,10 @@ const description = isZh ? 'Kylian 的兴趣制作：AIGC 多镜头影像与 Cod
           <p class="section-label">A film made in fragments</p>
           <h2>{aigc.displayTitle[lang]}</h2>
           <p>{isZh ? '我想知道：当角色、镜头和动作被拆成很多次生成，怎样才能让观众仍然相信它们属于同一段经历？于是我把提示词、角色约束和镜头衔接整理成一套可以重复修改的制作方法。' : 'I wanted to know how viewers could still believe that separate generations—characters, shots, and actions—belonged to one continuous experience. I turned prompts, character constraints, and shot transitions into a method that could be revised rather than blindly rerolled.'}</p>
-          <a class="button-link" href={`${projectBase}/${aigc.slug}/`}>{isZh ? '看它是怎么做出来的' : 'See how it was made'} <span>↗</span></a>
+          <div class="side-feature__actions">
+            <a class="button-link" href={`${projectBase}/${aigc.slug}/`}>{isZh ? '看它是怎么做出来的' : 'See how it was made'} <span>↗</span></a>
+            {aigc.video && <a class="quiet-link" href={aigc.video.url} target="_blank" rel="noreferrer" title={aigc.video.title[lang]}>{isZh ? '在 Bilibili 看成片' : 'Watch the finished film'} <span>↗</span></a>}
+          </div>
         </div>
       </section>
 
