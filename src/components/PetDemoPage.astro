@@ -1,0 +1,124 @@
+---
+import type { Lang } from '../data/content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const isZh = lang === 'zh';
+const canonicalPath = isZh ? '/pet/' : '/en/pet/';
+const alternatePath = isZh ? '/en/pet/' : '/pet/';
+const hobbiesPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const description = isZh
+  ? '不用安装，直接在浏览器里体验 Kylian 制作的 Codex 桌宠陈千语。'
+  : 'Meet Chen Qianyu, Kylian’s Codex desktop pet, directly in the browser with no installation.';
+---
+
+<BaseLayout lang={lang} title={`${isZh ? '陈千语 · 在线桌宠' : 'Chen Qianyu · Web pet'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="site-shell pet-demo-shell">
+    <SiteHeader lang={lang} alternatePath={alternatePath} compact />
+    <main id="content" class="pet-demo">
+      <header class="pet-demo__intro content-width" data-reveal>
+        <p class="section-label">Open in browser · No install</p>
+        <h1>{isZh ? <>不用安装。<br /><em>现在就让她陪你一会儿。</em></> : <>Nothing to install.<br /><em>Let her stay for a while.</em></>}</h1>
+        <p>{isZh ? '这是陈千语的网页版体验。点击下面的状态，她会回应、等待，或者陪你开始一段专注时间。关闭页面后不会留下账号或数据。' : 'This is Chen Qianyu’s browser demo. Ask her to respond, wait with you, or begin a focus session. Closing the page leaves no account or personal data behind.'}</p>
+      </header>
+
+      <section class="pet-demo__playground content-width" aria-labelledby="pet-playground-title" data-reveal>
+        <div class="pet-demo__screen" data-pet-stage data-lang={lang} data-state="idle">
+          <div class="pet-demo__topline"><span>CHEN QIANYU</span><span>WEB COMPANION · ONLINE</span></div>
+          <div class="pet-demo__bubble" aria-live="polite" data-pet-message>{isZh ? '我在。你可以慢慢来。' : 'I’m here. Take your time.'}</div>
+          <div class="pet-demo__character">
+            <div class="pet-avatar pet-demo__avatar" role="img" aria-label={isZh ? '陈千语桌宠待机动画' : 'Chen Qianyu desktop pet idle animation'}></div>
+          </div>
+          <time class="pet-demo__timer" datetime="PT25M" data-pet-timer>25:00</time>
+          <p class="pet-demo__state"><span></span><b data-pet-state>{isZh ? '待机中' : 'Idle'}</b></p>
+        </div>
+
+        <div class="pet-demo__controls">
+          <div>
+            <p class="section-label" id="pet-playground-title">Try a moment</p>
+            <h2>{isZh ? '不需要先理解它，点一下就好。' : 'No setup to understand. Just click once.'}</h2>
+          </div>
+          <div class="pet-demo__buttons" role="group" aria-label={isZh ? '桌宠互动' : 'Pet interactions'}>
+            <button type="button" data-pet-action="hello"><span>01</span>{isZh ? '和她打招呼' : 'Say hello'}</button>
+            <button type="button" data-pet-action="wait"><span>02</span>{isZh ? '陪我等一会儿' : 'Wait with me'}</button>
+            <button type="button" data-pet-action="focus"><span>03</span>{isZh ? '开始 25 分钟专注' : 'Start a 25-minute focus'}</button>
+            <button type="button" data-pet-action="reset"><span>00</span>{isZh ? '回到待机' : 'Return to idle'}</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="pet-demo__note content-width" data-reveal>
+        <div>
+          <p class="section-label">What this page is</p>
+          <h2>{isZh ? '先让别人直接感受到，再决定要不要安装。' : 'Let people feel it first, then decide whether to install it.'}</h2>
+        </div>
+        <div>
+          <p>{isZh ? '网页版负责零门槛体验；如果想把她放进 Codex，才需要进入 PetDex 或公开仓库安装。两件事不再混在一个按钮里。' : 'The web version is the zero-friction experience. PetDex and the public repository are only for people who later decide to add her to Codex.'}</p>
+          <div class="side-feature__actions">
+            <a class="quiet-link" href="https://petdex.dev/pets/chen-qianyu-3" target="_blank" rel="noreferrer">PetDex <span>↗</span></a>
+            <a class="quiet-link" href="https://github.com/mogwai911/chen-qianyu-codex-pet" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+          </div>
+        </div>
+      </section>
+
+      <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
+        <p>{isZh ? '这个在线体验属于兴趣制作，不放进 Work。' : 'This browser experience remains a side project, not Work.'}</p>
+        <a class="quiet-link" href={hobbiesPath}>{isZh ? '返回兴趣制作' : 'Back to side projects'} <span>→</span></a>
+      </nav>
+    </main>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Chen Qianyu · Web companion</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
+  </div>
+
+  <script is:inline>
+    (() => {
+      const stage = document.querySelector('[data-pet-stage]');
+      if (!stage) return;
+      const lang = stage.dataset.lang === 'zh' ? 'zh' : 'en';
+      const message = stage.querySelector('[data-pet-message]');
+      const state = stage.querySelector('[data-pet-state]');
+      const timer = stage.querySelector('[data-pet-timer]');
+      const copy = {
+        zh: {
+          idle: ['我在。你可以慢慢来。', '待机中'],
+          hello: ['你好，Kylian 的朋友。今天也辛苦了。', '回应中'],
+          wait: ['没关系，我们一起等。', '陪伴中'],
+          focus: ['先专心做一件事。时间到了我会告诉你。', '专注中'],
+        },
+        en: {
+          idle: ['I’m here. Take your time.', 'Idle'],
+          hello: ['Hello, friend of Kylian. You did enough to get here.', 'Responding'],
+          wait: ['It’s okay. We can wait together.', 'Waiting with you'],
+          focus: ['One thing at a time. I’ll keep the clock.', 'Focusing'],
+        },
+      };
+      let timerId;
+      const setState = (next) => {
+        window.clearInterval(timerId);
+        stage.dataset.state = next;
+        message.textContent = copy[lang][next][0];
+        state.textContent = copy[lang][next][1];
+        if (next !== 'focus') timer.textContent = '25:00';
+        if (next === 'focus') {
+          let remaining = 25 * 60;
+          timerId = window.setInterval(() => {
+            remaining -= 1;
+            const minutes = String(Math.floor(remaining / 60)).padStart(2, '0');
+            const seconds = String(remaining % 60).padStart(2, '0');
+            timer.textContent = `${minutes}:${seconds}`;
+            if (remaining <= 0) {
+              window.clearInterval(timerId);
+              message.textContent = lang === 'zh' ? '这一段完成了。休息一下吧。' : 'That session is complete. Take a break.';
+              state.textContent = lang === 'zh' ? '完成' : 'Complete';
+              stage.dataset.state = 'hello';
+            }
+          }, 1000);
+        }
+      };
+      document.querySelectorAll('[data-pet-action]').forEach((button) => {
+        button.addEventListener('click', () => setState(button.dataset.petAction === 'reset' ? 'idle' : button.dataset.petAction));
+      });
+    })();
+  </script>
+</BaseLayout>

@@ -16,7 +16,7 @@ const about = isZh ? '/about/' : '/en/about/';
 const path = Astro.url.pathname;
 const section = path.includes('/projects/') || path.includes('/work/')
   ? 'work'
-  : path.includes('/hobbies/')
+  : path.includes('/hobbies/') || path.includes('/pet/')
     ? 'side-projects'
     : path.includes('/about/') || path.includes('/f1/')
       ? 'about'
