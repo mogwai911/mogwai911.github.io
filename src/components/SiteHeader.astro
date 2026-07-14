@@ -11,67 +11,51 @@ const { lang, alternatePath, compact = false } = Astro.props;
 const isZh = lang === 'zh';
 const home = isZh ? '/' : '/en/';
 const work = isZh ? '/work/' : '/en/work/';
-const interests = isZh ? '/hobbies/' : '/en/hobbies/';
+const sideProjects = isZh ? '/hobbies/' : '/en/hobbies/';
 const about = isZh ? '/about/' : '/en/about/';
 const path = Astro.url.pathname;
 const section = path.includes('/projects/') || path.includes('/work/')
   ? 'work'
   : path.includes('/hobbies/')
-    ? 'interests'
+    ? 'side-projects'
     : path.includes('/about/') || path.includes('/f1/')
       ? 'about'
       : 'home';
 
 const navigation = [
-  { id: 'home', number: '01', href: home, label: isZh ? '首页' : 'Home', note: isZh ? '方向、能力与联系' : 'Direction, proof, contact' },
-  { id: 'work', number: '02', href: work, label: isZh ? '工作' : 'Work', note: isZh ? '项目案例与真实经历' : 'Case studies and experience' },
-  { id: 'interests', number: '03', href: interests, label: isZh ? '兴趣作品' : 'Side Projects', note: isZh ? 'AIGC 漫剧与桌宠' : 'AIGC film and desktop pet' },
-  { id: 'about', number: '04', href: about, label: isZh ? '关于' : 'About', note: isZh ? '教育、观察与 F1' : 'Education, notes, and F1' },
+  { id: 'work', href: work, label: isZh ? '作品' : 'Work' },
+  { id: 'side-projects', href: sideProjects, label: isZh ? '兴趣制作' : 'Side projects' },
+  { id: 'about', href: about, label: isZh ? '关于' : 'About' },
 ];
 ---
 
-<header class:list={['v3-header', { 'v3-header--compact': compact }]}>
-  <button class="menu-trigger" type="button" aria-controls="site-drawer" aria-expanded="false">
-    <span class="menu-trigger-lines" aria-hidden="true"><i></i><i></i></span>
-    <span>{isZh ? '菜单' : 'Menu'}</span>
-  </button>
-
-  <a class="header-identity" href={home} aria-label={isZh ? 'Kylian 首页' : 'Kylian home'}>
-    <strong>Kylian</strong>
-    <span>Portfolio · 2026</span>
-  </a>
-
-  <div class="v3-header-actions">
-    <a href="https://x.com/icewaterdundun" target="_blank" rel="noreferrer" aria-label="Kylian on X">X</a>
-    <a class="header-mail" href="mailto:icewaterdundundun@gmail.com">{isZh ? '写信' : 'Email'}</a>
-    <a class="language-switch-v3" href={alternatePath} lang={isZh ? 'en' : 'zh-CN'} hreflang={isZh ? 'en' : 'zh-CN'}>
-      {isZh ? 'EN' : '中文'}
+<header class:list={['site-header', { 'site-header--compact': compact }]}>
+  <div class="site-header__inner">
+    <a class="site-identity" href={home} aria-label={isZh ? 'Kylian 个人网站首页' : 'Kylian personal site home'}>
+      <strong>Kylian</strong>
+      <span>{isZh ? '个人网站' : 'Personal site'}</span>
     </a>
+
+    <nav class="desktop-nav" aria-label={isZh ? '主导航' : 'Primary navigation'}>
+      {navigation.map((item) => (
+        <a href={item.href} aria-current={section === item.id ? 'page' : undefined}>{item.label}</a>
+      ))}
+    </nav>
+
+    <div class="header-tools">
+      <a href="https://x.com/icewaterdundun" target="_blank" rel="noreferrer" aria-label="Kylian on X">X</a>
+      <a class="language-link" href={alternatePath} lang={isZh ? 'en' : 'zh-CN'} hreflang={isZh ? 'en' : 'zh-CN'}>{isZh ? 'EN' : '中文'}</a>
+      <button class="mobile-menu-trigger" type="button" aria-controls="mobile-navigation" aria-expanded="false">
+        <span>{isZh ? '菜单' : 'Menu'}</span><i aria-hidden="true"></i>
+      </button>
+    </div>
   </div>
-</header>
 
-<div class="drawer-scrim" data-drawer-close aria-hidden="true"></div>
-<aside class="site-drawer" id="site-drawer" aria-hidden="true" aria-label={isZh ? '网站导航' : 'Site navigation'}>
-  <div class="drawer-topline">
-    <p>{isZh ? '内容目录' : 'Contents'}</p>
-    <button type="button" data-drawer-close aria-label={isZh ? '关闭菜单' : 'Close menu'}>×</button>
-  </div>
-
-  <div class="drawer-signature" aria-hidden="true">Kylian</div>
-
-  <nav aria-label={isZh ? '主导航' : 'Primary navigation'}>
+  <nav class="mobile-nav" id="mobile-navigation" aria-hidden="true" aria-label={isZh ? '移动端导航' : 'Mobile navigation'}>
+    <a href={home} aria-current={section === 'home' ? 'page' : undefined}>{isZh ? '首页' : 'Home'}</a>
     {navigation.map((item) => (
-      <a href={item.href} aria-current={section === item.id ? 'page' : undefined}>
-        <span>{item.number}</span>
-        <strong>{item.label}</strong>
-        <small>{item.note}</small>
-        <b aria-hidden="true">↗</b>
-      </a>
+      <a href={item.href} aria-current={section === item.id ? 'page' : undefined}>{item.label}</a>
     ))}
+    <a href="mailto:icewaterdundundun@gmail.com">Email</a>
   </nav>
-
-  <footer>
-    <p>{isZh ? '判断什么值得做，然后把它做出来。' : 'Decide what is worth doing. Then make it real.'}</p>
-    <div><a href="mailto:icewaterdundundun@gmail.com">Email</a><a href="https://x.com/icewaterdundun" target="_blank" rel="noreferrer">X / @icewaterdundun</a></div>
-  </footer>
-</aside>
+</header>

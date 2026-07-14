@@ -10,76 +10,62 @@ const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/work/' : '/en/work/';
 const alternatePath = isZh ? '/en/work/' : '/work/';
 const projectBase = isZh ? '/projects' : '/en/projects';
-const description = isZh ? 'Kylian 的 AI 应用落地、Agent 评测、GIS 工作流与真实组织经历。' : 'Kylian’s work in AI applications, agent evaluation, GIS workflows, and organizational delivery.';
+const description = isZh ? 'Kylian 的 AI 应用、Agent 评测与 GIS 项目记录。' : 'Kylian’s project notes on AI applications, agent evaluation, and GIS.';
 const workOrder = ['tb2-diagnostics', 'fomo-firewall', 'geoagent'];
 const workProjects = workOrder.map((slug) => projects.find((project) => project.slug === slug)).filter(Boolean);
-const principles = isZh
-  ? [['01', '先判断价值', '影响谁、改变什么结果、是否存在可执行的干预。'], ['02', '再拆解系统', '把输入、判断、执行、反馈与异常分成能定位的环节。'], ['03', '最后验证结果', '用行为、效率、质量指标和边界判断方案是否成立。']]
-  : [['01', 'Judge value first', 'Who is affected, which outcome changes, and whether intervention is possible.'], ['02', 'Make the system legible', 'Separate inputs, decisions, execution, feedback, and exceptions.'], ['03', 'Verify the result', 'Use behavior, efficiency, quality metrics, and explicit limits.']];
+const posterLabels = {
+  'tb2-diagnostics': ['TRACE', 'CAUSE', 'FIX'],
+  'fomo-firewall': ['LEARN', 'LATER', 'IGNORE'],
+  'geoagent': ['SEARCH', 'RUN', 'VERIFY'],
+};
 ---
 
-<BaseLayout lang={lang} title={`${isZh ? '工作' : 'Work'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="v3-page-shell v3-work-shell">
+<BaseLayout lang={lang} title={`${isZh ? '作品' : 'Work'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="site-shell work-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content">
-      <header class="v3-page-hero v3-page-hero--work" data-reveal>
-        <div class="v3-page-number"><span>02</span><i></i><small>Work</small></div>
-        <div>
-          <p class="v3-kicker">AI applications · Evaluation · GIS</p>
-          <h1>{isZh ? <>先证明为什么值得做，<br /><em>再展示怎么做到。</em></> : <>Prove why it matters.<br /><em>Then show how it was done.</em></>}</h1>
-        </div>
-        <p>{isZh ? '三组项目沿着同一条主线展开：把 AI 能力接进具体任务，找到系统失效或低效的位置，再用证据判断方案是否真的改善了结果。' : 'Three projects follow one line: connect AI capability to a concrete task, locate where the system fails or wastes effort, and use evidence to judge whether the intervention improves the outcome.'}</p>
+      <header class="simple-hero content-width" data-reveal>
+        <p class="section-label">Work / selected cases</p>
+        <h1>{isZh ? <>这些是我真正<br /><em>花时间做过的事。</em></> : <>These are the things<br /><em>I genuinely spent time making.</em></>}</h1>
+        <p>{isZh ? '面对 Agent 日志、信息过载或 GIS 代码，我会先找到真正阻塞结果的环节，再决定该做流程、评测还是工具。下面三个案例记录了这个过程。' : 'Across agent traces, information overload, and GIS code, I start by locating what actually blocks the outcome. Then I decide whether the answer is a workflow, an evaluation, or a tool. These three cases document that process.'}</p>
       </header>
 
-      <section class="v3-method-strip" aria-label={isZh ? '工作方法' : 'Working method'} data-reveal>
-        {principles.map(([number, title, text]) => <article><span>{number}</span><h2>{title}</h2><p>{text}</p></article>)}
-      </section>
-
-      <section class="v3-work-catalog" aria-labelledby="catalog-title">
-        <header class="v3-section-heading" data-reveal>
-          <div><span>03</span><p>Cases</p></div>
-          <h2 id="catalog-title">{isZh ? '三个案例，一套判断方法' : 'Three cases, one way of thinking'}</h2>
-          <p>{isZh ? '项目名称先使用陌生人能够理解的描述；内部代号仅作为次级信息。' : 'Descriptive names lead. Internal codenames remain secondary.'}</p>
-        </header>
-
-        <div class="v3-work-list v3-work-list--catalog">
-          {workProjects.map((project, index) => project && (
-            <article class="v3-work-row" data-reveal>
-              <span class="v3-work-number">0{index + 1}</span>
-              <div class="v3-work-copy">
-                <p>{project.eyebrow[lang]} · {project.year}</p>
-                <h3><a href={`${projectBase}/${project.slug}/`}>{project.displayTitle[lang]}</a></h3>
-                <small>{project.title}</small>
-                <p>{project.summary[lang]}</p>
-              </div>
-              <div class="v3-work-proof"><span>{isZh ? '为什么值得做' : 'Why it mattered'}</span><strong>{project.value[lang]}</strong></div>
-              <a class="v3-row-arrow" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case'}: ${project.displayTitle[lang]}`}>↗</a>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section class="v3-experience-section" aria-labelledby="experience-heading">
-        <header class="v3-section-heading" data-reveal>
-          <div><span>04</span><p>Experience</p></div>
-          <h2 id="experience-heading">{isZh ? '真实组织中的交付' : 'Delivery inside an organization'}</h2>
-          <p>{isZh ? '项目之外，保留一段能说明现场核验、跨团队配合和工具沉淀的实习经历。' : 'Beyond projects, this experience shows field verification, cross-team delivery, and reusable tooling.'}</p>
-        </header>
-        {timeline.experience.map((item) => (
-          <article class="v3-experience-case" data-reveal>
-            <time>{item.date}</time>
-            <div><p>{item.place[lang]}</p><h3>{item.title[lang]}</h3></div>
-            <p>{item.detail[lang]}</p>
-            <strong>{isZh ? '3 天完成道路变化修正与平台验证' : 'Road change corrected and validated in three days'}</strong>
+      <section class="work-journal content-width" aria-label={isZh ? '项目案例' : 'Case studies'}>
+        {workProjects.map((project) => project && (
+          <article class={`work-entry work-entry--${project.slug}`} data-reveal>
+            <a class="work-entry__poster project-poster" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case'}: ${project.displayTitle[lang]}`}>
+              <div class="poster-grain"></div>
+              <span class="poster-code">{project.title}</span>
+              <div class="poster-orbit"><i></i><i></i><i></i></div>
+              <div class="poster-words">{(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}</div>
+            </a>
+            <div class="work-entry__copy">
+              <p class="entry-meta">{project.eyebrow[lang]} · {project.year}</p>
+              <h2><a href={`${projectBase}/${project.slug}/`}>{project.displayTitle[lang]}</a></h2>
+              <p class="entry-codename">{project.title}</p>
+              <p>{project.why[lang]}</p>
+              <p class="entry-role"><span>{isZh ? '我在里面做了什么' : 'What I worked on'}</span>{project.role[lang]}</p>
+              <a class="button-link" href={`${projectBase}/${project.slug}/`}>{isZh ? '阅读完整案例' : 'Read the full case'} <span>↗</span></a>
+            </div>
           </article>
         ))}
       </section>
 
-      <section class="v3-next-chapter" data-reveal>
-        <p>{isZh ? '工作以外，我也会亲手做一些更自由的实验。' : 'Outside the main work line, I build smaller and freer experiments.'}</p>
-        <a href={isZh ? '/hobbies/' : '/en/hobbies/'}>{isZh ? '查看兴趣作品' : 'View side projects'} <span>↗</span></a>
+      <section class="experience-note content-width" data-reveal>
+        <p class="section-label">Field experience</p>
+        <div>
+          <time>{timeline.experience[0].date}</time>
+          <h2>{timeline.experience[0].title[lang]}</h2>
+          <p class="entry-codename">{timeline.experience[0].place[lang]}</p>
+        </div>
+        <p>{timeline.experience[0].detail[lang]}</p>
       </section>
+
+      <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
+        <p>{isZh ? '主线之外，还有一些只是因为好奇而做的东西。' : 'Outside this main line are things made simply from curiosity.'}</p>
+        <a class="quiet-link" href={isZh ? '/hobbies/' : '/en/hobbies/'}>{isZh ? '去看兴趣制作' : 'See side projects'} <span>→</span></a>
+      </nav>
     </main>
-    <footer class="v3-footer"><p>© {new Date().getFullYear()} Kylian</p><p>Work / 02</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Work</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

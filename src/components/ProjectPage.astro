@@ -10,105 +10,93 @@ const { lang, project } = Astro.props;
 const isZh = lang === 'zh';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const workPath = isZh ? '/work/' : '/en/work/';
-const interestsPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const sidePath = isZh ? '/hobbies/' : '/en/hobbies/';
 const canonicalPath = `${projectBase}/${project.slug}/`;
 const alternatePath = `${isZh ? '/en/projects' : '/projects'}/${project.slug}/`;
 const isSideProject = project.slug === 'aigc-pov';
 const workProjects = projects.filter((item) => item.slug !== 'aigc-pov');
 const projectIndex = workProjects.findIndex((item) => item.slug === project.slug);
 const nextProject = isSideProject ? undefined : workProjects[(projectIndex + 1) % workProjects.length];
-const parentPath = isSideProject ? interestsPath : workPath;
+const parentPath = isSideProject ? sidePath : workPath;
 ---
 
 <BaseLayout lang={lang} title={`${project.displayTitle[lang]} | ${project.title} — Kylian`} description={project.summary[lang]} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="page-shell">
+  <div class="site-shell case-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
-    <main id="content" class="case-page">
-      <header class="case-hero">
-        <div class="case-ordinal"><span>{project.number}</span><span>{project.year}</span></div>
-        <div class="case-title">
-          <p class="kicker">{project.eyebrow[lang]}</p>
-          <h1>{project.displayTitle[lang]}</h1>
-          <p class="case-codename">{project.title}</p>
-          <p>{project.summary[lang]}</p>
-        </div>
+    <main id="content" class="case-story">
+      <header class="case-story__hero content-width" data-reveal>
+        <p class="section-label">{isSideProject ? (isZh ? '兴趣制作' : 'Side project') : (isZh ? '项目记录' : 'Project note')} · {project.year}</p>
+        <h1>{project.displayTitle[lang]}</h1>
+        <p class="case-story__codename">{project.title}</p>
+        <p class="case-story__deck">{project.summary[lang]}</p>
         <ul class="tag-list">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
       </header>
 
-      <section class="case-overview" aria-labelledby="overview-title">
-        <header>
-          <p class="case-section-number">{isZh ? '先看结论' : 'Start here'}</p>
-          <h2 id="overview-title">{isZh ? '这件事为什么值得做' : 'Why this was worth doing'}</h2>
-        </header>
-        <div class="case-overview-grid">
-          <article><span>01 / {isZh ? '背景' : 'Context'}</span><p>{project.why[lang]}</p></article>
-          <article><span>02 / {isZh ? '价值' : 'Value'}</span><p>{project.value[lang]}</p></article>
-          <article><span>03 / {isZh ? '我的角色' : 'My role'}</span><p>{project.role[lang]}</p>{project.link && <a href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} ↗</a>}</article>
-          <article><span>04 / {isZh ? '关键证据' : 'Key proof'}</span><ul>{project.evidence[lang].slice(0, 2).map((item) => <li>{item}</li>)}</ul></article>
+      <section class="case-opening content-width" data-reveal>
+        <div>
+          <p class="section-label">{isZh ? '为什么会做这件事' : 'Why I started'}</p>
+          <h2>{project.why[lang]}</h2>
         </div>
+        <aside>
+          <span>{isZh ? '我负责的部分' : 'My part'}</span>
+          <p>{project.role[lang]}</p>
+          {project.link && <a class="quiet-link" href={project.link} target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View public repository'} <span>↗</span></a>}
+        </aside>
       </section>
 
       {project.images?.[0] && (
-        <figure class="case-lead-image">
+        <figure class="case-image case-image--lead content-width" data-reveal>
           <a href={project.images[0].src} target="_blank" rel="noreferrer" aria-label={`${isZh ? '打开原尺寸图片' : 'Open full-size image'}: ${project.images[0].alt[lang]}`}>
             <img src={project.images[0].src} alt={project.images[0].alt[lang]} width="1600" height="900" />
           </a>
-          <figcaption><span>{isZh ? '界面证据 / 点击查看原图' : 'Interface evidence / open full size'}</span>{project.images[0].alt[lang]}</figcaption>
+          <figcaption><span>{isZh ? '点击查看原图' : 'Open full size'}</span>{project.images[0].alt[lang]}</figcaption>
         </figure>
       )}
 
-      <div class="case-body">
-        <div class="case-narrative">
-          <section>
-            <p class="case-section-number">01 / {isZh ? '真正要解决的问题' : 'The real problem'}</p>
-            <h2>{project.question[lang]}</h2>
-          </section>
+      <section class="case-question content-width" data-reveal>
+        <p class="section-label">{isZh ? '真正的问题' : 'The real question'}</p>
+        <blockquote>{project.question[lang]}</blockquote>
+      </section>
 
-          <section>
-            <p class="case-section-number">02 / {isZh ? '关键决策，以及为什么' : 'Key decisions—and why'}</p>
-            <ol class="decision-list">
-              {project.decisions[lang].map((decision, index) => <li><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{decision.action}</h3><p>{decision.reason}</p></div></li>)}
-            </ol>
-          </section>
+      <section class="case-decisions content-width" data-reveal>
+        <header><p class="section-label">{isZh ? '我做的关键选择' : 'Choices I made'}</p><h2>{isZh ? '每个动作，都应该能解释为什么。' : 'Every action should have a reason.'}</h2></header>
+        <ol>
+          {project.decisions[lang].map((decision) => <li><h3>{decision.action}</h3><p>{decision.reason}</p></li>)}
+        </ol>
+      </section>
 
-          <section>
-            <p class="case-section-number">03 / {isZh ? '业务流程图' : 'Business flow'}</p>
-            <h2>{project.workflow[lang].heading}</h2>
-            <BusinessFlow lang={lang} flow={project.workflow[lang]} />
-          </section>
+      <section class="case-flow content-width" data-reveal>
+        <header><p class="section-label">{isZh ? '系统怎样运转' : 'How the system moves'}</p><h2>{project.workflow[lang].heading}</h2></header>
+        <BusinessFlow lang={lang} flow={project.workflow[lang]} />
+      </section>
 
-          <section>
-            <p class="case-section-number">04 / {isZh ? '我具体做了什么' : 'What I did'}</p>
-            <div class="process-grid">
-              {project.process[lang].map((step, index) => <article><span>{String(index + 1).padStart(2, '0')}</span><h3>{step.title}</h3><p>{step.text}</p></article>)}
-            </div>
-          </section>
+      <section class="case-making content-width" data-reveal>
+        <header><p class="section-label">{isZh ? '亲手做的部分' : 'What I made'}</p><h2>{isZh ? '从判断到可运行的东西。' : 'From judgment to something that runs.'}</h2></header>
+        <div>{project.process[lang].map((step) => <article><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
+      </section>
 
-          {project.images && project.images.length > 1 && (
-            <section class="case-media-section">
-              <p class="case-section-number">05 / {isZh ? '界面如何承接流程' : 'How the interface supports the flow'}</p>
-              <div class="case-gallery">
-                {project.images.slice(1).map((image) => <figure><a href={image.src} target="_blank" rel="noreferrer" aria-label={`${isZh ? '打开原尺寸图片' : 'Open full-size image'}: ${image.alt[lang]}`}><img src={image.src} alt={image.alt[lang]} width="1600" height="900" loading="lazy" /></a><figcaption><span>{isZh ? '点击查看原图' : 'Open full size'}</span>{image.alt[lang]}</figcaption></figure>)}
-              </div>
-            </section>
-          )}
+      {project.images && project.images.length > 1 && (
+        <section class="case-gallery content-width" aria-label={isZh ? '项目界面' : 'Project interfaces'}>
+          {project.images.slice(1).map((image) => <figure data-reveal><a href={image.src} target="_blank" rel="noreferrer" aria-label={`${isZh ? '打开原尺寸图片' : 'Open full-size image'}: ${image.alt[lang]}`}><img src={image.src} alt={image.alt[lang]} width="1600" height="900" loading="lazy" /></a><figcaption><span>{isZh ? '点击查看原图' : 'Open full size'}</span>{image.alt[lang]}</figcaption></figure>)}
+        </section>
+      )}
 
-          <section>
-            <p class="case-section-number">{project.images && project.images.length > 1 ? '06' : '05'} / {isZh ? '结果与证据' : 'Results & evidence'}</p>
-            <ul class="evidence-list">{project.evidence[lang].map((item) => <li>{item}</li>)}</ul>
-          </section>
-
-          <section class="boundary-section">
-            <div><p class="case-section-number">{project.images && project.images.length > 1 ? '07' : '06'} / {isZh ? '当前边界' : 'Current boundary'}</p><p>{project.boundary[lang]}</p></div>
-            <div><p class="case-section-number">{project.images && project.images.length > 1 ? '08' : '07'} / {isZh ? '下一步验证' : 'Next validation'}</p><p>{project.next[lang]}</p></div>
-          </section>
+      <section class="case-ending content-width" data-reveal>
+        <div class="case-evidence">
+          <p class="section-label">{isZh ? '留下的证据' : 'What the work left behind'}</p>
+          <ul>{project.evidence[lang].map((item) => <li>{item}</li>)}</ul>
         </div>
-      </div>
+        <div class="case-limits">
+          <article><span>{isZh ? '现在还不能证明' : 'What this does not prove yet'}</span><p>{project.boundary[lang]}</p></article>
+          <article><span>{isZh ? '下一次会验证' : 'What I would test next'}</span><p>{project.next[lang]}</p></article>
+        </div>
+      </section>
 
-      <nav class="case-next" aria-label={isZh ? '案例导航' : 'Case study navigation'}>
-        <a href={parentPath}>← {isSideProject ? (isZh ? '兴趣作品' : 'Side Projects') : (isZh ? '全部案例' : 'All work')}</a>
-        {nextProject && <a href={`${projectBase}/${nextProject.slug}/`}><span>{isZh ? '下一个案例' : 'Next case'}</span>{nextProject.displayTitle[lang]}<small>{nextProject.title}</small> →</a>}
+      <nav class="case-navigation content-width" aria-label={isZh ? '案例导航' : 'Case study navigation'}>
+        <a href={parentPath}>← {isSideProject ? (isZh ? '兴趣制作' : 'Side projects') : (isZh ? '全部作品' : 'All work')}</a>
+        {nextProject && <a href={`${projectBase}/${nextProject.slug}/`}><span>{isZh ? '接着看' : 'Next story'}</span>{nextProject.displayTitle[lang]} →</a>}
       </nav>
     </main>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>{project.title}</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

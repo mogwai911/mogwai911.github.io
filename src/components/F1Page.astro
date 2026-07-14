@@ -9,57 +9,39 @@ const { lang } = Astro.props;
 const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/f1/' : '/en/f1/';
 const alternatePath = isZh ? '/en/f1/' : '/f1/';
-const description = isZh ? '关于 F1 赛事、产业与技术的长期观点短札。' : 'Long-form notes on F1 as sport, business, and technology.';
+const description = isZh ? 'Kylian 关于 F1 赛事、产业与技术的长期观点短札。' : 'Kylian’s durable notes on F1 as sport, business, and technology.';
 ---
 
-<BaseLayout lang={lang} title={`F1 Notes — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="page-shell f1-page-shell">
+<BaseLayout lang={lang} title="F1 Notes — Kylian" description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="site-shell f1-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
-    <main id="content" class="f1-page">
-      <header class="f1-page-hero">
-        <div>
-          <p class="kicker">About / Notes · Sport · Business · Technology</p>
-          <h1>F1 Notes</h1>
-          <p class="f1-page-thesis">{isZh ? '我关注 F1，不只是因为速度，也因为它把车手天赋、车队工程、商业利益与规则政治压缩在同一条赛道上。' : 'I follow F1 not only for speed, but because it compresses driver talent, team engineering, commercial interests, and regulatory politics onto the same track.'}</p>
-        </div>
-        <p class="f1-page-intro">{isZh ? '这里没有实时积分榜，也不追逐赛后热搜。它是一组长期短札：从竞技纯粹性、商业增长与规则治理之间的张力，理解这项运动如何运转。' : 'There are no live standings or reactive race recaps here. These are durable notes on how the sport operates through the tensions among sporting purity, commercial growth, and regulatory governance.'}</p>
+    <main id="content" class="f1-notebook">
+      <header class="f1-intro content-width" data-reveal>
+        <div><p class="section-label">About / F1 Notes</p><h1>F1 Notes</h1></div>
+        <div><p>{isZh ? '我关注 F1，不只是因为速度，也因为它把车手天赋、车队工程、商业利益与规则政治压缩在同一条赛道上。' : 'I follow F1 not only for speed, but because it compresses driver talent, team engineering, commercial interests, and regulatory politics onto the same track.'}</p><small>{isZh ? '不做实时积分榜，也不追逐赛后热搜。这里只留下经得起一段时间的观察。' : 'No live standings or reactive race recaps—only observations meant to last a little longer.'}</small></div>
       </header>
 
-      <figure class="f1-page-image">
-        <picture>
-          <source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" />
-          <img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian'} width="1800" height="1200" />
-        </picture>
+      <figure class="f1-cover" data-reveal>
+        <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian'} width="1800" height="1200" /></picture>
         <figcaption>{isZh ? '个人摄影 · 德国 · 车型暂不标注' : 'Personal photograph · Germany · model intentionally unlabeled'}</figcaption>
       </figure>
 
-      <nav class="f1-toc" aria-label={isZh ? '文章目录' : 'Article index'}>
-        {f1Notes.map((note, index) => <a href={`#${note.id}`}><span>{String(index + 1).padStart(2, '0')} / {note.category[lang]}</span>{note.title[lang]}</a>)}
+      <nav class="f1-index content-width" aria-label={isZh ? '文章目录' : 'Article index'} data-reveal>
+        {f1Notes.map((note) => <a href={`#${note.id}`}><span>{note.category[lang]}</span>{note.title[lang]}</a>)}
       </nav>
 
-      <div class="f1-articles">
-        {f1Notes.map((note, index) => (
-          <article id={note.id} class="f1-article">
-            <header>
-              <p class="article-index">{String(index + 1).padStart(2, '0')} / {note.category[lang]}</p>
-              <h2>{note.title[lang]}</h2>
-              <p class="article-deck">{note.summary[lang]}</p>
-            </header>
-            <div class="article-body">{note.body[lang].map((paragraph) => <p>{paragraph}</p>)}</div>
-            {note.sources && (
-              <footer>
-                <p>{isZh ? '一手资料' : 'Primary sources'}</p>
-                <ul>{note.sources.map((source) => <li><a href={source.url} target="_blank" rel="noreferrer">{source.label} ↗</a></li>)}</ul>
-              </footer>
-            )}
+      <div class="f1-articles content-width">
+        {f1Notes.map((note) => (
+          <article id={note.id} class="f1-article" data-reveal>
+            <header><p class="section-label">{note.category[lang]}</p><h2>{note.title[lang]}</h2><p>{note.summary[lang]}</p></header>
+            <div>{note.body[lang].map((paragraph) => <p>{paragraph}</p>)}</div>
+            {note.sources && <footer><span>{isZh ? '一手资料' : 'Primary sources'}</span>{note.sources.map((source) => <a href={source.url} target="_blank" rel="noreferrer">{source.label} ↗</a>)}</footer>}
           </article>
         ))}
       </div>
+
+      <nav class="next-note content-width"><p>{isZh ? 'F1 是兴趣，关于我本人还有更多。' : 'F1 is an interest; there is more about the person behind it.'}</p><a class="quiet-link" href={isZh ? '/about/' : '/en/about/'}>← {isZh ? '返回 About' : 'Back to About'}</a></nav>
     </main>
-    <footer class="site-footer site-footer--dark">
-      <p>© {new Date().getFullYear()} Kylian</p>
-      <a href={isZh ? '/about/' : '/en/about/'}>← {isZh ? '返回关于' : 'Back to About'}</a>
-      <a href="#content">{isZh ? '回到顶部 ↑' : 'Back to top ↑'}</a>
-    </footer>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>F1 Notes</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

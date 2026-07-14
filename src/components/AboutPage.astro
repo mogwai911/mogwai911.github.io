@@ -10,71 +10,62 @@ const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/about/' : '/en/about/';
 const alternatePath = isZh ? '/en/about/' : '/about/';
 const f1Path = isZh ? '/f1/' : '/en/f1/';
-const description = isZh ? '关于 Kylian：判断、执行、教育背景与 F1 观察。' : 'About Kylian: judgment, execution, education, and F1 notes.';
-const schoolMarks = ['LU', 'NWAFU'];
+const description = isZh ? '关于 Kylian：空间数据背景、正在做的事与 F1 观察。' : 'About Kylian: a spatial-data background, current work, and F1 notes.';
 ---
 
 <BaseLayout lang={lang} title={`${isZh ? '关于' : 'About'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="v3-page-shell v3-about-shell">
+  <div class="site-shell about-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content">
-      <header class="v3-about-hero" data-reveal>
+      <header class="about-portrait content-width" data-reveal>
         <figure>
           <picture><source media="(max-width: 720px)" srcset="/images/vienna-hero-960.webp" /><img src="/images/vienna-hero-1800.webp" alt={isZh ? 'Kylian 在金色大厅中侧身看向右方' : 'Kylian looking to the right inside a golden hall'} width="1800" height="1200" /></picture>
-          <figcaption>04 / About · Kylian</figcaption>
+          <figcaption>{isZh ? '旅行时，我更喜欢先看一会儿。' : 'When travelling, I prefer to watch for a while.'}</figcaption>
         </figure>
         <div>
-          <p class="v3-kicker">Judgment · Execution · Curiosity</p>
-          <h1>{isZh ? <>我在意判断力，<br /><em>也在意把判断落地。</em></> : <>I value judgment,<br /><em>and making it real.</em></>}</h1>
-          <p>{isZh ? '我会被创造新事物和发现未知点燃。AI 是一个强力杠杆，但真正困难的部分，是让它在约束中收敛，找出系统不稳定或低效的位置，并判断改动是否产生了真实影响。' : 'Creating something new and discovering the unknown are what energize me. AI is a powerful lever, but the harder work is making it converge under constraints, locating where systems are unstable or inefficient, and judging whether an intervention has a real effect.'}</p>
+          <p class="section-label">About Kylian</p>
+          <h1>{isZh ? <>我对未知有耐心，<br /><em>对含糊没有。</em></> : <>I am patient with the unknown,<br /><em>but not with vagueness.</em></>}</h1>
+          <p>{isZh ? '我喜欢先观察一个系统怎么运转，再找到能让它变清楚、变可靠的那个切口。GIS 教会我尊重现实世界的复杂性；做 Agent 和 AI 应用，则让我更在意失败、证据与人的最终判断。' : 'I like to watch how a system behaves before finding the opening that can make it clearer and more reliable. GIS taught me to respect real-world complexity; building agents and AI applications made me care more about failure, evidence, and the final human judgment.'}</p>
+          <p>{isZh ? '工作之外，我会拍照、看 F1，也会把一个不太实用但很想看到的想法做出来。' : 'Outside work, I take photographs, follow F1, and sometimes build an idea simply because I want to see it exist.'}</p>
         </div>
       </header>
 
-      <section class="v3-beliefs" aria-labelledby="beliefs-title" data-reveal>
-        <header><p>01 / Point of view</p><h2 id="beliefs-title">{isZh ? '为什么是判断与执行' : 'Why judgment and execution'}</h2></header>
-        <article><span>{isZh ? '判断' : 'Judgment'}</span><p>{isZh ? '判断代表主体性：知道应该关注什么、什么值得投入、哪种证据足以改变原来的看法。这是不能简单外包给 AI 的部分。' : 'Judgment is agency: knowing what deserves attention, what is worth investing in, and which evidence should change the original view. That part cannot simply be delegated to AI.'}</p></article>
-        <article><span>{isZh ? '执行' : 'Execution'}</span><p>{isZh ? '执行让判断接受现实检验。把想法做成流程、原型或交付物，才能暴露 80 分之后那些真正困难的细节。' : 'Execution exposes judgment to reality. Turning an idea into a workflow, prototype, or deliverable reveals the difficult details that appear after the first 80 percent.'}</p></article>
+      <section class="about-now content-width" data-reveal>
+        <p class="section-label">{isZh ? '我现在关心的事' : 'What I care about now'}</p>
+        <div>
+          <h2>{isZh ? 'AI 不缺“能做”，更缺“为什么做”和“怎么知道做对了”。' : 'AI has plenty of “can do.” It needs more “why” and “how do we know it worked.”'}</h2>
+          <p>{isZh ? '所以我会把时间放在应用落地、Agent 评测与工作流产品上：让模型进入一个具体任务，让失败可以被定位，让改动能被真实行为或结果验证。' : 'That is why I spend time on AI applications, agent evaluation, and workflow products: putting models into concrete tasks, making failure diagnosable, and verifying change through real behavior or outcomes.'}</p>
+        </div>
       </section>
 
-      <section class="v3-education" aria-labelledby="education-title">
-        <header class="v3-section-heading" data-reveal>
-          <div><span>02</span><p>Education</p></div>
-          <h2 id="education-title">{isZh ? '空间数据是我的起点' : 'Spatial data was my starting point'}</h2>
-          <p>{isZh ? '只保留专业、学位与学校；教育解释知识背景，不替代项目证据。' : 'Only field, degree, and university are shown. Education explains context; it does not replace project evidence.'}</p>
-        </header>
-        <div class="v3-school-list">
-          {timeline.education.map((item, index) => (
-            <article data-reveal>
-              <div class="v3-school-mark" aria-hidden="true"><span>{schoolMarks[index]}</span><i></i></div>
-              <time>{item.date}</time>
-              <div><h3>{item.title[lang]}</h3><p>{item.place[lang]}</p></div>
-            </article>
+      <section class="education-lines content-width" data-reveal>
+        <header><p class="section-label">Background</p><h2>{isZh ? '空间数据，是我理解复杂系统的起点。' : 'Spatial data was my starting point for understanding complex systems.'}</h2></header>
+        <div>
+          {timeline.education.map((item) => (
+            <article><time>{item.date}</time><h3>{item.title[lang]}</h3><p>{item.place[lang]}</p></article>
           ))}
         </div>
       </section>
 
-      <section class="v3-f1-notes-preview" aria-labelledby="f1-preview-title" data-reveal>
+      <section class="about-f1 content-width" data-reveal>
         <figure>
           <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
           <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
         </figure>
         <div>
-          <p class="v3-kicker">Notes / F1</p>
-          <h2 id="f1-preview-title">{isZh ? '同样理性，只是观察对象不同' : 'The same analytical lens, applied elsewhere'}</h2>
-          <p>{isZh ? '我关注 F1 的赛事、产业和技术，但不把兴趣拔高成工作方法。它只是我持续观察规则、利益与工程如何共同塑造结果的地方。' : 'I follow F1 as sport, business, and technology without turning a personal interest into a professional claim. It is simply where I keep observing how rules, incentives, and engineering shape outcomes.'}</p>
-          <ol>{f1Notes.map((note, index) => <li><a href={`${f1Path}#${note.id}`}><span>0{index + 1}</span>{note.title[lang]} <b>↗</b></a></li>)}</ol>
-          <a class="v3-inline-link" href={f1Path}>{isZh ? '阅读 F1 Notes' : 'Read F1 Notes'} <span>→</span></a>
+          <p class="section-label">F1 / Notes</p>
+          <h2>{isZh ? '我看 F1，不只是在看速度。' : 'I do not watch F1 only for speed.'}</h2>
+          <p>{isZh ? '车手、工程、资本与规则在一条赛道上彼此牵制。这是兴趣，不是职业能力证明；我只是把一些值得长期想的问题写下来。' : 'Drivers, engineering, capital, and rules constrain one another on the same track. This is an interest, not professional proof; I simply write down questions worth thinking about over time.'}</p>
+          <ul>{f1Notes.map((note) => <li><a href={`${f1Path}#${note.id}`}><span>{note.category[lang]}</span>{note.title[lang]}</a></li>)}</ul>
+          <a class="button-link button-link--light" href={f1Path}>{isZh ? '阅读 F1 Notes' : 'Read F1 Notes'} <span>↗</span></a>
         </div>
       </section>
 
-      <section class="v3-contact" aria-labelledby="about-contact-title" data-reveal>
-        <div><p class="v3-kicker">Contact</p><h2 id="about-contact-title">{isZh ? '如果你想了解我正在做什么，欢迎简单聊聊。' : 'If you want to know what I am working on, feel free to say hello.'}</h2></div>
-        <div class="v3-contact-links">
-          <a href={`mailto:${profile.email}`}><span>Email</span><strong>{profile.email}</strong><b>↗</b></a>
-          <a href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span><strong>{profile.x.label}</strong><b>↗</b></a>
-        </div>
+      <section class="contact-note content-width" data-reveal>
+        <p>{isZh ? '想聊一个具体问题，直接写信或在 X 找我。' : 'To talk about a concrete problem, email me or find me on X.'}</p>
+        <div><a href={`mailto:${profile.email}`}>{profile.email}</a><a href={profile.x.url} target="_blank" rel="noreferrer">X · {profile.x.label}</a></div>
       </section>
     </main>
-    <footer class="v3-footer"><p>© {new Date().getFullYear()} Kylian</p><p>About / 04</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>About</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

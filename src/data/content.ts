@@ -505,12 +505,12 @@ export const profile = {
   email: 'icewaterdundundun@gmail.com',
   x: { label: '@icewaterdundun', url: 'https://x.com/icewaterdundun' },
   intro: {
-    zh: '我是 Kylian，GIS 与空间数据背景，正在做 AI 应用落地、Agent 评测与工作流产品。我关注什么问题值得做，也会把判断变成流程、原型和可验证的结果。',
-    en: 'I’m Kylian, with a background in GIS and spatial data. I work on AI applications, agent evaluation, and workflow products—deciding what is worth doing, then turning that judgment into processes, prototypes, and verifiable results.',
+    zh: '我是 Kylian，空间数据背景，正在做 AI 应用、Agent 评测与工作流产品。我喜欢先看清系统如何运转，再把问题做成可以验证的改动。',
+    en: 'I’m Kylian, with a background in spatial data. I work on AI applications, agent evaluation, and workflow products—first understanding how a system moves, then turning the problem into a change that can be tested.',
   },
   aside: {
-    zh: '是否值得做 = 预期影响 × 可干预性。',
-    en: 'Worth doing = expected impact × ability to intervene.',
+    zh: '观察一帧，拆开系统，亲手让它运转。',
+    en: 'Observe a frame. Unfold the system. Make it move.',
   },
 };
 

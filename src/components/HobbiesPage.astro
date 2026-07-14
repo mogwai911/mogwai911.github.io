@@ -11,59 +11,51 @@ const canonicalPath = isZh ? '/hobbies/' : '/en/hobbies/';
 const alternatePath = isZh ? '/en/hobbies/' : '/hobbies/';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const aigc = projects.find((project) => project.slug === 'aigc-pov')!;
-const description = isZh
-  ? 'Kylian 的兴趣作品：AIGC 多镜头创作工作流与 Codex 桌宠。'
-  : 'Kylian’s side projects: a multi-shot AIGC workflow and a Codex desktop pet.';
+const description = isZh ? 'Kylian 的兴趣制作：AIGC 多镜头影像与 Codex 桌宠。' : 'Kylian’s side projects: multi-shot AIGC film and a Codex desktop pet.';
 ---
 
-<BaseLayout lang={lang} title={`${isZh ? '兴趣作品' : 'Side Projects'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
-  <div class="v3-page-shell v3-interests-shell">
+<BaseLayout lang={lang} title={`${isZh ? '兴趣制作' : 'Side projects'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+  <div class="site-shell side-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content">
-      <header class="v3-page-hero v3-page-hero--interests" data-reveal>
-        <div class="v3-page-number"><span>03</span><i></i><small>Side Projects</small></div>
-        <div>
-          <p class="v3-kicker">Made by curiosity</p>
-          <h1>{isZh ? <>主线之外，<br /><em>我也亲手做东西。</em></> : <>Outside the main line,<br /><em>I still make things.</em></>}</h1>
-        </div>
-        <p>{isZh ? '这里不是另一组职业案例，而是由兴趣驱动的制作：把一个好奇的问题变成能够运行、观看或陪伴的东西。' : 'These are not additional career cases. They are curiosity-driven builds that turn a question into something runnable, watchable, or companionable.'}</p>
+      <header class="simple-hero content-width side-hero" data-reveal>
+        <p class="section-label">Made by curiosity</p>
+        <h1>{isZh ? <>有些想法，<br /><em>只是很想看它出现。</em></> : <>Some ideas simply<br /><em>ask to be made visible.</em></>}</h1>
+        <p>{isZh ? '这两件东西不属于 Work，也没有被包装成职业能力。一个来自对连续影像的好奇，一个来自对工具陪伴感的好奇。' : 'These two pieces do not belong under Work, and they are not dressed up as career proof. One came from curiosity about continuous images; the other from curiosity about companionship in tools.'}</p>
       </header>
 
-      <section class="v3-side-project v3-side-project--film" aria-labelledby="aigc-title" data-reveal>
+      <section class="side-feature side-feature--film content-width" data-reveal>
         <figure>
           <img src="/images/aigc-pov.webp" alt={aigc.images?.[0]?.alt[lang]} width="1600" height="900" />
-          <figcaption>01 / AIGC POV · 2025–26</figcaption>
+          <figcaption>AIGC POV · 2025–26</figcaption>
         </figure>
         <div>
-          <p class="v3-kicker">AIGC film experiment</p>
-          <h2 id="aigc-title">{aigc.displayTitle[lang]}</h2>
-          <p>{aigc.why[lang]}</p>
-          <blockquote>{isZh ? '不是让模型多抽几次卡，而是知道为什么失败、下一轮改什么。' : 'Not more blind retries, but knowing why a shot failed and what to change next.'}</blockquote>
-          <ul>{aigc.evidence[lang].map((item) => <li>{item}</li>)}</ul>
-          <a class="v3-primary-action" href={`${projectBase}/${aigc.slug}/`}>{isZh ? '查看制作过程' : 'See the making process'} <span>↗</span></a>
+          <p class="section-label">A film made in fragments</p>
+          <h2>{aigc.displayTitle[lang]}</h2>
+          <p>{isZh ? '我想知道：当角色、镜头和动作被拆成很多次生成，怎样才能让观众仍然相信它们属于同一段经历？于是我把提示词、角色约束和镜头衔接整理成一套可以重复修改的制作方法。' : 'I wanted to know how viewers could still believe that separate generations—characters, shots, and actions—belonged to one continuous experience. I turned prompts, character constraints, and shot transitions into a method that could be revised rather than blindly rerolled.'}</p>
+          <a class="button-link" href={`${projectBase}/${aigc.slug}/`}>{isZh ? '看它是怎么做出来的' : 'See how it was made'} <span>↗</span></a>
         </div>
       </section>
 
-      <section class="v3-side-project v3-side-project--pet" aria-labelledby="pet-title" data-reveal>
-        <div class="v3-pet-stage" aria-hidden="true">
-          <span class="v3-pet-grid"></span>
-          <div class="v3-pet-egg"><i></i><b></b></div>
-          <p>HATCH / WAIT / GROW</p>
+      <section class="side-feature side-feature--pet content-width" data-reveal>
+        <div class="pet-window" aria-hidden="true">
+          <span class="pet-moon"></span>
+          <div class="pet-egg"><i></i><b></b></div>
+          <p>HATCH · WAIT · GROW</p>
         </div>
         <div>
-          <p class="v3-kicker">Codex companion experiment</p>
-          <h2 id="pet-title">{isZh ? '一只可以孵化的 Codex 桌宠' : 'A hatchable desktop pet for Codex'}</h2>
-          <p>{isZh ? '我把任务状态、等待时间和陪伴感做成一个桌面角色：它不是效率工具的核心功能，而是一次关于“工具是否也能有情绪反馈”的小实验。' : 'I turned task state, waiting time, and companionship into a desktop character. It is not a core productivity feature, but a small experiment in whether tools can also communicate emotional feedback.'}</p>
-          <blockquote>{isZh ? '有些东西不必先证明市场规模，先做出来，才能知道它为什么让人喜欢。' : 'Some ideas do not need a market-size argument first. Building them is how you discover why people may care.'}</blockquote>
-          <a class="v3-primary-action" href="https://github.com/mogwai911/chen-qianyu-codex-pet" target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View repository'} <span>↗</span></a>
+          <p class="section-label">A small companion</p>
+          <h2>{isZh ? '一只可以孵化的 Codex 桌宠' : 'A hatchable desktop pet for Codex'}</h2>
+          <p>{isZh ? '等待 Agent 完成任务通常只剩一个进度状态。我想让这段时间多一点生命感，于是把任务状态、等待和反馈做成一只会变化的桌面角色。它没有宏大价值，只是确实让我想把它做出来。' : 'Waiting for an agent usually collapses into a progress state. I wanted that time to feel a little more alive, so I turned task status, waiting, and feedback into a changing desktop character. It has no grand value claim; I simply wanted it to exist.'}</p>
+          <a class="button-link" href="https://github.com/mogwai911/chen-qianyu-codex-pet" target="_blank" rel="noreferrer">{isZh ? '查看公开仓库' : 'View repository'} <span>↗</span></a>
         </div>
       </section>
 
-      <section class="v3-next-chapter" data-reveal>
-        <p>{isZh ? '关于我的教育背景、判断方式与 F1 观察，放在 About。' : 'Education, point of view, and F1 notes live in About.'}</p>
-        <a href={isZh ? '/about/' : '/en/about/'}>{isZh ? '进入关于' : 'Go to About'} <span>↗</span></a>
-      </section>
+      <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
+        <p>{isZh ? '教育背景、正在关心的问题和 F1 Notes 放在 About。' : 'Education, current interests, and F1 Notes live in About.'}</p>
+        <a class="quiet-link" href={isZh ? '/about/' : '/en/about/'}>{isZh ? '去 About' : 'Go to About'} <span>→</span></a>
+      </nav>
     </main>
-    <footer class="v3-footer"><p>© {new Date().getFullYear()} Kylian</p><p>Side Projects / 03</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Side projects</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

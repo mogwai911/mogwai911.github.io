@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../data/content';
-import { profile, projects, timeline } from '../data/content';
+import { profile, projects } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from './SiteHeader.astro';
 
@@ -10,105 +10,119 @@ const isZh = lang === 'zh';
 const home = isZh ? '/' : '/en/';
 const workPath = isZh ? '/work/' : '/en/work/';
 const aboutPath = isZh ? '/about/' : '/en/about/';
-const interestsPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const sidePath = isZh ? '/hobbies/' : '/en/hobbies/';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const alternate = isZh ? '/en/' : '/';
-const title = isZh ? 'Kylian — AI 应用、评测与工作流' : 'Kylian — AI applications, evaluation, and workflows';
+const title = isZh ? 'Kylian — AI 应用、Agent 评测与 GIS' : 'Kylian — AI applications, agent evaluation, and GIS';
 const description = profile.intro[lang];
 const workOrder = ['tb2-diagnostics', 'fomo-firewall', 'geoagent'];
 const selected = workOrder.map((slug) => projects.find((project) => project.slug === slug)).filter(Boolean);
-const experience = timeline.experience[0];
+const posterLabels = {
+  'tb2-diagnostics': ['TRACE', 'CAUSE', 'FIX'],
+  'fomo-firewall': ['LEARN', 'LATER', 'IGNORE'],
+  'geoagent': ['SEARCH', 'RUN', 'VERIFY'],
+};
 ---
 
 <BaseLayout lang={lang} title={title} description={description} canonicalPath={home} alternatePath={alternate}>
-  <div class="v3-page-shell">
+  <div class="site-shell home-shell">
     <SiteHeader lang={lang} alternatePath={alternate} />
     <main id="content">
-      <section class="v3-home-hero" aria-labelledby="hero-title">
-        <figure class="v3-hero-photo" data-reveal>
+      <section class="home-hero" aria-labelledby="hero-title">
+        <figure class="home-hero__photo" data-photo-drift>
           <picture>
             <source media="(max-width: 720px)" srcset="/images/vienna-hero-960.webp" />
             <img src="/images/vienna-hero-1800.webp" alt={isZh ? 'Kylian 在金色大厅中侧身看向右方' : 'Kylian looking to the right inside a golden hall'} width="1800" height="1200" fetchpriority="high" />
           </picture>
-          <figcaption><span>Personal frame / 2024</span><b>{isZh ? '观察与行动之间' : 'Between observation and action'}</b></figcaption>
+          <figcaption>{isZh ? '维也纳，一次没有预设答案的停留' : 'Vienna, a pause without a predetermined answer'}</figcaption>
         </figure>
 
-        <div class="v3-hero-copy" data-reveal>
-          <div class="v3-issue-line"><span>Vol. 01</span><i></i><b>Portfolio · 2026</b></div>
-          <p class="v3-kicker">AI {isZh ? '应用落地' : 'applications'} · Agent {isZh ? '评测' : 'evaluation'} · GIS</p>
-          <p class="v3-hero-name">Kylian</p>
-          <h1 id="hero-title">{isZh ? <>判断什么值得做，<br /><em>然后把它做出来。</em></> : <>Decide what is worth doing.<br /><em>Then make it real.</em></>}</h1>
-          <p class="v3-hero-intro">{profile.intro[lang]}</p>
-          <div class="v3-hero-actions">
-            <a class="v3-primary-action" href={workPath}>{isZh ? '查看我具体做过什么' : 'See what I have built'} <span>↗</span></a>
-            <a class="v3-text-action" href={aboutPath}>{isZh ? '认识 Kylian' : 'About Kylian'} →</a>
+        <div class="home-hero__shade" aria-hidden="true"></div>
+        <div class="home-hero__copy" data-reveal>
+          <p class="eyebrow">Kylian · Personal site</p>
+          <h1 id="hero-title">{isZh ? <>我习惯先看一会儿，<br /><em>再把事情做出来。</em></> : <>I tend to watch first.<br /><em>Then I make things real.</em></>}</h1>
+          <p class="home-hero__role">AI {isZh ? '应用落地' : 'applications'} · Agent {isZh ? '评测' : 'evaluation'} · GIS</p>
+          <p class="home-hero__intro">{isZh ? '我从空间数据出发，现在关注 AI 如何进入真实工作：哪里值得介入、系统为什么失效，以及怎样用一次可验证的改动让它变好。' : 'I started with spatial data and now focus on how AI enters real work: where intervention matters, why a system fails, and how one verifiable change can make it better.'}</p>
+          <div class="hero-links">
+            <a class="button-link button-link--light" href={workPath}>{isZh ? '看看我做过什么' : 'See what I have made'} <span>↗</span></a>
+            <a class="quiet-link quiet-link--light" href={aboutPath}>{isZh ? '先认识我' : 'Meet Kylian'} <span>→</span></a>
           </div>
         </div>
 
-        <aside class="v3-value-formula" data-reveal aria-label={isZh ? '产品判断公式' : 'Product judgment formula'}>
-          <span>{isZh ? '我的判断起点' : 'My starting point'}</span>
-          <p>{isZh ? '是否值得做' : 'Worth doing?'}</p>
-          <b>=</b>
-          <p>{isZh ? '预期影响' : 'Expected impact'}</p>
-          <b>×</b>
-          <p>{isZh ? '可干预性' : 'Ability to intervene'}</p>
-          <small>{isZh ? '先判断对人的行为和业务结果会产生什么影响，再选择有成功可能的干预手段。' : 'First clarify the effect on behavior and outcomes, then choose an intervention with a realistic chance of working.'}</small>
-        </aside>
+        <p class="home-hero__note" aria-hidden="true">observe · unfold · make</p>
       </section>
 
-      <section class="v3-selected-work" aria-labelledby="selected-title" data-reveal>
-        <header class="v3-section-heading">
-          <div><span>02</span><p>Selected Work</p></div>
-          <h2 id="selected-title">{isZh ? '用项目证明判断力与执行力' : 'Proof of judgment and execution'}</h2>
-          <p>{isZh ? '每个案例先回答为什么值得做，再展开关键判断、动作、证据和边界。' : 'Each case starts with why it matters, then explains decisions, actions, evidence, and limits.'}</p>
+      <section class="home-now content-width" data-reveal>
+        <p class="section-label">{isZh ? '现在 / NOW' : 'NOW'}</p>
+        <div>
+          <h2>{isZh ? <>从 GIS 到 Agent，<br />我总想先看清系统怎么运转。</> : <>From GIS to agents,<br />I first want to see how the system moves.</>}</h2>
+          <p>{isZh ? '信息很多、系统很复杂，但真正需要被看清的通常只有几件事：哪一步出了问题，谁会受到影响，以及下一步能不能被实际执行。比起先给自己贴一个职业标签，我更愿意用做出来的东西回答。' : 'There is always too much information and too much system complexity. What matters is usually smaller: where it broke, who is affected, and whether the next step can actually be carried out. I would rather answer with things I have made than start with a job-title label.'}</p>
+        </div>
+      </section>
+
+      <section class="home-work content-width" aria-labelledby="home-work-title">
+        <header class="editorial-heading" data-reveal>
+          <p class="section-label">Selected work</p>
+          <h2 id="home-work-title">{isZh ? '最近，我在这些问题里停留得比较久。' : 'These are the problems I have stayed with lately.'}</h2>
+          <a class="quiet-link" href={workPath}>{isZh ? '查看全部作品' : 'View all work'} <span>→</span></a>
         </header>
 
-        <div class="v3-work-list">
-          {selected.map((project, index) => project && (
-            <a href={`${projectBase}/${project.slug}/`} class="v3-work-row" data-reveal>
-              <span class="v3-work-number">0{index + 1}</span>
-              <div class="v3-work-copy">
+        <div class="project-stories">
+          {selected.map((project) => project && (
+            <a class={`project-story project-story--${project.slug}`} href={`${projectBase}/${project.slug}/`} data-reveal>
+              <div class="project-poster" aria-hidden="true">
+                <div class="poster-grain"></div>
+                <span class="poster-code">{project.title}</span>
+                <div class="poster-orbit"><i></i><i></i><i></i></div>
+                <div class="poster-words">
+                  {(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}
+                </div>
+              </div>
+              <div class="project-story__copy">
                 <p>{project.eyebrow[lang]} · {project.year}</p>
                 <h3>{project.displayTitle[lang]}</h3>
-                <small>{project.title}</small>
                 <p>{project.summary[lang]}</p>
+                <span>{isZh ? '进入这个故事' : 'Open the story'} ↗</span>
               </div>
-              <div class="v3-work-proof"><span>{isZh ? '关键证据' : 'Key proof'}</span><strong>{project.evidence[lang][0]}</strong></div>
-              <b aria-hidden="true">↗</b>
             </a>
           ))}
         </div>
-        <a class="v3-inline-link" href={workPath}>{isZh ? '进入完整 Work' : 'View all work'} <span>→</span></a>
       </section>
 
-      <section class="v3-experience-band" aria-labelledby="experience-title" data-reveal>
-        <div class="v3-experience-label"><span>03</span><p>{isZh ? '真实组织经历' : 'In an organization'}</p></div>
-        <div class="v3-experience-copy">
-          <p>{experience.date}</p>
-          <h2 id="experience-title">{experience.title[lang]}</h2>
-          <strong>{experience.place[lang]}</strong>
-          <p>{experience.detail[lang]}</p>
+      <section class="home-side content-width" data-reveal>
+        <div class="home-side__image">
+          <img src="/images/aigc-pov.webp" alt={isZh ? 'AIGC 多镜头 POV 创作画面' : 'A frame from a multi-shot AIGC POV experiment'} width="1600" height="900" loading="lazy" />
+          <span>{isZh ? '制作中的一帧' : 'A frame in the making'}</span>
         </div>
-        <div class="v3-experience-proof">
-          <strong>3 {isZh ? '天' : 'days'}</strong>
-          <span>{isZh ? '完成道路变化修正与平台验证' : 'from road change to verified platform update'}</span>
-          <a href={workPath}>{isZh ? '查看经历与项目' : 'Experience and cases'} ↗</a>
+        <div class="home-side__copy">
+          <p class="section-label">Made by curiosity</p>
+          <h2>{isZh ? '不是所有东西，都要先证明它有用。' : 'Not everything needs to prove its utility first.'}</h2>
+          <p>{isZh ? '我也会做 AIGC 影像和一只会孵化的 Codex 桌宠。它们不属于职业主线，但很能说明我为什么喜欢把想法变成可以观看、运行或陪伴的东西。' : 'I also make AIGC film experiments and a hatchable Codex desktop pet. They are not part of the career narrative, but they show why I like turning ideas into things that can be watched, run, or kept nearby.'}</p>
+          <a class="button-link" href={sidePath}>{isZh ? '去看兴趣制作' : 'See side projects'} <span>↗</span></a>
         </div>
       </section>
 
-      <section class="v3-home-elsewhere" aria-label={isZh ? '更多内容' : 'More from Kylian'} data-reveal>
-        <a href={interestsPath}><span>{isZh ? '兴趣作品' : 'Side Projects'}</span><h2>{isZh ? 'AIGC 漫剧与 Codex 桌宠' : 'AIGC film and a Codex desktop pet'}</h2><p>{isZh ? '主线之外，由好奇心驱动的制作。' : 'Curiosity-driven builds outside the main line.'}</p><b>↗</b></a>
-        <a href={aboutPath}><span>{isZh ? '关于与观察' : 'About & Notes'}</span><h2>{isZh ? '教育背景、个人判断与 F1 Notes' : 'Education, point of view, and F1 Notes'}</h2><p>{isZh ? '同样理性，只是观察对象不同。' : 'The same analytical lens, applied elsewhere.'}</p><b>↗</b></a>
+      <section class="home-about content-width" data-reveal>
+        <div>
+          <p class="section-label">About</p>
+          <h2>{isZh ? '我喜欢复杂系统，但更喜欢把它讲明白。' : 'I like complex systems. I like making them understandable even more.'}</h2>
+        </div>
+        <div>
+          <p>{isZh ? '教育背景、真实经历、F1 观察，以及我现在愿意公开的联系方式，都放在 About。' : 'My education, field experience, F1 notes, and public contact details live in About.'}</p>
+          <a class="quiet-link" href={aboutPath}>{isZh ? '关于 Kylian' : 'About Kylian'} <span>→</span></a>
+        </div>
       </section>
 
-      <section class="v3-contact" aria-labelledby="contact-title" data-reveal>
-        <div><p class="v3-kicker">Contact</p><h2 id="contact-title">{isZh ? '如果你也在处理一个值得做、但还没有被说清的问题，欢迎联系我。' : 'If you are working on a problem worth solving but not yet clearly framed, get in touch.'}</h2></div>
-        <div class="v3-contact-links">
-          <a href={`mailto:${profile.email}`}><span>Email</span><strong>{profile.email}</strong><b>↗</b></a>
-          <a href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span><strong>{profile.x.label}</strong><b>↗</b></a>
-        </div>
+      <section class="contact-note content-width" data-reveal>
+        <p>{isZh ? '如果你正在处理一个还没有被说清的问题，我们可以聊聊。' : 'If you are working on a problem that has not been made clear yet, we can talk.'}</p>
+        <div><a href={`mailto:${profile.email}`}>{profile.email}</a><a href={profile.x.url} target="_blank" rel="noreferrer">X · {profile.x.label}</a></div>
       </section>
     </main>
-    <footer class="v3-footer"><p>© {new Date().getFullYear()} Kylian</p><p>{isZh ? '判断 · 执行 · 验证' : 'Judgment · Execution · Validation'}</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
+
+    <footer class="site-footer content-width">
+      <p>© {new Date().getFullYear()} Kylian</p>
+      <p>{isZh ? '观察 · 拆开 · 做出来' : 'Observe · Unfold · Make'}</p>
+      <a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a>
+    </footer>
   </div>
 </BaseLayout>
