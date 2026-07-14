@@ -105,17 +105,28 @@ const posterLabels = {
       <section class="home-about content-width" data-reveal>
         <div>
           <p class="section-label">About</p>
-          <h2>{isZh ? '我喜欢复杂系统，但更喜欢把它讲明白。' : 'I like complex systems. I like making them understandable even more.'}</h2>
+          <h2>{isZh ? '作品之外，我也会拍照片、看 F1，在陌生城市里慢慢走。' : 'Outside work, I take photographs, follow F1, and wander through unfamiliar cities.'}</h2>
         </div>
         <div>
-          <p>{isZh ? '教育背景、真实经历、F1 观察，以及我现在愿意公开的联系方式，都放在 About。' : 'My education, field experience, F1 notes, and public contact details live in About.'}</p>
-          <a class="quiet-link" href={aboutPath}>{isZh ? '关于 Kylian' : 'About Kylian'} <span>→</span></a>
+          <p>{isZh ? '如果你想认识项目之外的我，可以从这里继续。' : 'If you want to meet the person behind the projects, continue here.'}</p>
+          <a class="quiet-link" href={aboutPath}>{isZh ? '去 About 看看' : 'Meet me in About'} <span>→</span></a>
         </div>
       </section>
 
       <section class="contact-note content-width" data-reveal>
-        <p>{isZh ? '如果你正在处理一个还没有被说清的问题，我们可以聊聊。' : 'If you are working on a problem that has not been made clear yet, we can talk.'}</p>
-        <div><a href={`mailto:${profile.email}`}>{profile.email}</a><a href={profile.x.url} target="_blank" rel="noreferrer">X · {profile.x.label}</a></div>
+        <div class="contact-note__copy">
+          <p class="section-label">Open to work · Open to conversation</p>
+          <h2>{isZh ? '我在寻找新的工作机会，也愿意随便聊聊。' : 'I’m open to new roles—and always happy to have a real conversation.'}</h2>
+          <p>{isZh ? '合适的岗位、一段合作、一个还没想清楚的点子，或者 F1，都可以来找我。' : 'A role, a collaboration, an unfinished idea, or F1—feel free to reach out.'}</p>
+        </div>
+        <div class="contact-note__actions">
+          <a class="contact-link" href={`mailto:${profile.email}`}>
+            <span>Email</span><strong>{profile.email}</strong><i aria-hidden="true">↗</i>
+          </a>
+          <a class="contact-link" href={profile.x.url} target="_blank" rel="noreferrer">
+            <span>X</span><strong>{profile.x.label}</strong><i aria-hidden="true">↗</i>
+          </a>
+        </div>
       </section>
     </main>
 
