@@ -39,8 +39,14 @@ const description = isZh ? '关于 Kylian：空间数据背景、正在做的事
       </section>
 
       <section class="education-lines content-width" data-reveal>
-        <header><p class="section-label">Background</p><h2>{isZh ? '空间数据，是我理解复杂系统的起点。' : 'Spatial data was my starting point for understanding complex systems.'}</h2></header>
-        <div>
+        <div class="education-lines__intro">
+          <header><p class="section-label">Background</p><h2>{isZh ? '空间数据，是我理解复杂系统的起点。' : 'Spatial data was my starting point for understanding complex systems.'}</h2></header>
+          <figure class="education-evidence">
+            <picture><source media="(max-width: 720px)" srcset="/images/lund-presentation-960.webp" /><img src="/images/lund-presentation-1800.webp" alt={isZh ? 'Kylian 在课堂展示多 Agent 实验平台' : 'Kylian presenting a multi-agent experimental platform in class'} width="1800" height="1350" loading="lazy" /></picture>
+            <figcaption>{isZh ? '硕士项目展示 · 多 Agent 实验平台' : 'MSc project presentation · Multi-agent experimental platform'}</figcaption>
+          </figure>
+        </div>
+        <div class="education-lines__list">
           {timeline.education.map((item) => (
             <article><time>{item.date}</time><h3>{item.title[lang]}</h3><p>{item.place[lang]}</p></article>
           ))}
@@ -48,11 +54,17 @@ const description = isZh ? '关于 Kylian：空间数据背景、正在做的事
       </section>
 
       <section class="about-f1 content-width" data-reveal>
-        <figure>
-          <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
-          <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
+        <figure class="about-f1__media">
+          <div class="about-f1__photo">
+            <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
+            <span>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</span>
+          </div>
+          <div class="about-f1__aigc">
+            <picture><source media="(max-width: 720px)" srcset="/images/f1-aigc-grid-720.webp" /><img src="/images/f1-aigc-grid-1200.webp" alt={isZh ? '将动漫角色与方程式赛车围场结合的 AIGC 视觉实验' : 'An AIGC visual experiment combining anime characters with formula racing garages'} width="1200" height="2150" loading="lazy" /></picture>
+            <span>{isZh ? 'AIGC 视觉实验 · 非真实赛事影像' : 'AIGC visual study · Not real race imagery'}</span>
+          </div>
         </figure>
-        <div>
+        <div class="about-f1__copy">
           <p class="section-label">F1 / Notes</p>
           <h2>{isZh ? '我看 F1，不只是在看速度。' : 'I do not watch F1 only for speed.'}</h2>
           <p>{isZh ? '车手、工程、资本与规则在一条赛道上彼此牵制。这是兴趣，不是职业能力证明；我只是把一些值得长期想的问题写下来。' : 'Drivers, engineering, capital, and rules constrain one another on the same track. This is an interest, not professional proof; I simply write down questions worth thinking about over time.'}</p>
@@ -62,8 +74,15 @@ const description = isZh ? '关于 Kylian：空间数据背景、正在做的事
       </section>
 
       <section class="contact-note content-width" data-reveal>
-        <p>{isZh ? '想聊一个具体问题，直接写信或在 X 找我。' : 'To talk about a concrete problem, email me or find me on X.'}</p>
-        <div><a href={`mailto:${profile.email}`}>{profile.email}</a><a href={profile.x.url} target="_blank" rel="noreferrer">X · {profile.x.label}</a></div>
+        <div class="contact-note__copy">
+          <p class="section-label">Open to work · Open to conversation</p>
+          <h2>{isZh ? '我在寻找新的工作机会，也愿意随便聊聊。' : 'I’m open to new roles—and always happy to have a real conversation.'}</h2>
+          <p>{isZh ? '工作、合作、一个还没想清楚的点子，或者只是想打个招呼，都欢迎来找我。' : 'Work, collaboration, an unfinished idea, or simply saying hello—you are welcome to reach out.'}</p>
+        </div>
+        <div class="contact-note__actions">
+          <a class="contact-link" href={`mailto:${profile.email}`}><span>Email</span><strong>{profile.email}</strong><i aria-hidden="true">↗</i></a>
+          <a class="contact-link" href={profile.x.url} target="_blank" rel="noreferrer"><span>X</span><strong>{profile.x.label}</strong><i aria-hidden="true">↗</i></a>
+        </div>
       </section>
     </main>
     <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>About</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
