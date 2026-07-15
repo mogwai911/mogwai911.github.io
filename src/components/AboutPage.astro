@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../data/content';
-import { f1Notes, profile, timeline } from '../data/content';
+import { profile, timeline } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from './SiteHeader.astro';
 
@@ -9,8 +9,8 @@ const { lang } = Astro.props;
 const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/about/' : '/en/about/';
 const alternatePath = isZh ? '/en/about/' : '/about/';
-const f1Path = isZh ? '/f1/' : '/en/f1/';
-const description = isZh ? '关于 Kylian：空间数据背景、正在做的事与 F1 观察。' : 'About Kylian: a spatial-data background, current work, and F1 notes.';
+const hobbiesPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const description = isZh ? '关于 Kylian：空间数据背景、正在做的事与教育经历。' : 'About Kylian: a spatial-data background, current work, and education.';
 ---
 
 <BaseLayout lang={lang} title={`${isZh ? '关于' : 'About'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
@@ -53,19 +53,10 @@ const description = isZh ? '关于 Kylian：空间数据背景、正在做的事
         </div>
       </section>
 
-      <section class="about-f1 content-width" data-reveal>
-        <figure>
-          <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
-          <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
-        </figure>
-        <div>
-          <p class="section-label">F1 / Notes</p>
-          <h2>{isZh ? '我看 F1，不只是在看速度。' : 'I do not watch F1 only for speed.'}</h2>
-          <p>{isZh ? '车手、工程、资本与规则在一条赛道上彼此牵制。这是兴趣，不是职业能力证明；我只是把一些值得长期想的问题写下来。' : 'Drivers, engineering, capital, and rules constrain one another on the same track. This is an interest, not professional proof; I simply write down questions worth thinking about over time.'}</p>
-          <ul>{f1Notes.map((note) => <li><a href={`${f1Path}#${note.id}`}><span>{note.category[lang]}</span>{note.title[lang]}</a></li>)}</ul>
-          <a class="button-link button-link--light" href={f1Path}>{isZh ? '阅读 F1 Notes' : 'Read F1 Notes'} <span>↗</span></a>
-        </div>
-      </section>
+      <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'} data-reveal>
+        <p>{isZh ? '工作之外的 F1、AIGC 和桌宠放在 Hobbies。' : 'F1, AIGC, and the Codex pet live in Hobbies.'}</p>
+        <a class="quiet-link" href={hobbiesPath}>{isZh ? '去看兴趣' : 'Explore hobbies'} <span>→</span></a>
+      </nav>
 
       <section class="contact-note content-width" data-reveal>
         <div class="contact-note__copy">

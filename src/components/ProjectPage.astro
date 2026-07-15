@@ -11,12 +11,16 @@ const isZh = lang === 'zh';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const workPath = isZh ? '/work/' : '/en/work/';
 const sidePath = isZh ? '/hobbies/' : '/en/hobbies/';
+const aboutPath = isZh ? '/about/' : '/en/about/';
 const canonicalPath = `${projectBase}/${project.slug}/`;
 const alternatePath = `${isZh ? '/en/projects' : '/projects'}/${project.slug}/`;
 const isSideProject = project.slug === 'aigc-pov';
-const workProjects = projects.filter((item) => item.slug !== 'aigc-pov');
+const workOrder = ['tb2-diagnostics', 'fomo-firewall', 'geoagent'];
+const workProjects = workOrder.map((slug) => projects.find((item) => item.slug === slug)).filter((item): item is ProjectCase => Boolean(item));
 const projectIndex = workProjects.findIndex((item) => item.slug === project.slug);
-const nextProject = isSideProject ? undefined : workProjects[(projectIndex + 1) % workProjects.length];
+const nextProject = !isSideProject && projectIndex >= 0 && projectIndex < workProjects.length - 1 ? workProjects[projectIndex + 1] : undefined;
+const nextPath = isSideProject ? undefined : nextProject ? `${projectBase}/${nextProject.slug}/` : aboutPath;
+const nextTitle = nextProject ? nextProject.displayTitle[lang] : (isZh ? '关于 Kylian' : 'About Kylian');
 const parentPath = isSideProject ? sidePath : workPath;
 ---
 
@@ -25,7 +29,7 @@ const parentPath = isSideProject ? sidePath : workPath;
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content" class="case-story">
       <header class="case-story__hero content-width" data-reveal>
-        <p class="section-label">{isSideProject ? (isZh ? '兴趣制作' : 'Side project') : (isZh ? '项目记录' : 'Project note')} · {project.year}</p>
+        <p class="section-label">{isSideProject ? (isZh ? '兴趣' : 'Hobby') : (isZh ? '项目记录' : 'Project note')} · {project.year}</p>
         <h1>{project.displayTitle[lang]}</h1>
         <p class="case-story__codename">{project.title}</p>
         <p class="case-story__deck">{project.summary[lang]}</p>
@@ -96,8 +100,8 @@ const parentPath = isSideProject ? sidePath : workPath;
       </section>
 
       <nav class="case-navigation content-width" aria-label={isZh ? '案例导航' : 'Case study navigation'}>
-        <a href={parentPath}>← {isSideProject ? (isZh ? '兴趣制作' : 'Side projects') : (isZh ? '全部作品' : 'All work')}</a>
-        {nextProject && <a href={`${projectBase}/${nextProject.slug}/`}><span>{isZh ? '接着看' : 'Next story'}</span>{nextProject.displayTitle[lang]} →</a>}
+        <a href={parentPath}>← {isSideProject ? (isZh ? '全部兴趣' : 'All hobbies') : (isZh ? '全部作品' : 'All work')}</a>
+        {nextPath && <a href={nextPath}><span>{isZh ? '接着看' : 'Next story'}</span>{nextTitle} →</a>}
       </nav>
     </main>
     <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>{project.title}</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>

@@ -1,6 +1,6 @@
 ---
 import type { Lang } from '../data/content';
-import { projects } from '../data/content';
+import { f1Notes, projects } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from './SiteHeader.astro';
 
@@ -10,19 +10,39 @@ const isZh = lang === 'zh';
 const canonicalPath = isZh ? '/hobbies/' : '/en/hobbies/';
 const alternatePath = isZh ? '/en/hobbies/' : '/hobbies/';
 const petPath = isZh ? '/pet/' : '/en/pet/';
+const f1Path = isZh ? '/f1/' : '/en/f1/';
 const projectBase = isZh ? '/projects' : '/en/projects';
 const aigc = projects.find((project) => project.slug === 'aigc-pov')!;
-const description = isZh ? 'Kylian 的兴趣制作：AIGC 多镜头影像与 Codex 桌宠。' : 'Kylian’s side projects: multi-shot AIGC film and a Codex desktop pet.';
+const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头影像与 Codex 桌宠。' : 'Kylian’s hobbies: long-form F1 notes, multi-shot AIGC film, and a Codex desktop pet.';
 ---
 
-<BaseLayout lang={lang} title={`${isZh ? '兴趣制作' : 'Side projects'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
+<BaseLayout lang={lang} title={`${isZh ? '兴趣' : 'Hobbies'} — Kylian`} description={description} canonicalPath={canonicalPath} alternatePath={alternatePath}>
   <div class="site-shell side-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content">
       <header class="simple-hero content-width side-hero" data-reveal>
-        <p class="section-label">Made by curiosity</p>
+        <p class="section-label">Hobbies / beyond work</p>
         <h1>{isZh ? <>有些想法，<br /><em>只是很想看它出现。</em></> : <>Some ideas simply<br /><em>ask to be made visible.</em></>}</h1>
-        <p>{isZh ? '这两件东西不属于 Work，也没有被包装成职业能力。一个来自对连续影像的好奇，一个来自对工具陪伴感的好奇。' : 'These two pieces do not belong under Work, and they are not dressed up as career proof. One came from curiosity about continuous images; the other from curiosity about companionship in tools.'}</p>
+        <p>{isZh ? '这里放着工作主线之外的观察与制作：F1 长期短札、AIGC 影像，以及一只 Codex 桌宠。它们来自不同形式的好奇，也保留各自的表达方式。' : 'This is where observations and things made beyond work live: long-form F1 notes, AIGC film, and a Codex pet. They come from different kinds of curiosity and keep their own forms.'}</p>
+      </header>
+
+      <section class="f1-feature content-width" data-reveal>
+        <figure>
+          <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
+          <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
+        </figure>
+        <div>
+          <p class="section-label">Notes / F1</p>
+          <h2>{isZh ? '我看 F1，不只是在看速度。' : 'I do not watch F1 only for speed.'}</h2>
+          <p>{isZh ? '车手、工程、资本与规则在一条赛道上彼此牵制。我把一些值得长期想的问题写下来。' : 'Drivers, engineering, capital, and rules constrain one another on the same track. I write down questions worth thinking about over time.'}</p>
+          <ul>{f1Notes.map((note) => <li><a href={`${f1Path}#${note.id}`}><span>{note.category[lang]}</span>{note.title[lang]}</a></li>)}</ul>
+          <a class="button-link button-link--light" href={f1Path}>{isZh ? '阅读 F1 Notes' : 'Read F1 Notes'} <span>↗</span></a>
+        </div>
+      </section>
+
+      <header class="editorial-heading content-width" data-reveal>
+        <p class="section-label">Made by curiosity</p>
+        <h2>{isZh ? '做出来的东西。' : 'Things I made.'}</h2>
       </header>
 
       <section class="side-feature side-feature--film content-width" data-reveal>
@@ -62,10 +82,10 @@ const description = isZh ? 'Kylian 的兴趣制作：AIGC 多镜头影像与 Cod
       </section>
 
       <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
-        <p>{isZh ? '教育背景、正在关心的问题和 F1 Notes 放在 About。' : 'Education, current interests, and F1 Notes live in About.'}</p>
+        <p>{isZh ? '教育背景和现在关心的问题放在 About。' : 'Education and the questions I care about now live in About.'}</p>
         <a class="quiet-link" href={isZh ? '/about/' : '/en/about/'}>{isZh ? '去 About' : 'Go to About'} <span>→</span></a>
       </nav>
     </main>
-    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Side projects</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
+    <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Hobbies</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>
 </BaseLayout>

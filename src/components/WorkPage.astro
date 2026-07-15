@@ -43,7 +43,8 @@ const posterLabels = {
               <p class="entry-meta">{project.eyebrow[lang]} · {project.year}</p>
               <h2><a href={`${projectBase}/${project.slug}/`}>{project.displayTitle[lang]}</a></h2>
               <p class="entry-codename">{project.title}</p>
-              <p>{project.why[lang]}</p>
+              <p>{project.summary[lang]}</p>
+              <p class="entry-value"><span>{isZh ? '为什么值得做' : 'Why it matters'}</span>{project.value[lang]}</p>
               <p class="entry-role"><span>{isZh ? '我在里面做了什么' : 'What I worked on'}</span>{project.role[lang]}</p>
               <a class="button-link" href={`${projectBase}/${project.slug}/`}>{isZh ? '阅读完整案例' : 'Read the full case'} <span>↗</span></a>
             </div>
@@ -63,7 +64,7 @@ const posterLabels = {
 
       <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
         <p>{isZh ? '主线之外，还有一些只是因为好奇而做的东西。' : 'Outside this main line are things made simply from curiosity.'}</p>
-        <a class="quiet-link" href={isZh ? '/hobbies/' : '/en/hobbies/'}>{isZh ? '去看兴趣制作' : 'See side projects'} <span>→</span></a>
+        <a class="quiet-link" href={isZh ? '/hobbies/' : '/en/hobbies/'}>{isZh ? '去看兴趣' : 'Explore hobbies'} <span>→</span></a>
       </nav>
     </main>
     <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Work</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>

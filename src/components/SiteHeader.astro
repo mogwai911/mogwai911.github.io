@@ -14,17 +14,18 @@ const work = isZh ? '/work/' : '/en/work/';
 const sideProjects = isZh ? '/hobbies/' : '/en/hobbies/';
 const about = isZh ? '/about/' : '/en/about/';
 const path = Astro.url.pathname;
-const section = path.includes('/projects/') || path.includes('/work/')
+const isSideProject = path.includes('/projects/aigc-pov/');
+const section = (path.includes('/projects/') && !isSideProject) || path.includes('/work/')
   ? 'work'
-  : path.includes('/hobbies/') || path.includes('/pet/')
+  : path.includes('/hobbies/') || path.includes('/pet/') || path.includes('/f1/') || isSideProject
     ? 'side-projects'
-    : path.includes('/about/') || path.includes('/f1/')
+    : path.includes('/about/')
       ? 'about'
       : 'home';
 
 const navigation = [
   { id: 'work', href: work, label: isZh ? '作品' : 'Work' },
-  { id: 'side-projects', href: sideProjects, label: isZh ? '兴趣制作' : 'Side projects' },
+  { id: 'side-projects', href: sideProjects, label: isZh ? '兴趣' : 'Hobbies' },
   { id: 'about', href: about, label: isZh ? '关于' : 'About' },
 ];
 ---

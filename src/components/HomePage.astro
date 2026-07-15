@@ -52,14 +52,6 @@ const posterLabels = {
         <p class="home-hero__note" aria-hidden="true">observe · unfold · make</p>
       </section>
 
-      <section class="home-now content-width" data-reveal>
-        <p class="section-label">{isZh ? '现在 / NOW' : 'NOW'}</p>
-        <div>
-          <h2>{isZh ? <>从 GIS 到 Agent，<br />我总想先看清系统怎么运转。</> : <>From GIS to agents,<br />I first want to see how the system moves.</>}</h2>
-          <p>{isZh ? '信息很多、系统很复杂，但真正需要被看清的通常只有几件事：哪一步出了问题，谁会受到影响，以及下一步能不能被实际执行。比起先给自己贴一个职业标签，我更愿意用做出来的东西回答。' : 'There is always too much information and too much system complexity. What matters is usually smaller: where it broke, who is affected, and whether the next step can actually be carried out. I would rather answer with things I have made than start with a job-title label.'}</p>
-        </div>
-      </section>
-
       <section class="home-work content-width" aria-labelledby="home-work-title">
         <header class="editorial-heading" data-reveal>
           <p class="section-label">Selected work</p>
@@ -95,21 +87,13 @@ const posterLabels = {
           <span>{isZh ? '制作中的一帧' : 'A frame in the making'}</span>
         </div>
         <div class="home-side__copy">
-          <p class="section-label">Made by curiosity</p>
+          <p class="section-label">Beyond work</p>
           <h2>{isZh ? '不是所有东西，都要先证明它有用。' : 'Not everything needs to prove its utility first.'}</h2>
-          <p>{isZh ? '我也会做 AIGC 影像和一只会孵化的 Codex 桌宠。它们不属于职业主线，但很能说明我为什么喜欢把想法变成可以观看、运行或陪伴的东西。' : 'I also make AIGC film experiments and a hatchable Codex desktop pet. They are not part of the career narrative, but they show why I like turning ideas into things that can be watched, run, or kept nearby.'}</p>
-          <a class="button-link" href={sidePath}>{isZh ? '去看兴趣制作' : 'See side projects'} <span>↗</span></a>
-        </div>
-      </section>
-
-      <section class="home-about content-width" data-reveal>
-        <div>
-          <p class="section-label">About</p>
-          <h2>{isZh ? '作品之外，我也会拍照片、看 F1，在陌生城市里慢慢走。' : 'Outside work, I take photographs, follow F1, and wander through unfamiliar cities.'}</h2>
-        </div>
-        <div>
-          <p>{isZh ? '如果你想认识项目之外的我，可以从这里继续。' : 'If you want to meet the person behind the projects, continue here.'}</p>
-          <a class="quiet-link" href={aboutPath}>{isZh ? '去 About 看看' : 'Meet me in About'} <span>→</span></a>
+          <p>{isZh ? '我也会做 AIGC 影像和一只会孵化的 Codex 桌宠。作品之外，我还会拍照片、看 F1，在陌生城市里慢慢走。' : 'I also make AIGC film experiments and a hatchable Codex pet. Outside work, I take photographs, follow F1, and wander through unfamiliar cities.'}</p>
+          <div class="side-feature__actions">
+            <a class="button-link" href={sidePath}>{isZh ? '去看兴趣' : 'Explore hobbies'} <span>↗</span></a>
+            <a class="quiet-link" href={aboutPath}>{isZh ? '认识项目之外的我' : 'Meet the person behind the work'} <span>→</span></a>
+          </div>
         </div>
       </section>
 
