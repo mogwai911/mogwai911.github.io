@@ -16,6 +16,7 @@ const site = Astro.site ?? new URL('https://mogwai911.github.io');
 const canonical = new URL(canonicalPath, site);
 const alternate = new URL(alternatePath, site);
 const absoluteOg = new URL(ogImage, site);
+const preloadAtlasFont = lang === 'zh' && canonicalPath === '/';
 ---
 
 <!doctype html>
@@ -30,6 +31,7 @@ const absoluteOg = new URL(ogImage, site);
     <link rel="alternate" hreflang={lang === 'zh' ? 'en' : 'zh-CN'} href={alternate} />
     <link rel="alternate" hreflang="x-default" href={new URL('/', site)} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    {preloadAtlasFont && <link rel="preload" href="/fonts/noto-serif-sc-atlas-700.woff2" as="font" type="font/woff2" crossorigin />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Kylian" />
     <meta property="og:title" content={title} />

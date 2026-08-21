@@ -1,5 +1,6 @@
 ---
 import type { Lang } from '../data/content';
+import { profile } from '../data/content';
 
 interface Props {
   lang: Lang;
@@ -44,7 +45,7 @@ const navigation = [
     </nav>
 
     <div class="header-tools">
-      <a href="https://x.com/icewaterdundun" target="_blank" rel="noreferrer" aria-label="Kylian on X">X</a>
+      <a class="header-email" href={`mailto:${profile.email}`}>Email</a>
       <a class="language-link" href={alternatePath} lang={isZh ? 'en' : 'zh-CN'} hreflang={isZh ? 'en' : 'zh-CN'}>{isZh ? 'EN' : '中文'}</a>
       <button class="mobile-menu-trigger" type="button" aria-controls="mobile-navigation" aria-expanded="false">
         <span>{isZh ? '菜单' : 'Menu'}</span><i aria-hidden="true"></i>
@@ -57,6 +58,6 @@ const navigation = [
     {navigation.map((item) => (
       <a href={item.href} aria-current={section === item.id ? 'page' : undefined}>{item.label}</a>
     ))}
-    <a href="mailto:icewaterdundundun@gmail.com">Email</a>
+    <a href={`mailto:${profile.email}`}>Email</a>
   </nav>
 </header>

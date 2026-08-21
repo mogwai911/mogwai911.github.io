@@ -22,25 +22,41 @@ const posterLabels = {
   'fomo-firewall': ['LEARN', 'LATER', 'IGNORE'],
   'geoagent': ['SEARCH', 'RUN', 'VERIFY'],
 };
+const stationMeta = {
+  zh: [
+    '站点 01 · Agent 诊断 · 评估系统 · 2025–26',
+    '站点 02 · 信息分诊 · 产品判断 · 2026',
+    '站点 03 · GIS · RAG · Multi-Agent · 2025',
+  ],
+  en: [
+    'Station 01 · Agent diagnostics · Evaluation · 2025–26',
+    'Station 02 · Information triage · Product judgment · 2026',
+    'Station 03 · GIS · RAG · Multi-Agent · 2025',
+  ],
+};
 ---
 
 <BaseLayout lang={lang} title={title} description={description} canonicalPath={home} alternatePath={alternate}>
   <div class="site-shell home-shell">
     <SiteHeader lang={lang} alternatePath={alternate} />
     <main id="content">
-      <section class="home-hero" aria-labelledby="hero-title">
+      <section class="home-hero home-hero--atlas" aria-labelledby="hero-title">
         <figure class="home-hero__photo" data-photo-drift>
           <picture>
             <source media="(max-width: 720px)" srcset="/images/vienna-hero-960.webp" />
             <img src="/images/vienna-hero-1800.webp" alt={isZh ? 'Kylian 在金色大厅中侧身看向右方' : 'Kylian looking to the right inside a golden hall'} width="1800" height="1200" fetchpriority="high" />
           </picture>
-          <figcaption>{isZh ? '维也纳，一次没有预设答案的停留' : 'Vienna, a pause without a predetermined answer'}</figcaption>
+          <figcaption>
+            <strong>WIEN · FIELD NOTE 01</strong>
+            <span>{isZh ? '维也纳，一次没有预设答案的停留' : 'Vienna, a pause without a predetermined answer'}</span>
+          </figcaption>
         </figure>
 
         <div class="home-hero__shade" aria-hidden="true"></div>
+        <div class="home-hero__atlas-grid" aria-hidden="true"></div>
         <div class="home-hero__copy" data-reveal>
-          <p class="eyebrow">Kylian · Personal site</p>
-          <h1 id="hero-title">{isZh ? <>堆叠可能性，<br /><em>而非追寻确定性。</em></> : <>Stack possibilities.<br /><em>Do not chase certainty.</em></>}</h1>
+          <p class="eyebrow">{isZh ? '图幅 01 · 总览 OVERVIEW' : 'Plate 01 · Overview'}</p>
+          <h1 id="hero-title" class="atlas-title">{isZh ? <>堆叠可能性，<br /><em>而非追寻确定性。</em></> : <>Stack possibilities.<br /><em>Do not chase certainty.</em></>}</h1>
           <p class="home-hero__role">AI {isZh ? '应用落地' : 'applications'} · Agent {isZh ? '评测' : 'evaluation'} · GIS</p>
           <p class="home-hero__intro">{isZh ? '我从空间数据出发，现在关注 AI 如何进入真实工作：哪里值得介入、系统为什么失效，以及怎样用一次可验证的改动让它变好。' : 'I started with spatial data and now focus on how AI enters real work: where intervention matters, why a system fails, and how one verifiable change can make it better.'}</p>
           <div class="hero-links">
@@ -50,45 +66,57 @@ const posterLabels = {
         </div>
 
         <p class="home-hero__note" aria-hidden="true">observe · unfold · make</p>
+        <i class="home-hero__origin" aria-hidden="true"></i>
       </section>
 
-      <section class="home-work content-width" aria-labelledby="home-work-title">
+      <section class="home-work content-width atlas-route-section" aria-labelledby="home-work-title">
         <header class="editorial-heading" data-reveal>
-          <p class="section-label">Selected work</p>
-          <h2 id="home-work-title">{isZh ? '最近，我在这些问题里停留得比较久。' : 'These are the problems I have stayed with lately.'}</h2>
+          <p class="section-label">Route · 03 stops</p>
+          <h2 id="home-work-title" class="atlas-title">{isZh ? '最近，我在这些问题里停留得比较久。' : 'These are the problems I have stayed with lately.'}</h2>
           <a class="quiet-link" href={workPath}>{isZh ? '查看全部作品' : 'View all work'} <span>→</span></a>
         </header>
 
-        <div class="project-stories">
-          {selected.map((project) => project && (
-            <a class={`project-story project-story--${project.slug}`} href={`${projectBase}/${project.slug}/`} data-reveal>
-              <div class="project-poster" aria-hidden="true">
-                <div class="poster-grain"></div>
-                <span class="poster-code">{project.title}</span>
-                <div class="poster-orbit"><i></i><i></i><i></i></div>
-                <div class="poster-words">
-                  {(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}
+        <div class="atlas-route">
+          <svg class="atlas-route__line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path class="atlas-route__path atlas-route__path--base atlas-route__path--desktop" d="M50 0 C61 7 62 12 50 16 C36 27 36 39 50 50 C64 61 64 73 50 84 C38 91 39 97 48 100" />
+            <path class="atlas-route__path atlas-route__path--dash atlas-route__path--desktop" d="M50 0 C61 7 62 12 50 16 C36 27 36 39 50 50 C64 61 64 73 50 84 C38 91 39 97 48 100" />
+            <path class="atlas-route__path atlas-route__path--base atlas-route__path--mobile" d="M50 0 L50 100" />
+            <path class="atlas-route__path atlas-route__path--dash atlas-route__path--mobile" d="M50 0 L50 100" />
+          </svg>
+          <div class="atlas-route__stations">
+            {selected.map((project, index) => project && (
+              <a class={`atlas-station atlas-station--${index + 1} atlas-station--${project.slug}`} href={`${projectBase}/${project.slug}/`} data-reveal>
+                <i class="atlas-station__marker" aria-hidden="true"></i>
+                <div class="atlas-station__body">
+                  <div class="project-poster" aria-hidden="true">
+                    <div class="poster-grain"></div>
+                    <span class="poster-code">{project.title}</span>
+                    <div class="poster-orbit"><i></i><i></i><i></i></div>
+                    <div class="poster-words">
+                      {(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}
+                    </div>
+                  </div>
+                  <div class="atlas-station__copy">
+                    <p>{stationMeta[lang][index]}</p>
+                    <h3>{project.displayTitle[lang]}</h3>
+                    <p>{project.summary[lang]}</p>
+                    <span>{isZh ? '进入这个故事' : 'Open the story'} ↗</span>
+                  </div>
                 </div>
-              </div>
-              <div class="project-story__copy">
-                <p>{project.eyebrow[lang]} · {project.year}</p>
-                <h3>{project.displayTitle[lang]}</h3>
-                <p>{project.summary[lang]}</p>
-                <span>{isZh ? '进入这个故事' : 'Open the story'} ↗</span>
-              </div>
-            </a>
-          ))}
+              </a>
+            ))}
+          </div>
         </div>
       </section>
 
-      <section class="home-side content-width">
+      <section class="home-side content-width home-side--atlas">
         <div class="home-side__image" data-reveal>
           <img src="/images/aigc-pov.webp" alt={isZh ? 'AIGC 多镜头 POV 创作画面' : 'A frame from a multi-shot AIGC POV experiment'} width="1600" height="900" loading="lazy" />
           <span>{isZh ? '制作中的一帧' : 'A frame in the making'}</span>
         </div>
         <div class="home-side__copy" data-reveal>
-          <p class="section-label">Beyond work</p>
-          <h2>{isZh ? '不是所有东西，都要先证明它有用。' : 'Not everything needs to prove its utility first.'}</h2>
+          <p class="section-label">{isZh ? '图外注记 MARGINALIA' : 'Marginalia · Beyond work'}</p>
+          <h2 class="atlas-title">{isZh ? '不是所有东西，都要先证明它有用。' : 'Not everything needs to prove its utility first.'}</h2>
           <p>{isZh ? '我也会做 AIGC 影像和一只会孵化的 Codex 桌宠。作品之外，我还会拍照片、看 F1，在陌生城市里慢慢走。' : 'I also make AIGC film experiments and a hatchable Codex pet. Outside work, I take photographs, follow F1, and wander through unfamiliar cities.'}</p>
           <div class="side-feature__actions">
             <a class="button-link" href={sidePath}>{isZh ? '去看兴趣' : 'Explore hobbies'} <span>↗</span></a>
@@ -97,10 +125,10 @@ const posterLabels = {
         </div>
       </section>
 
-      <section class="contact-note content-width">
+      <section class="contact-note content-width contact-note--cartouche">
         <div class="contact-note__copy">
-          <p class="section-label">Open to work · Open to conversation</p>
-          <h2>{isZh ? <>我在寻找新的<span class="nowrap">工作机会</span>，也愿意随便聊聊。</> : 'I’m open to new roles—and always happy to have a real conversation.'}</h2>
+          <p class="section-label">{isZh ? '图签 · Cartouche — Open to work' : 'Cartouche · Open to work'}</p>
+          <h2 class="atlas-title">{isZh ? <>我在寻找新的<span class="nowrap">工作机会</span>，也愿意随便聊聊。</> : 'I’m open to new roles—and always happy to have a real conversation.'}</h2>
           <p>{isZh ? '合适的岗位、一段合作、一个还没想清楚的点子，或者 F1，都可以来找我。' : 'A role, a collaboration, an unfinished idea, or F1—feel free to reach out.'}</p>
         </div>
         <div class="contact-note__actions" data-reveal>
@@ -111,6 +139,7 @@ const posterLabels = {
             <span>X</span><strong>{profile.x.label}</strong><i aria-hidden="true">↗</i>
           </a>
         </div>
+        <p class="cartouche-stamp">Kylian · {new Date().getFullYear()}</p>
       </section>
     </main>
 

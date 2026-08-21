@@ -1,16 +1,21 @@
 ---
+import type { Lang } from '../data/content';
+
 interface Props {
   active: 'overview' | 'walkthrough';
+  lang: Lang;
 }
 
-const { active } = Astro.props;
-const overviewUrl = 'https://mogwai911.github.io/projects/tb2-diagnostics/';
+const { active, lang } = Astro.props;
+const isZh = lang === 'zh';
+const overviewUrl = isZh ? '/projects/tb2-diagnostics/' : '/en/projects/tb2-diagnostics/';
+const workUrl = isZh ? '/work/' : '/en/work/';
 const walkthroughUrl = 'https://mogwai911.github.io/agent-failure-diagnosis-case-study/';
 const repositoryUrl = 'https://github.com/mogwai911/agent-failure-diagnosis-case-study';
 ---
 
 <nav class="project-subnav content-width" aria-label="TB2 project views">
-  <a class="project-subnav__back" href="/work/">← Projects</a>
+  <a class="project-subnav__back" href={workUrl}>← {isZh ? '全部作品' : 'All work'}</a>
   <div class="project-subnav__bar">
     <div class="project-subnav__identity">
       <strong>TB2 DIAGNOSTICS</strong>
