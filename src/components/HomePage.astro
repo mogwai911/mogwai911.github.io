@@ -80,8 +80,10 @@ const stationMeta = {
           <svg class="atlas-route__line" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <path class="atlas-route__path atlas-route__path--base atlas-route__path--desktop" d="M50 0 C61 7 62 12 50 16 C36 27 36 39 50 50 C64 61 64 73 50 84 C38 91 39 97 48 100" />
             <path class="atlas-route__path atlas-route__path--dash atlas-route__path--desktop" d="M50 0 C61 7 62 12 50 16 C36 27 36 39 50 50 C64 61 64 73 50 84 C38 91 39 97 48 100" />
+            <path class="atlas-route__path atlas-route__path--progress atlas-route__path--desktop" d="M50 0 C61 7 62 12 50 16 C36 27 36 39 50 50 C64 61 64 73 50 84 C38 91 39 97 48 100" pathLength="1" data-route-progress />
             <path class="atlas-route__path atlas-route__path--base atlas-route__path--mobile" d="M50 0 L50 100" />
             <path class="atlas-route__path atlas-route__path--dash atlas-route__path--mobile" d="M50 0 L50 100" />
+            <path class="atlas-route__path atlas-route__path--progress atlas-route__path--mobile" d="M50 0 L50 100" pathLength="1" data-route-progress />
           </svg>
           <div class="atlas-route__stations">
             {selected.map((project, index) => project && (
@@ -150,3 +152,60 @@ const stationMeta = {
     </footer>
   </div>
 </BaseLayout>
+
+<script>
+  const route = document.querySelector<HTMLElement>('.atlas-route');
+  const progressPaths = route?.querySelectorAll<SVGPathElement>('[data-route-progress]');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (route && progressPaths?.length && !reducedMotion) {
+    let start = 0;
+    let end = 1;
+    let scrollTicking = false;
+    let measureTicking = false;
+
+    const updateProgress = () => {
+      const raw = (window.scrollY - start) / Math.max(end - start, 1);
+      const progress = Math.min(1, Math.max(0, raw));
+      const offset = String(1 - progress);
+
+      progressPaths.forEach((path) => {
+        path.style.strokeDashoffset = offset;
+      });
+
+      scrollTicking = false;
+    };
+
+    const measureRoute = () => {
+      const rect = route.getBoundingClientRect();
+      const pageTop = rect.top + window.scrollY;
+      const pageBottom = pageTop + rect.height;
+      const viewportHeight = window.innerHeight;
+
+      start = pageTop - viewportHeight * 0.72;
+      end = pageBottom - viewportHeight * 0.45;
+      updateProgress();
+      route.classList.add('route-motion-ready');
+      measureTicking = false;
+    };
+
+    const scheduleMeasure = () => {
+      if (measureTicking) return;
+      measureTicking = true;
+      requestAnimationFrame(measureRoute);
+    };
+
+    const onScroll = () => {
+      if (scrollTicking) return;
+      scrollTicking = true;
+      requestAnimationFrame(updateProgress);
+    };
+
+    measureRoute();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', scheduleMeasure);
+    window.addEventListener('orientationchange', scheduleMeasure);
+    window.addEventListener('pageshow', scheduleMeasure);
+    document.fonts?.ready.then(scheduleMeasure);
+  }
+</script>
