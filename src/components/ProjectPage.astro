@@ -3,6 +3,7 @@ import type { Lang, ProjectCase } from '../data/content';
 import { projects } from '../data/content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import BusinessFlow from './BusinessFlow.astro';
+import ProjectSubnav from './ProjectSubnav.astro';
 import SiteHeader from './SiteHeader.astro';
 
 interface Props { lang: Lang; project: ProjectCase }
@@ -15,6 +16,8 @@ const aboutPath = isZh ? '/about/' : '/en/about/';
 const canonicalPath = `${projectBase}/${project.slug}/`;
 const alternatePath = `${isZh ? '/en/projects' : '/projects'}/${project.slug}/`;
 const isSideProject = project.slug === 'aigc-pov';
+const hasTb2Walkthrough = isZh && project.slug === 'tb2-diagnostics';
+const tb2WalkthroughUrl = 'https://mogwai911.github.io/agent-failure-diagnosis-case-study/';
 const workOrder = ['tb2-diagnostics', 'fomo-firewall', 'geoagent'];
 const workProjects = workOrder.map((slug) => projects.find((item) => item.slug === slug)).filter((item): item is ProjectCase => Boolean(item));
 const projectIndex = workProjects.findIndex((item) => item.slug === project.slug);
@@ -28,6 +31,8 @@ const parentPath = isSideProject ? sidePath : workPath;
   <div class="site-shell case-shell">
     <SiteHeader lang={lang} alternatePath={alternatePath} compact />
     <main id="content" class="case-story">
+      {hasTb2Walkthrough && <ProjectSubnav active="overview" />}
+
       <header class="case-story__hero content-width" data-reveal>
         <p class="section-label">{isSideProject ? (isZh ? '兴趣' : 'Hobby') : (isZh ? '项目记录' : 'Project note')} · {project.year}</p>
         <h1>{project.displayTitle[lang]}</h1>
@@ -75,6 +80,7 @@ const parentPath = isSideProject ? sidePath : workPath;
       <section class="case-flow content-width" data-reveal>
         <header><p class="section-label">{isZh ? '系统怎样运转' : 'How the system moves'}</p><h2>{project.workflow[lang].heading}</h2></header>
         <BusinessFlow lang={lang} flow={project.workflow[lang]} />
+        {hasTb2Walkthrough && <a class="case-flow__deep-link" href={tb2WalkthroughUrl}>View detailed walkthrough <span aria-hidden="true">→</span></a>}
       </section>
 
       <section class="case-making content-width" data-reveal>
@@ -98,6 +104,17 @@ const parentPath = isSideProject ? sidePath : workPath;
           <article><span>{isZh ? '下一次会验证' : 'What I would test next'}</span><p>{project.next[lang]}</p></article>
         </div>
       </section>
+
+      {hasTb2Walkthrough && (
+        <aside class="case-continuation content-width" data-reveal aria-labelledby="tb2-continuation-title">
+          <div>
+            <p class="section-label">Continue exploring TB2</p>
+            <h2 id="tb2-continuation-title">Diagnosis Walkthrough</h2>
+            <p>从失败轨迹到优化决策的完整诊断链路。</p>
+          </div>
+          <a href={tb2WalkthroughUrl}>View walkthrough <span aria-hidden="true">→</span></a>
+        </aside>
+      )}
 
       <nav class="case-navigation content-width" aria-label={isZh ? '案例导航' : 'Case study navigation'}>
         <a href={parentPath}>← {isSideProject ? (isZh ? '全部兴趣' : 'All hobbies') : (isZh ? '全部作品' : 'All work')}</a>

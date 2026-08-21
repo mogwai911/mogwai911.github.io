@@ -1,0 +1,25 @@
+---
+interface Props {
+  active: 'overview' | 'walkthrough';
+}
+
+const { active } = Astro.props;
+const overviewUrl = 'https://mogwai911.github.io/projects/tb2-diagnostics/';
+const walkthroughUrl = 'https://mogwai911.github.io/agent-failure-diagnosis-case-study/';
+const repositoryUrl = 'https://github.com/mogwai911/agent-failure-diagnosis-case-study';
+---
+
+<nav class="project-subnav content-width" aria-label="TB2 project views">
+  <a class="project-subnav__back" href="/work/">← Projects</a>
+  <div class="project-subnav__bar">
+    <div class="project-subnav__identity">
+      <strong>TB2 DIAGNOSTICS</strong>
+      <span>Agent Failure Diagnosis System</span>
+    </div>
+    <div class="project-subnav__links">
+      <a href={overviewUrl} aria-current={active === 'overview' ? 'page' : undefined}>Overview</a>
+      <a href={walkthroughUrl} aria-current={active === 'walkthrough' ? 'page' : undefined}>Diagnosis Walkthrough</a>
+      <a class="project-subnav__external" href={repositoryUrl} target="_blank" rel="noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</nav>
