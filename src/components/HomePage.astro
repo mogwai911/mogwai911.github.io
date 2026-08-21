@@ -81,12 +81,12 @@ const posterLabels = {
         </div>
       </section>
 
-      <section class="home-side content-width" data-reveal>
-        <div class="home-side__image">
+      <section class="home-side content-width">
+        <div class="home-side__image" data-reveal>
           <img src="/images/aigc-pov.webp" alt={isZh ? 'AIGC 多镜头 POV 创作画面' : 'A frame from a multi-shot AIGC POV experiment'} width="1600" height="900" loading="lazy" />
           <span>{isZh ? '制作中的一帧' : 'A frame in the making'}</span>
         </div>
-        <div class="home-side__copy">
+        <div class="home-side__copy" data-reveal>
           <p class="section-label">Beyond work</p>
           <h2>{isZh ? '不是所有东西，都要先证明它有用。' : 'Not everything needs to prove its utility first.'}</h2>
           <p>{isZh ? '我也会做 AIGC 影像和一只会孵化的 Codex 桌宠。作品之外，我还会拍照片、看 F1，在陌生城市里慢慢走。' : 'I also make AIGC film experiments and a hatchable Codex pet. Outside work, I take photographs, follow F1, and wander through unfamiliar cities.'}</p>
@@ -97,13 +97,13 @@ const posterLabels = {
         </div>
       </section>
 
-      <section class="contact-note content-width" data-reveal>
+      <section class="contact-note content-width">
         <div class="contact-note__copy">
           <p class="section-label">Open to work · Open to conversation</p>
-          <h2>{isZh ? '我在寻找新的工作机会，也愿意随便聊聊。' : 'I’m open to new roles—and always happy to have a real conversation.'}</h2>
+          <h2>{isZh ? <>我在寻找新的<span class="nowrap">工作机会</span>，也愿意随便聊聊。</> : 'I’m open to new roles—and always happy to have a real conversation.'}</h2>
           <p>{isZh ? '合适的岗位、一段合作、一个还没想清楚的点子，或者 F1，都可以来找我。' : 'A role, a collaboration, an unfinished idea, or F1—feel free to reach out.'}</p>
         </div>
-        <div class="contact-note__actions">
+        <div class="contact-note__actions" data-reveal>
           <a class="contact-link" href={`mailto:${profile.email}`}>
             <span>Email</span><strong>{profile.email}</strong><i aria-hidden="true">↗</i>
           </a>

@@ -41,12 +41,12 @@ const parentPath = isSideProject ? sidePath : workPath;
         <ul class="tag-list">{project.tags.map((tag) => <li>{tag}</li>)}</ul>
       </header>
 
-      <section class="case-opening content-width" data-reveal>
-        <div>
+      <section class="case-opening content-width">
+        <div data-reveal>
           <p class="section-label">{isZh ? '为什么会做这件事' : 'Why I started'}</p>
           <h2>{project.why[lang]}</h2>
         </div>
-        <aside>
+        <aside data-reveal>
           <span>{isZh ? '我负责的部分' : 'My part'}</span>
           <p>{project.role[lang]}</p>
           {(project.link || project.video) && <div class="case-external-links">
@@ -65,27 +65,29 @@ const parentPath = isSideProject ? sidePath : workPath;
         </figure>
       )}
 
-      <section class="case-question content-width" data-reveal>
+      <section class="case-question content-width">
         <p class="section-label">{isZh ? '真正的问题' : 'The real question'}</p>
-        <blockquote>{project.question[lang]}</blockquote>
+        <blockquote data-reveal>{project.question[lang]}</blockquote>
       </section>
 
-      <section class="case-decisions content-width" data-reveal>
-        <header><p class="section-label">{isZh ? '我做的关键选择' : 'Choices I made'}</p><h2>{isZh ? '每个动作，都应该能解释为什么。' : 'Every action should have a reason.'}</h2></header>
-        <ol>
+      <section class="case-decisions content-width">
+        <header data-reveal><p class="section-label">{isZh ? '我做的关键选择' : 'Choices I made'}</p><h2>{isZh ? '每个动作，都应该能解释为什么。' : 'Every action should have a reason.'}</h2></header>
+        <ol data-reveal>
           {project.decisions[lang].map((decision) => <li><h3>{decision.action}</h3><p>{decision.reason}</p></li>)}
         </ol>
       </section>
 
-      <section class="case-flow content-width" data-reveal>
-        <header><p class="section-label">{isZh ? '系统怎样运转' : 'How the system moves'}</p><h2>{project.workflow[lang].heading}</h2></header>
-        <BusinessFlow lang={lang} flow={project.workflow[lang]} />
-        {hasTb2Walkthrough && <a class="case-flow__deep-link" href={tb2WalkthroughUrl}>View detailed walkthrough <span aria-hidden="true">→</span></a>}
+      <section class="case-flow content-width">
+        <header data-reveal><p class="section-label">{isZh ? '系统怎样运转' : 'How the system moves'}</p><h2>{project.workflow[lang].heading}</h2></header>
+        <div class="case-flow__body" data-reveal>
+          <BusinessFlow lang={lang} flow={project.workflow[lang]} />
+          {hasTb2Walkthrough && <a class="case-flow__deep-link" href={tb2WalkthroughUrl}>View detailed walkthrough <span aria-hidden="true">→</span></a>}
+        </div>
       </section>
 
-      <section class="case-making content-width" data-reveal>
-        <header><p class="section-label">{isZh ? '亲手做的部分' : 'What I made'}</p><h2>{isZh ? '从判断到可运行的东西。' : 'From judgment to something that runs.'}</h2></header>
-        <div>{project.process[lang].map((step) => <article><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
+      <section class="case-making content-width">
+        <header data-reveal><p class="section-label">{isZh ? '亲手做的部分' : 'What I made'}</p><h2>{isZh ? '从判断到可运行的东西。' : 'From judgment to something that runs.'}</h2></header>
+        <div data-reveal>{project.process[lang].map((step) => <article><h3>{step.title}</h3><p>{step.text}</p></article>)}</div>
       </section>
 
       {project.images && project.images.length > 1 && (
@@ -94,12 +96,12 @@ const parentPath = isSideProject ? sidePath : workPath;
         </section>
       )}
 
-      <section class="case-ending content-width" data-reveal>
-        <div class="case-evidence">
+      <section class="case-ending content-width">
+        <div class="case-evidence" data-reveal>
           <p class="section-label">{isZh ? '留下的证据' : 'What the work left behind'}</p>
           <ul>{project.evidence[lang].map((item) => <li>{item}</li>)}</ul>
         </div>
-        <div class="case-limits">
+        <div class="case-limits" data-reveal>
           <article><span>{isZh ? '现在还不能证明' : 'What this does not prove yet'}</span><p>{project.boundary[lang]}</p></article>
           <article><span>{isZh ? '下一次会验证' : 'What I would test next'}</span><p>{project.next[lang]}</p></article>
         </div>

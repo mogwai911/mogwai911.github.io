@@ -32,14 +32,14 @@ const posterLabels = {
 
       <section class="work-journal content-width" aria-label={isZh ? '项目案例' : 'Case studies'}>
         {workProjects.map((project) => project && (
-          <article class={`work-entry work-entry--${project.slug}`} data-reveal>
-            <a class="work-entry__poster project-poster" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case'}: ${project.displayTitle[lang]}`}>
+          <article class={`work-entry work-entry--${project.slug}`}>
+            <a class="work-entry__poster project-poster" href={`${projectBase}/${project.slug}/`} aria-label={`${isZh ? '阅读案例' : 'Read case'}: ${project.displayTitle[lang]}`} data-reveal>
               <div class="poster-grain"></div>
               <span class="poster-code">{project.title}</span>
               <div class="poster-orbit"><i></i><i></i><i></i></div>
               <div class="poster-words">{(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}</div>
             </a>
-            <div class="work-entry__copy">
+            <div class="work-entry__copy" data-reveal>
               <p class="entry-meta">{project.eyebrow[lang]} · {project.year}</p>
               <h2><a href={`${projectBase}/${project.slug}/`}>{project.displayTitle[lang]}</a></h2>
               <p class="entry-codename">{project.title}</p>
@@ -52,14 +52,14 @@ const posterLabels = {
         ))}
       </section>
 
-      <section class="experience-note content-width" data-reveal>
+      <section class="experience-note content-width">
         <p class="section-label">Field experience</p>
-        <div>
+        <div data-reveal>
           <time>{timeline.experience[0].date}</time>
           <h2>{timeline.experience[0].title[lang]}</h2>
           <p class="entry-codename">{timeline.experience[0].place[lang]}</p>
         </div>
-        <p>{timeline.experience[0].detail[lang]}</p>
+        <p data-reveal>{timeline.experience[0].detail[lang]}</p>
       </section>
 
       <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>

@@ -52,8 +52,6 @@ const absoluteOg = new URL(ogImage, site);
         const body = document.body;
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const finePointer = window.matchMedia('(pointer: fine)').matches;
-        requestAnimationFrame(() => body.classList.add('site-ready'));
-
         const trigger = document.querySelector('.mobile-menu-trigger');
         const mobileNav = document.querySelector('.mobile-nav');
         const setMenu = (open) => {
@@ -77,7 +75,7 @@ const absoluteOg = new URL(ogImage, site);
                 observer.unobserve(entry.target);
               }
             });
-          }, { threshold: 0.1, rootMargin: '0px 0px -6% 0px' });
+          }, { threshold: 0.05, rootMargin: '0px 0px 12% 0px' });
           reveals.forEach((element) => observer.observe(element));
         } else {
           reveals.forEach((element) => element.classList.add('is-visible'));

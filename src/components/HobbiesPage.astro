@@ -26,12 +26,12 @@ const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头�
         <p>{isZh ? '这里放着工作主线之外的观察与制作：F1 长期短札、AIGC 影像，以及一只 Codex 桌宠。它们来自不同形式的好奇，也保留各自的表达方式。' : 'This is where observations and things made beyond work live: long-form F1 notes, AIGC film, and a Codex pet. They come from different kinds of curiosity and keep their own forms.'}</p>
       </header>
 
-      <section class="f1-feature content-width" data-reveal>
-        <figure>
+      <section class="f1-feature content-width">
+        <figure data-reveal>
           <picture><source media="(max-width: 720px)" srcset="/images/f1-notes-960.webp" /><img src="/images/f1-notes-1800.webp" alt={isZh ? 'Kylian 在现场拍摄的一辆经典方程式赛车' : 'A classic formula racing car photographed by Kylian in person'} width="1800" height="1200" /></picture>
           <figcaption>{isZh ? '现场摄影 · 德国' : 'On-site photograph · Germany'}</figcaption>
         </figure>
-        <div>
+        <div data-reveal>
           <p class="section-label">Notes / F1</p>
           <h2>{isZh ? '我看 F1，不只是在看速度。' : 'I do not watch F1 only for speed.'}</h2>
           <p>{isZh ? '车手、工程、资本与规则在一条赛道上彼此牵制。我把一些值得长期想的问题写下来。' : 'Drivers, engineering, capital, and rules constrain one another on the same track. I write down questions worth thinking about over time.'}</p>
@@ -45,12 +45,12 @@ const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头�
         <h2>{isZh ? '做出来的东西。' : 'Things I made.'}</h2>
       </header>
 
-      <section class="side-feature side-feature--film content-width" data-reveal>
-        <figure>
+      <section class="side-feature side-feature--film content-width">
+        <figure data-reveal>
           <img src="/images/aigc-pov.webp" alt={aigc.images?.[0]?.alt[lang]} width="1600" height="900" />
           <figcaption>AIGC POV · 2025–26</figcaption>
         </figure>
-        <div>
+        <div data-reveal>
           <p class="section-label">A film made in fragments</p>
           <h2>{aigc.displayTitle[lang]}</h2>
           <p>{isZh ? '我想知道：当角色、镜头和动作被拆成很多次生成，怎样才能让观众仍然相信它们属于同一段经历？于是我把提示词、角色约束和镜头衔接整理成一套可以重复修改的制作方法。' : 'I wanted to know how viewers could still believe that separate generations—characters, shots, and actions—belonged to one continuous experience. I turned prompts, character constraints, and shot transitions into a method that could be revised rather than blindly rerolled.'}</p>
@@ -61,8 +61,8 @@ const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头�
         </div>
       </section>
 
-      <section class="side-feature side-feature--pet content-width" data-reveal>
-        <div class="pet-window">
+      <section class="side-feature side-feature--pet content-width">
+        <div class="pet-window" data-reveal>
           <div
             class="pet-avatar"
             role="img"
@@ -70,7 +70,7 @@ const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头�
           ></div>
           <p class="pet-window__meta"><span>CHEN QIANYU · IDLE</span><span>PETDEX NO. 3379</span></p>
         </div>
-        <div>
+        <div data-reveal>
           <p class="section-label">A small companion</p>
           <h2>{isZh ? '陈千语，一只陪 Agent 等待的 Codex 桌宠' : 'Chen Qianyu, a Codex pet for the moments between tasks'}</h2>
           <p>{isZh ? '等待 Agent 完成任务通常只剩一个进度状态。我想让这段时间多一点生命感，于是把任务状态、等待和反馈做成一只会变化的桌面角色。它没有宏大价值，只是确实让我想把它做出来。' : 'Waiting for an agent usually collapses into a progress state. I wanted that time to feel a little more alive, so I turned task status, waiting, and feedback into a changing desktop character. It has no grand value claim; I simply wanted it to exist.'}</p>
