@@ -42,6 +42,14 @@
 
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; background: var(--paper); }
+
+/* --- View Transitions (page swaps read as turning to the next plate) --- */
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) { animation: vt-plate-out .28s cubic-bezier(.4, 0, .2, 1) both; }
+  ::view-transition-new(root) { animation: vt-plate-in .42s cubic-bezier(.22, .8, .26, 1) .08s both; }
+}
+@keyframes vt-plate-out { to { opacity: 0; transform: translateY(-10px); } }
+@keyframes vt-plate-in { from { opacity: 0; transform: translateY(14px); } }
 body {
   margin: 0;
   color: var(--ink);
@@ -109,12 +117,32 @@ button, input, textarea, select { font: inherit; }
 .mobile-nav { display: none; }
 
 /* Motion and shared language */
-.motion-ready [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity .6s cubic-bezier(.22,.8,.26,1), transform .6s cubic-bezier(.22,.8,.26,1); }
+.motion-ready [data-reveal] { opacity: 0; transform: translateY(12px); transition: opacity .6s cubic-bezier(.22,.8,.26,1), transform .6s cubic-bezier(.22,.8,.26,1); transition-delay: var(--reveal-delay, 0ms); }
 .motion-ready [data-reveal].is-visible { opacity: 1; transform: translateY(0); }
+
+/* Line variant: titles unveil row by row via clip-path (atlas-title only).
+   Hidden state keeps a 1px visible edge — a fully-clipped element reports
+   zero intersection area, so IntersectionObserver would never fire it. */
+.motion-ready [data-reveal~="line"] { opacity: 1; transform: none; clip-path: inset(0 0 calc(108% - 1px) 0); transition: clip-path .85s cubic-bezier(.22,.8,.26,1); transition-delay: var(--reveal-delay, 0ms); }
+.motion-ready [data-reveal~="line"].is-visible { clip-path: inset(-2% -2% -8% -2%); }
+
+/* Draw variant: decorative rules grow from the left. */
+.motion-ready [data-reveal~="draw"] { opacity: 1; transform: none; transform-origin: left center; scale: 0 1; transition: scale .9s cubic-bezier(.22,.8,.26,1); transition-delay: var(--reveal-delay, 0ms); }
+.motion-ready [data-reveal~="draw"].is-visible { scale: 1 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-ready [data-reveal~="line"], .motion-ready [data-reveal~="draw"] { transition: none; clip-path: none; scale: none; }
+}
 .cursor-mark { position: fixed; left: -15px; top: -15px; z-index: 200; width: 30px; height: 30px; border: 1px solid rgba(32, 54, 188, .48); border-radius: 50%; opacity: 0; pointer-events: none; transition: opacity .2s ease, width .2s ease, height .2s ease, margin .2s ease, border-color .2s ease; }
 .cursor-mark i { position: absolute; left: 50%; top: 50%; width: 5px; height: 5px; transform: translate(-50%,-50%); border-radius: 50%; background: var(--gold); }
 .cursor-mark.is-visible { opacity: 1; }
 .cursor-mark.is-over { width: 44px; height: 44px; margin: -7px 0 0 -7px; border-color: var(--gold); }
+/* Media state: hovering a photo becomes a surveyor's crosshair. */
+.cursor-mark.is-media { width: 58px; height: 58px; margin: -14px 0 0 -14px; border-color: rgba(32,54,188,.65); }
+.cursor-mark.is-media::before, .cursor-mark.is-media::after { content: ""; position: absolute; background: rgba(255,255,255,.85); box-shadow: 0 0 4px rgba(4,8,30,.6); }
+.cursor-mark.is-media::before { left: 50%; top: 8%; width: 1px; height: 84%; transform: translateX(-50%); }
+.cursor-mark.is-media::after { left: 8%; top: 50%; width: 84%; height: 1px; transform: translateY(-50%); }
+.cursor-mark.is-media i { background: white; }
 
 .section-label, .eyebrow { margin: 0 0 1rem; color: var(--royal); font-size: .69rem; font-weight: 700; line-height: 1.4; letter-spacing: .18em; text-transform: uppercase; }
 .section-label::before { content: ""; display: inline-block; width: 28px; height: 2px; margin: 0 .65rem .2rem 0; border-radius: 2px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
@@ -142,7 +170,7 @@ h1 em, h2 em { color: var(--royal); font-style: normal; }
 .home-hero__shade::after { content: ""; position: absolute; inset: 0; opacity: .22; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 1px 4px); mix-blend-mode: screen; }
 .home-hero__copy { width: min(45vw, 820px); margin-left: 53%; padding: clamp(7rem, 14vh, 10.5rem) 2rem 7rem 0; }
 .home-hero__copy .eyebrow { color: var(--gold-light); }
-.home-hero h1 { max-width: 820px; margin: 0; font-size: clamp(3.05rem, 4.6vw, 5.5rem); font-weight: 620; line-height: 1.06; letter-spacing: -.055em; }
+.home-hero h1 { max-width: 820px; margin: 0; font-size: clamp(2.6rem,4vw,4.6rem); font-weight: 620; line-height: 1.08; letter-spacing: -.045em; }
 .home-hero h1 em { position: relative; color: white; }
 .home-hero h1 em::after { content: ""; position: absolute; left: 2%; right: -1%; bottom: -.12em; height: .11em; border-radius: 50%; background: linear-gradient(90deg, transparent, var(--gold-light) 9%, var(--gold) 64%, transparent); transform: rotate(-1.2deg); opacity: .86; }
 .home-hero__role { margin: 2rem 0 .7rem; color: var(--gold-light); font-size: .78rem; font-weight: 650; letter-spacing: .12em; text-transform: uppercase; }
@@ -171,8 +199,32 @@ html[lang="en"] .atlas-title {
     repeating-linear-gradient(90deg, transparent 0 calc(12.5% - 1px), rgba(255,255,255,.22) calc(12.5% - 1px) 12.5%),
     repeating-linear-gradient(0deg, transparent 0 calc(16.666% - 1px), rgba(255,255,255,.2) calc(16.666% - 1px) 16.666%);
 }
+/* Grid breathes like tracing paper on a lightbox — a very slow drift + glow. */
+@media (prefers-reduced-motion: no-preference) {
+  .home-hero--atlas .home-hero__atlas-grid { animation: atlas-grid-breathe 56s ease-in-out infinite alternate; }
+  @keyframes atlas-grid-breathe {
+    from { background-position: 0 0; opacity: .18; filter: brightness(1); }
+    to { background-position: 22px 14px; opacity: .27; filter: brightness(1.25); }
+  }
+}
 .home-hero--atlas h1 em::after { display: none; }
 .home-hero--atlas h1 { line-height: 1.1; letter-spacing: -.035em; }
+
+/* --- Hero first-load choreography (zh Atlas hero only) ---
+   Photo eases into place → eyebrow drifts in → copy unveils → CTA last.
+   One-shot: gated behind .hero-intro on the section + .motion-ready on <body>. */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-ready .home-hero.hero-intro .home-hero__photo img { animation: hero-photo-settle 1.4s cubic-bezier(.22,.8,.26,1) both; }
+  @keyframes hero-photo-settle { from { transform: scale(1.1) translateY(0); } to { transform: scale(1.035) translateY(var(--photo-drift, 0)); } }
+
+  .motion-ready .home-hero.hero-intro [data-reveal~="line"] { transition-delay: .5s; }
+  .motion-ready .home-hero.hero-intro .home-hero__role { --reveal-delay: 950ms !important; }
+  .motion-ready .home-hero.hero-intro .home-hero__intro { --reveal-delay: 1050ms !important; }
+  .motion-ready .home-hero.hero-intro .hero-links { --reveal-delay: 1200ms !important; }
+
+  .motion-ready .home-hero.hero-intro .eyebrow { opacity: 0; animation: hero-eyebrow-in .7s ease .35s forwards; }
+  @keyframes hero-eyebrow-in { from { opacity: 0; letter-spacing: .3em; } to { opacity: 1; letter-spacing: .18em; } }
+}
 .home-hero--atlas .button-link--light { color: var(--navy); border-color: var(--gold); background: var(--gold); }
 .home-hero--atlas .button-link--light:hover { color: var(--navy); border-color: var(--paper); background: var(--paper); }
 .home-hero--atlas .home-hero__photo figcaption { display: grid; gap: .12rem; text-align: left; }
@@ -182,7 +234,11 @@ html[lang="en"] .atlas-title {
 
 .home-work { padding: clamp(5.5rem,9vw,8.5rem) 0; }
 .editorial-heading { display: grid; grid-template-columns: minmax(140px,.35fr) minmax(0,1fr) auto; gap: 2.5rem; align-items: end; margin-bottom: 3.2rem; }
-.editorial-heading h2 { max-width: 850px; margin: 0; font-size: clamp(2rem,3.6vw,4.25rem); font-weight: 570; line-height: 1.12; letter-spacing: -.04em; }
+/* Stacked variant: for standalone section intros — label sits above the
+   title in normal flow, not stranded in a far-left column. */
+.editorial-heading--stacked { grid-template-columns: 1fr; gap: .35rem; align-items: start; margin-bottom: clamp(2.4rem,4vw,3.6rem); }
+.editorial-heading--stacked h2 { margin-top: .2rem; }
+.editorial-heading h2 { max-width: 850px; margin: 0; font-size: clamp(1.6rem,2.4vw,2.2rem); font-weight: 570; line-height: 1.26; letter-spacing: -.025em; }
 .project-stories { display: grid; grid-template-columns: repeat(12,1fr); gap: clamp(1rem,2.4vw,2rem); }
 .project-story { grid-column: span 4; display: flex; flex-direction: column; min-width: 0; }
 .project-poster { position: relative; display: block; aspect-ratio: 1.22 / 1; overflow: hidden; border-radius: var(--radius-lg); border: 1px solid rgba(255,255,255,.5); background: var(--navy); isolation: isolate; transition: transform .35s cubic-bezier(.22,.8,.26,1), box-shadow .35s ease; }
@@ -199,6 +255,8 @@ html[lang="en"] .atlas-title {
 .poster-words { position: absolute; z-index: 4; left: 1.2rem; right: 1.2rem; bottom: 1rem; display: flex; justify-content: space-between; color: rgba(255,255,255,.64); font-size: .58rem; letter-spacing: .13em; }
 [class*="fomo-firewall"] .project-poster { background: linear-gradient(145deg, #f8f7f3, #e7ebfa 68%, #cdd8f7); border-color: rgba(32,54,188,.42); }
 [class*="fomo-firewall"] .poster-code, [class*="fomo-firewall"] .poster-words { color: rgba(16,18,46,.78); }
+/* Light poster: the grain lines must go dark, white-on-light is invisible. */
+[class*="fomo-firewall"] .poster-grain { opacity: .22; background: repeating-linear-gradient(0deg, rgba(32,54,188,.16) 0 1px, transparent 1px 5px); mix-blend-mode: normal; }
 [class*="fomo-firewall"] .poster-orbit { width: 55%; border-color: rgba(32,54,188,.4); border-radius: 28% 72% 50% 50% / 45% 37% 63% 55%; transform: translate(-50%,-50%) rotate(-12deg); }
 [class*="fomo-firewall"] .poster-orbit::before { inset: 16%; border-color: rgba(32,54,188,.25); }
 [class*="fomo-firewall"] .poster-orbit::after { background: var(--royal); box-shadow: 0 0 0 12px rgba(32,54,188,.09); }
@@ -206,6 +264,46 @@ html[lang="en"] .atlas-title {
 [class*="geoagent"] .project-poster { background: linear-gradient(135deg, #1f36bc, #101842 66%, #0a102d); }
 [class*="geoagent"] .project-poster::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent 0 14%, rgba(255,255,255,.08) 14.2%, transparent 14.5%), repeating-linear-gradient(0deg, transparent 0 18%, rgba(255,255,255,.07) 18.2%, transparent 18.5%); }
 [class*="geoagent"] .poster-orbit { width: 62%; border-radius: 43% 57% 63% 37% / 54% 36% 64% 46%; transform: translate(-50%,-50%) rotate(18deg); }
+
+/* --- Stage C: poster personalities ---
+   TB2's orbit becomes a slowly spinning rangefinder (hover speeds it up);
+   keyframes carry the centering translate so the ring never flies off-center. */
+@media (prefers-reduced-motion: no-preference) {
+  [class*="tb2-diagnostics"] .poster-orbit { animation: tb2-orbit-spin 22s linear infinite; }
+  @keyframes tb2-orbit-spin {
+    from { transform: translate(-50%,-50%) rotate(0deg); }
+    to { transform: translate(-50%,-50%) rotate(360deg); }
+  }
+  .project-story:hover [class*="tb2-diagnostics"] .poster-orbit,
+  .atlas-station:hover [class*="tb2-diagnostics"] .poster-orbit,
+  a:hover [class*="tb2-diagnostics"] .poster-orbit { animation-duration: 6s; }
+
+  /* FOMO: the orbit ring is a soft blob that keeps reshaping itself. */
+  [class*="fomo-firewall"] .poster-orbit { animation: fomo-blob-morph 7s ease-in-out infinite alternate; }
+  @keyframes fomo-blob-morph {
+    0% { border-radius: 26% 74% 48% 52% / 42% 34% 66% 58%; transform: translate(-50%,-50%) rotate(-14deg); }
+    50% { border-radius: 64% 36% 42% 58% / 54% 66% 34% 46%; transform: translate(-50%,-50%) rotate(-6deg); }
+    100% { border-radius: 38% 62% 68% 32% / 36% 48% 52% 64%; transform: translate(-50%,-50%) rotate(-20deg); }
+  }
+
+  /* GeoAgent: a survey point traverses the map grid corner to corner. */
+  .geoagent-traverse { position: absolute; z-index: 3; left: 8%; top: 70%; width: 8px; height: 8px; border-radius: 50%; background: var(--gold-light); box-shadow: 0 0 10px rgba(234,217,164,.9), 0 0 3px rgba(255,255,255,.9); pointer-events: none; animation: geoagent-survey 13s ease-in-out infinite; opacity: 0; }
+  @keyframes geoagent-survey {
+    0% { left: 8%; top: 72%; opacity: 0; }
+    6% { opacity: 1; }
+    28% { left: 34%; top: 38%; }
+    52% { left: 58%; top: 62%; }
+    76% { left: 82%; top: 26%; }
+    92% { opacity: 1; }
+    100% { left: 92%; top: 14%; opacity: 0; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .geoagent-traverse { display: none; }
+  [class*="tb2-diagnostics"] .poster-orbit,
+  [class*="fomo-firewall"] .poster-orbit { animation: none; }
+}
 .project-story__copy { padding: 1.35rem .25rem 0; }
 .project-story__copy > p:first-child, .entry-meta { margin: 0 0 .45rem; color: var(--royal); font-size: .65rem; font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
 .project-story h3 { margin: 0 0 .65rem; font-size: clamp(1.45rem,2vw,2.2rem); font-weight: 620; line-height: 1.2; letter-spacing: -.035em; }
@@ -255,7 +353,7 @@ html[lang="en"] .atlas-title {
 .contact-note__copy { position: relative; z-index: 1; }
 .contact-note__copy .section-label { margin-bottom: 1.4rem; color: var(--gold-light); }
 .contact-note__copy .section-label::before { border-color: rgba(230,213,160,.68); }
-.contact-note__copy h2 { max-width: 780px; margin: 0; font-size: clamp(1.9rem,3.2vw,3.75rem); font-weight: 580; line-height: 1.14; letter-spacing: -.04em; }
+.contact-note__copy h2 { max-width: 780px; margin: 0; font-size: clamp(1.55rem,2.3vw,2.1rem); font-weight: 580; line-height: 1.28; letter-spacing: -.025em; }
 .contact-note__copy > p:last-child { max-width: 690px; margin: 1.35rem 0 0; color: rgba(255,255,255,.7); }
 .contact-note__actions { position: relative; z-index: 1; display: grid; gap: .75rem; }
 .contact-link { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .2rem 1rem; align-items: center; min-width: 0; padding: 1rem 1.15rem; border: 1px solid rgba(255,255,255,.32); border-radius: var(--radius-md); background: rgba(255,255,255,.06); color: white; transition: color .25s ease, background .25s ease, border-color .25s ease, transform .25s ease; }
@@ -278,7 +376,7 @@ html[lang="en"] .atlas-title {
 /* Shared inner-page hero */
 .simple-hero { display: grid; grid-template-columns: minmax(0,1.42fr) minmax(280px,.58fr); column-gap: clamp(3rem,6vw,7rem); align-items: end; padding: clamp(5rem,8vw,7.5rem) 0 clamp(4rem,7vw,6rem); border-bottom: 1px solid var(--line); }
 .simple-hero .section-label { grid-column: 1 / -1; }
-.simple-hero h1 { margin: 0; font-size: clamp(3rem,5vw,5.5rem); font-weight: 610; line-height: 1.04; letter-spacing: -.06em; }
+.simple-hero h1 { margin: 0; font-size: clamp(2.1rem,3.2vw,2.75rem); font-weight: 610; line-height: 1.12; letter-spacing: -.04em; }
 .simple-hero > p:last-child { margin: 0 0 .6rem; color: var(--ink-soft); font-size: 1rem; line-height: 1.9; }
 
 /* Work journal */
@@ -287,10 +385,10 @@ html[lang="en"] .atlas-title {
 .work-entry:first-child { padding-top: clamp(5rem,6vw,6.25rem); }
 .work-entry:nth-child(even) .work-entry__poster { order: 2; }
 .work-entry__poster { width: 100%; aspect-ratio: 1.2/1; }
-.work-entry__copy h2 { margin: 0; font-size: clamp(2.15rem,4vw,4.8rem); font-weight: 590; line-height: 1.08; letter-spacing: -.05em; }
+.work-entry__copy h2 { margin: 0; font-size: clamp(1.5rem,2.2vw,1.9rem); font-weight: 590; line-height: 1.18; letter-spacing: -.03em; }
 .work-entry__copy h2 a:hover { color: var(--royal); }
 .entry-codename { margin: .45rem 0 1.5rem; color: var(--gold); font-size: .75rem; font-weight: 650; letter-spacing: .1em; text-transform: uppercase; }
-.work-entry__copy > p:not(.entry-meta):not(.entry-codename):not(.entry-value):not(.entry-role) { margin: 0 0 1.5rem; color: var(--ink-soft); }
+.work-entry__copy > p:not(.entry-meta):not(.entry-codename):not(.entry-value):not(.entry-role) { margin: 0 0 1.5rem; color: var(--ink-soft); font-size: .95rem; line-height: 1.85; }
 .entry-value { margin: 0 0 1.2rem; color: var(--ink-soft); font-size: .88rem; }
 .entry-value span { display: block; margin-bottom: .2rem; color: var(--ink); font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .entry-role { margin: 0 0 2rem; padding-left: 1rem; border-left: 3px solid var(--gold); color: var(--ink-soft); font-size: .88rem; }
@@ -299,7 +397,7 @@ html[lang="en"] .atlas-title {
 .experience-note { display: grid; grid-template-columns: 180px minmax(260px,.7fr) minmax(0,1fr); gap: clamp(2rem,5vw,5rem); padding: clamp(5rem,8vw,7rem) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
 .experience-note > .section-label { margin: 0; }
 .experience-note time { color: var(--ink-soft); font-size: .72rem; }
-.experience-note h2 { margin: .5rem 0 0; font-size: clamp(1.65rem,2.5vw,2.7rem); line-height: 1.2; }
+.experience-note h2 { margin: .5rem 0 0; font-size: clamp(1.4rem,2vw,1.8rem); line-height: 1.28; }
 .experience-note > p:last-child { margin: 0; color: var(--ink-soft); }
 .next-note { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 2rem; padding: 3.2rem 0; border-bottom: 1px solid var(--line); }
 .next-note p { margin: 0; color: var(--ink-soft); }
@@ -311,7 +409,7 @@ html[lang="en"] .atlas-title {
 .side-feature figure::before { content: ""; position: absolute; inset: -10px 12px 10px -12px; z-index: -1; border: 1px solid rgba(32,54,188,.35); border-radius: var(--radius-xl); }
 .side-feature figure img { width: 100%; border-radius: var(--radius-xl); box-shadow: 11px 13px 0 rgba(32,54,188,.08); }
 .side-feature figcaption { margin-top: .8rem; color: var(--ink-soft); font-size: .68rem; letter-spacing: .08em; }
-.side-feature h2 { margin: 0; font-size: clamp(2.2rem,4.3vw,5rem); font-weight: 590; line-height: 1.08; letter-spacing: -.05em; }
+.side-feature h2 { margin: 0; font-size: clamp(1.5rem,2.2vw,1.95rem); font-weight: 590; line-height: 1.24; letter-spacing: -.03em; }
 .side-feature > div:last-child > p:not(.section-label) { margin: 1.5rem 0 2rem; color: var(--ink-soft); }
 .side-feature__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.4rem; }
 .side-feature--pet > div:first-child { order: 2; }
@@ -329,7 +427,7 @@ html[lang="en"] .atlas-title {
 .pet-demo .section-label { color: var(--gold-light); }
 .pet-demo__intro { display: grid; grid-template-columns: minmax(0,1.25fr) minmax(300px,.75fr); gap: clamp(3rem,7vw,8rem); align-items: end; padding: clamp(5rem,9vw,8rem) 0 clamp(4rem,7vw,6rem); border-bottom: 1px solid var(--line-light); }
 .pet-demo__intro .section-label { grid-column: 1 / -1; }
-.pet-demo__intro h1 { margin: 0; font-size: clamp(3rem,5.5vw,6.5rem); font-weight: 610; line-height: 1.02; letter-spacing: -.06em; }
+.pet-demo__intro h1 { margin: 0; font-size: clamp(2.2rem,3.4vw,3rem); font-weight: 610; line-height: 1.12; letter-spacing: -.04em; }
 .pet-demo__intro h1 em { color: var(--gold-light); }
 .pet-demo__intro > p:last-child { margin: 0 0 .6rem; color: rgba(255,255,255,.7); line-height: 1.9; }
 .pet-demo__playground { display: grid; grid-template-columns: minmax(0,1.15fr) minmax(300px,.85fr); gap: clamp(3rem,7vw,7rem); align-items: center; padding: clamp(4rem,8vw,7rem) 0; }
@@ -368,17 +466,17 @@ html[lang="en"] .atlas-title {
 /* About */
 .about-portrait { display: grid; grid-template-columns: minmax(360px,.9fr) minmax(0,1.1fr); gap: clamp(3rem,8vw,9rem); align-items: center; padding: clamp(5rem,9vw,8rem) 0; }
 .about-portrait figure { position: relative; margin: 0; }
-.about-portrait figure::before { content: ""; position: absolute; inset: 10px -12px -10px 12px; z-index: -1; border: 1px solid var(--gold); border-radius: var(--radius-xl); }
+.about-portrait figure::before { content: ""; position: absolute; inset: 10px -4px -10px 4px; z-index: -1; border: 1px solid var(--gold); border-radius: var(--radius-xl); }
 .about-portrait img { width: 100%; aspect-ratio: .86/1; object-fit: cover; object-position: 37% 62%; border-radius: var(--radius-xl); filter: saturate(.82) contrast(1.04); }
 .about-portrait figcaption { margin-top: .8rem; color: var(--ink-soft); font-size: .68rem; }
-.about-portrait h1 { margin: 0; font-size: clamp(3rem,5.5vw,6.6rem); font-weight: 610; line-height: 1.03; letter-spacing: -.06em; }
+.about-portrait h1 { margin: 0; font-size: clamp(2.2rem,3.4vw,3rem); font-weight: 610; line-height: 1.14; letter-spacing: -.04em; }
 .about-portrait div > p:not(.section-label) { max-width: 720px; margin: 1.6rem 0 0; color: var(--ink-soft); }
 .about-now { display: grid; grid-template-columns: minmax(180px,.34fr) minmax(0,1fr); gap: clamp(3rem,8vw,9rem); padding: clamp(5rem,8vw,7.5rem) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-.about-now h2 { max-width: 940px; margin: 0; font-size: clamp(2.2rem,4vw,4.8rem); font-weight: 580; line-height: 1.14; letter-spacing: -.045em; }
+.about-now h2 { max-width: 940px; margin: 0; font-size: clamp(1.6rem,2.4vw,2.1rem); font-weight: 580; line-height: 1.32; letter-spacing: -.025em; }
 .about-now div > p { max-width: 750px; margin: 2rem 0 0; color: var(--ink-soft); }
 .education-lines { display: grid; grid-template-columns: minmax(300px,.85fr) minmax(0,1.15fr); gap: clamp(3rem,8vw,9rem); padding: clamp(5rem,8vw,7.5rem) 0; }
 .education-lines__intro { display: grid; align-content: start; gap: 2.6rem; }
-.education-lines header h2 { margin: 0; font-size: clamp(1.8rem,3vw,3.4rem); font-weight: 590; line-height: 1.2; letter-spacing: -.035em; }
+.education-lines header h2 { margin: 0; font-size: clamp(1.45rem,2.1vw,1.85rem); font-weight: 590; line-height: 1.3; letter-spacing: -.025em; }
 .education-evidence { margin: 0; }
 .education-evidence img { display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: var(--radius-lg); filter: saturate(.82) contrast(1.03); }
 .education-evidence figcaption { margin-top: .75rem; color: var(--ink-soft); font-size: .68rem; }
@@ -395,7 +493,7 @@ html[lang="en"] .atlas-title {
 .f1-feature figcaption { position: absolute; z-index: 2; left: 1rem; bottom: 1rem; font-size: .64rem; color: rgba(255,255,255,.7); }
 .f1-feature > div { padding: clamp(3rem,5vw,5.5rem) clamp(2.2rem,4vw,4rem) clamp(3rem,5vw,5rem) 0; align-self: center; }
 .f1-feature .section-label { color: var(--gold-light); }
-.f1-feature h2 { margin: 0; font-size: clamp(2.2rem,3.8vw,4.4rem); font-weight: 590; line-height: 1.1; letter-spacing: -.045em; }
+.f1-feature h2 { margin: 0; font-size: clamp(1.5rem,2.2vw,1.95rem); font-weight: 590; line-height: 1.24; letter-spacing: -.03em; }
 .f1-feature > div > p:not(.section-label) { color: rgba(255,255,255,.73); }
 .f1-feature ul { margin: 2rem 0; padding: 0; list-style: none; border-top: 1px solid var(--line-light); }
 .f1-feature li { border-bottom: 1px solid var(--line-light); }
@@ -419,16 +517,16 @@ html[lang="en"] .atlas-title {
 .project-subnav__links .project-subnav__external::after { background: var(--platinum); }
 .project-subnav + .case-story__hero { padding-top: clamp(3.6rem,6vw,5.2rem); }
 .case-story__hero { padding: clamp(5.5rem,9vw,8rem) 0 clamp(4.5rem,7vw,6rem); border-bottom: 1px solid var(--ink); }
-.case-story__hero h1 { max-width: 1120px; margin: 0; font-size: clamp(3.2rem,6vw,6.8rem); font-weight: 610; line-height: 1; letter-spacing: -.06em; }
+.case-story__hero h1 { max-width: 1120px; margin: 0; font-size: clamp(2.2rem,3.4vw,3rem); font-weight: 610; line-height: 1.12; letter-spacing: -.04em; }
 .case-story__codename { margin: 1.1rem 0 0; color: var(--gold); font-size: .78rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
 .case-story__deck { max-width: 840px; margin: 2rem 0 0; color: var(--ink-soft); font-size: clamp(1.05rem,1.35vw,1.3rem); line-height: 1.8; }
 .tag-list { display: flex; flex-wrap: wrap; gap: .55rem; margin: 2rem 0 0; padding: 0; list-style: none; }
 .tag-list li { padding: .34rem .65rem; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-soft); font-size: .63rem; letter-spacing: .05em; }
 .case-opening { display: grid; grid-template-columns: minmax(0,1.35fr) minmax(280px,.65fr); gap: clamp(3rem,8vw,9rem); padding: clamp(5rem,8vw,7.5rem) 0; }
-.case-opening h2 { margin: 0; font-size: clamp(1.75rem,3vw,3.45rem); font-weight: 560; line-height: 1.45; letter-spacing: -.025em; }
+.case-opening h2 { margin: 0; font-size: clamp(1.2rem,1.7vw,1.5rem); font-weight: 560; line-height: 1.72; letter-spacing: -.01em; }
 .case-opening aside { padding: 1.5rem 0 1.5rem 1.4rem; border-left: 3px solid var(--gold); }
 .case-opening aside > span, .case-limits article > span { color: var(--royal); font-size: .67rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
-.case-opening aside p { margin: .65rem 0 1.1rem; color: var(--ink-soft); font-size: .9rem; }
+.case-opening aside p { margin: .65rem 0 1.1rem; color: var(--ink-soft); font-size: .92rem; line-height: 1.8; }
 .case-image { margin-top: 0; margin-bottom: clamp(5rem,8vw,7.5rem); }
 .case-image a { display: block; overflow: hidden; border-radius: var(--radius-lg); border: 1px solid var(--line); background: white; box-shadow: 12px 14px 0 rgba(32,54,188,.07); }
 .case-image img { width: 100%; max-height: 900px; object-fit: contain; background: white; transition: transform .45s ease; }
@@ -436,16 +534,16 @@ html[lang="en"] .atlas-title {
 .case-image figcaption, .case-gallery figcaption { display: flex; justify-content: space-between; gap: 1rem; margin-top: .75rem; color: var(--ink-soft); font-size: .68rem; }
 .case-image figcaption span, .case-gallery figcaption span { color: var(--royal); text-transform: uppercase; letter-spacing: .08em; }
 .case-question { padding: clamp(4.5rem,7vw,6.5rem) 0; border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
-.case-question blockquote { max-width: 1080px; margin: 0; font: 580 clamp(2rem,4.1vw,4.8rem)/1.23 var(--display); letter-spacing: -.045em; }
+.case-question blockquote { max-width: 1080px; margin: 0; font: 580 clamp(1.7rem,2.6vw,2.35rem)/1.32 var(--display); letter-spacing: -.03em; }
 .case-question blockquote::before { content: "“"; display: block; height: .75em; margin-left: -.04em; color: var(--gold); font-size: 2em; line-height: .8; }
 .case-decisions, .case-making { display: grid; grid-template-columns: minmax(260px,.65fr) minmax(0,1.35fr); gap: clamp(3rem,8vw,9rem); padding: clamp(5rem,8vw,7.5rem) 0; }
-.case-decisions header h2, .case-making header h2, .case-flow header h2 { margin: 0; font-size: clamp(1.85rem,3vw,3.5rem); font-weight: 590; line-height: 1.18; letter-spacing: -.04em; }
+.case-decisions header h2, .case-making header h2, .case-flow header h2 { margin: 0; font-size: clamp(1.45rem,2.1vw,1.85rem); font-weight: 590; line-height: 1.28; letter-spacing: -.03em; }
 .case-decisions ol { margin: 0; padding: 0; list-style: none; counter-reset: choices; }
 .case-decisions li { position: relative; padding: 1.3rem 0 1.5rem 3rem; border-top: 1px solid var(--line); counter-increment: choices; }
 .case-decisions li:last-child { border-bottom: 1px solid var(--line); }
 .case-decisions li::before { content: counter(choices); position: absolute; left: 0; top: 1.15rem; display: grid; place-items: center; width: 29px; height: 29px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold); font-size: .68rem; }
 .case-decisions h3, .case-making h3 { margin: 0 0 .45rem; font-size: 1.08rem; }
-.case-decisions p, .case-making p { margin: 0; color: var(--ink-soft); font-size: .9rem; }
+.case-decisions p, .case-making p { margin: 0; color: var(--ink-soft); font-size: .92rem; line-height: 1.8; }
 .case-flow { padding: clamp(5rem,8vw,7.5rem) 0; border-top: 1px solid var(--ink); }
 .case-flow > header { display: grid; grid-template-columns: minmax(220px,.45fr) minmax(0,1fr); gap: clamp(3rem,8vw,9rem); margin-bottom: 2.5rem; }
 .case-flow__deep-link { display: flex; width: fit-content; margin: 1.25rem 0 0 auto; padding: .4rem 0 .15rem; border-bottom: 1px solid currentColor; color: var(--royal); font-size: .78rem; font-weight: 650; }
@@ -505,7 +603,7 @@ html[lang="en"] .atlas-title {
 
 /* F1 notebook */
 .f1-intro { display: grid; grid-template-columns: minmax(0,1fr) minmax(320px,.65fr); gap: clamp(4rem,8vw,9rem); align-items: end; padding: clamp(5rem,9vw,8rem) 0 clamp(4rem,7vw,6rem); }
-.f1-intro h1 { margin: 0; color: var(--royal); font-size: clamp(4rem,10vw,11rem); font-weight: 650; line-height: .85; letter-spacing: -.08em; }
+.f1-intro h1 { margin: 0; color: var(--royal); font-size: clamp(2.6rem,4.5vw,4rem); font-weight: 650; line-height: 1; letter-spacing: -.05em; }
 .f1-intro > div:last-child > p { margin: 0 0 1rem; font-size: 1.15rem; font-weight: 570; line-height: 1.7; }
 .f1-intro small { color: var(--ink-soft); }
 .f1-cover { position: relative; width: min(calc(100% - 32px), 1600px); margin: 0 auto; overflow: hidden; border-radius: var(--radius-xl); background: var(--navy); box-shadow: 13px 15px 0 rgba(177,138,66,.29); }
@@ -537,6 +635,8 @@ html[lang="en"] .atlas-title {
   .site-header__inner { grid-template-columns: 1fr auto; }
   .header-email { display: none !important; }
   .mobile-menu-trigger { display: inline-flex; }
+  /* Narrow screens: icon only — the "菜单/Menu" word duplicated the icon. */
+  .mobile-menu-trigger span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .mobile-nav { position: fixed; left: 0; right: 0; top: 72px; z-index: 95; display: grid; padding: 1rem 32px 1.4rem; border-bottom: 1px solid var(--line); background: rgba(248,247,243,.98); transform: translateY(-120%); opacity: 0; visibility: hidden; transition: transform .3s ease, opacity .3s ease, visibility .3s; }
   .mobile-nav a { padding: .8rem 0; border-bottom: 1px solid var(--line); font-size: .9rem; }
   .mobile-menu-open .mobile-nav { transform: translateY(0); opacity: 1; visibility: visible; }
@@ -571,7 +671,7 @@ html[lang="en"] .atlas-title {
   .home-hero__shade { top: 0; bottom: auto; height: 460px; z-index: 1; background: linear-gradient(0deg, rgba(6,9,30,.46), transparent 45%), linear-gradient(90deg, transparent 55%, rgba(6,8,28,.18)); }
   .home-hero--atlas .home-hero__atlas-grid { top: 0; bottom: auto; z-index: 2; height: 460px; opacity: .2; background-image: repeating-linear-gradient(90deg, transparent 0 calc(33.333% - 1px), rgba(255,255,255,.2) calc(33.333% - 1px) 33.333%), repeating-linear-gradient(0deg, transparent 0 calc(33.333% - 1px), rgba(255,255,255,.18) calc(33.333% - 1px) 33.333%); }
   .home-hero__copy { position: relative; z-index: 2; left: auto; right: auto; bottom: auto; width: auto; margin: 0; padding: 2.5rem 18px 3.5rem; background: var(--navy); }
-  .home-hero h1 { font-size: clamp(2.3rem,9.7vw,3.2rem); line-height: 1.08; }
+  .home-hero h1 { font-size: clamp(2.1rem,8vw,2.9rem); line-height: 1.08; }
   .home-hero__role { margin-top: 1.5rem; }
   .home-hero__intro { font-size: .92rem; line-height: 1.75; }
   .home-hero__photo figcaption { right: 18px; bottom: .8rem; z-index: 3; max-width: calc(100% - 36px); text-align: right; }
@@ -611,7 +711,7 @@ html[lang="en"] .atlas-title {
   .site-footer { grid-template-columns: 1fr auto; }
   .site-footer p:nth-child(2) { display: none; }
   .simple-hero { grid-template-columns: 1fr; gap: 2rem; padding: 4.5rem 0 3.5rem; }
-  .simple-hero h1 { font-size: clamp(2.8rem,12vw,4.8rem); }
+  .simple-hero h1 { font-size: clamp(1.9rem,7.5vw,2.6rem); }
   .work-entry { grid-template-columns: 1fr; gap: 2.4rem; padding: 3.5rem 0; }
   .work-entry:first-child { padding-top: 2.5rem; }
   .work-entry:nth-child(even) .work-entry__poster { order: 0; }
@@ -633,8 +733,8 @@ html[lang="en"] .atlas-title {
   .project-subnav__links { justify-content: flex-start; gap: 1.25rem; overflow-x: auto; }
   .project-subnav__links a { min-height: 44px; }
   .project-subnav + .case-story__hero { padding-top: 3.5rem; }
-  .case-story__hero h1 { font-size: clamp(3rem,13vw,5.5rem); }
-  .case-opening h2 { font-size: 1.7rem; }
+  .case-story__hero h1 { font-size: clamp(1.9rem,7.5vw,2.6rem); }
+  .case-opening h2 { font-size: 1.25rem; }
   .case-flow > header { grid-template-columns: 1fr; gap: 1rem; }
   .flow-main, .flow-branches, .case-making > div { grid-template-columns: 1fr; }
   .flow-main::before { left: 50%; top: 8%; bottom: 8%; width: 2px; height: auto; }

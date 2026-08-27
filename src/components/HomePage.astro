@@ -41,7 +41,7 @@ const stationMeta = {
   <div class="site-shell home-shell">
     <SiteHeader lang={lang} alternatePath={alternate} />
     <main id="content">
-      <section class="home-hero home-hero--atlas" aria-labelledby="hero-title">
+      <section class={`home-hero home-hero--atlas${isZh ? ' hero-intro' : ''}`} aria-labelledby="hero-title" data-reveal-group>
         <figure class="home-hero__photo" data-photo-drift>
           <picture>
             <source media="(max-width: 720px)" srcset="/images/vienna-hero-960.webp" />
@@ -57,7 +57,7 @@ const stationMeta = {
         <div class="home-hero__atlas-grid" aria-hidden="true"></div>
         <div class="home-hero__copy" data-reveal>
           <p class="eyebrow">{isZh ? '图幅 01 · 总览 OVERVIEW' : 'Plate 01 · Overview'}</p>
-          <h1 id="hero-title" class="atlas-title">{isZh ? <>堆叠可能性，<br /><em>而非追寻确定性。</em></> : <>Stack possibilities.<br /><em>Do not chase certainty.</em></>}</h1>
+          <h1 id="hero-title" class="atlas-title" data-reveal="line">{isZh ? <>堆叠可能性，<br /><em>而非追寻确定性。</em></> : <>Stack possibilities.<br /><em>Do not chase certainty.</em></>}</h1>
           <p class="home-hero__role">AI {isZh ? '应用落地' : 'applications'} · Agent {isZh ? '评测' : 'evaluation'} · GIS</p>
           <p class="home-hero__intro">{isZh ? '我从空间数据出发，现在关注 AI 如何进入真实工作：哪里值得介入、系统为什么失效，以及怎样用一次可验证的改动让它变好。' : 'I started with spatial data and now focus on how AI enters real work: where intervention matters, why a system fails, and how one verifiable change can make it better.'}</p>
           <div class="hero-links">
@@ -100,6 +100,7 @@ const stationMeta = {
                     <div class="poster-grain"></div>
                     <span class="poster-code">{project.title}</span>
                     <div class="poster-orbit"><i></i><i></i><i></i></div>
+                    {project.slug === 'geoagent' && <i class="geoagent-traverse"></i>}
                     <div class="poster-words">
                       {(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}
                     </div>

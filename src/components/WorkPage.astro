@@ -37,6 +37,7 @@ const posterLabels = {
               <div class="poster-grain"></div>
               <span class="poster-code">{project.title}</span>
               <div class="poster-orbit"><i></i><i></i><i></i></div>
+              {project.slug === 'geoagent' && <i class="geoagent-traverse"></i>}
               <div class="poster-words">{(posterLabels[project.slug as keyof typeof posterLabels] ?? []).map((word) => <span>{word}</span>)}</div>
             </a>
             <div class="work-entry__copy" data-reveal>

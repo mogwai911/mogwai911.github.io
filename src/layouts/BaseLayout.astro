@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { ClientRouter } from 'astro:transitions';
 import type { Lang } from '../data/content';
 
 interface Props {
@@ -44,32 +45,52 @@ const preloadAtlasFont = lang === 'zh' && canonicalPath === '/';
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={absoluteOg} />
     <title>{title}</title>
+    <ClientRouter />
   </head>
   <body>
     <a class="skip-link" href="#content">{lang === 'zh' ? '跳到正文' : 'Skip to content'}</a>
     <div class="cursor-mark" aria-hidden="true"><i></i></div>
     <slot />
-    <script is:inline>
-      (() => {
+    <script>
+      const siteWindow = window as Window & {
+        __mogwaiSiteCleanup?: () => void;
+        __mogwaiSiteInit?: () => void;
+      };
+
+      const init = () => {
+        siteWindow.__mogwaiSiteCleanup?.();
+        const controller = new AbortController();
+        const cleanupTasks: Array<() => void> = [];
+        const { signal } = controller;
         const body = document.body;
         const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         const finePointer = window.matchMedia('(pointer: fine)').matches;
-        const trigger = document.querySelector('.mobile-menu-trigger');
-        const mobileNav = document.querySelector('.mobile-nav');
-        const setMenu = (open) => {
+        const trigger = document.querySelector<HTMLElement>('.mobile-menu-trigger');
+        const mobileNav = document.querySelector<HTMLElement>('.mobile-nav');
+        const setMenu = (open: boolean) => {
           if (!trigger || !mobileNav) return;
           body.classList.toggle('mobile-menu-open', open);
           trigger.setAttribute('aria-expanded', String(open));
           mobileNav.setAttribute('aria-hidden', String(!open));
         };
-        trigger?.addEventListener('click', () => setMenu(!body.classList.contains('mobile-menu-open')));
+        trigger?.addEventListener('click', () => setMenu(!body.classList.contains('mobile-menu-open')), { signal });
         window.addEventListener('keydown', (event) => {
           if (event.key === 'Escape') setMenu(false);
-        });
+        }, { signal });
 
-        const reveals = document.querySelectorAll('[data-reveal]');
+        const reveals = document.querySelectorAll<HTMLElement>('[data-reveal]');
+        // Stagger groups: children of a [data-reveal-group] inherit an
+        // incremental transition-delay so they cascade as they enter.
+        document.querySelectorAll('[data-reveal-group]').forEach((group) => {
+          Array.from(group.querySelectorAll<HTMLElement>('[data-reveal]')).forEach((el, i) => {
+            el.style.setProperty('--reveal-delay', `${i * 90}ms`);
+          });
+        });
         if (!reducedMotion && 'IntersectionObserver' in window) {
           body.classList.add('motion-ready');
+          // threshold 0: elements hidden by a clip-path reveal report zero
+          // intersection area until they become visible, so any positive
+          // threshold would never fire for them.
           const observer = new IntersectionObserver((entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
@@ -77,13 +98,14 @@ const preloadAtlasFont = lang === 'zh' && canonicalPath === '/';
                 observer.unobserve(entry.target);
               }
             });
-          }, { threshold: 0.05, rootMargin: '0px 0px 12% 0px' });
+          }, { threshold: 0, rootMargin: '0px 0px 12% 0px' });
           reveals.forEach((element) => observer.observe(element));
+          cleanupTasks.push(() => observer.disconnect());
         } else {
           reveals.forEach((element) => element.classList.add('is-visible'));
         }
 
-        const heroPhoto = document.querySelector('[data-photo-drift]');
+        const heroPhoto = document.querySelector<HTMLElement>('[data-photo-drift]');
         if (heroPhoto && !reducedMotion) {
           let ticking = false;
           const updatePhoto = () => {
@@ -96,30 +118,51 @@ const preloadAtlasFont = lang === 'zh' && canonicalPath === '/';
               requestAnimationFrame(updatePhoto);
               ticking = true;
             }
-          }, { passive: true });
+          }, { passive: true, signal });
         }
 
-        const cursor = document.querySelector('.cursor-mark');
+        const cursor = document.querySelector<HTMLElement>('.cursor-mark');
         if (cursor && finePointer && !reducedMotion) {
           let tx = innerWidth / 2, ty = innerHeight / 2, x = tx, y = ty;
+          let cursorFrame = 0;
           const paint = () => {
             x += (tx - x) * 0.2;
             y += (ty - y) * 0.2;
             cursor.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-            requestAnimationFrame(paint);
+            cursorFrame = requestAnimationFrame(paint);
           };
           addEventListener('pointermove', (event) => {
             tx = event.clientX;
             ty = event.clientY;
             cursor.classList.add('is-visible');
-          }, { passive: true });
+          }, { passive: true, signal });
           document.addEventListener('pointerover', (event) => {
-            cursor.classList.toggle('is-over', Boolean(event.target.closest('a, button')));
-          });
-          addEventListener('blur', () => cursor.classList.remove('is-visible'));
+            const target = event.target;
+            if (!(target instanceof Element)) return;
+            const overLink = Boolean(target.closest('a, button'));
+            const overMedia = Boolean(target.closest('img, figure, picture, [data-cursor-media]'));
+            cursor.classList.toggle('is-over', overLink);
+            cursor.classList.toggle('is-media', !overLink && overMedia);
+          }, { signal });
+          addEventListener('blur', () => cursor.classList.remove('is-visible'), { signal });
           paint();
+          cleanupTasks.push(() => cancelAnimationFrame(cursorFrame));
         }
-      })();
+
+        siteWindow.__mogwaiSiteCleanup = () => {
+          controller.abort();
+          cleanupTasks.forEach((cleanup) => cleanup());
+        };
+      };
+
+      // Re-init on every page swap (View Transitions) so per-page
+      // reveals, menu, photo drift and cursor keep working.
+      if (siteWindow.__mogwaiSiteInit) {
+        document.removeEventListener('astro:page-load', siteWindow.__mogwaiSiteInit);
+      }
+      siteWindow.__mogwaiSiteInit = init;
+      document.addEventListener('astro:page-load', init);
+      init();
     </script>
   </body>
 </html>
