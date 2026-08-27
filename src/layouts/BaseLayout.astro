@@ -49,6 +49,11 @@ const preloadAtlasFont = lang === 'zh' && canonicalPath === '/';
   </head>
   <body>
     <a class="skip-link" href="#content">{lang === 'zh' ? '跳到正文' : 'Skip to content'}</a>
+    <div class="silk-bg" aria-hidden="true">
+      <video class="silk-bg__video" muted loop playsinline preload="metadata" poster="/images/silk-poster.webp">
+        <source src="/videos/silk-bg.mp4" type="video/mp4" />
+      </video>
+    </div>
     <div class="cursor-mark" aria-hidden="true"><i></i></div>
     <slot />
     <script>
@@ -147,6 +152,19 @@ const preloadAtlasFont = lang === 'zh' && canonicalPath === '/';
           addEventListener('blur', () => cursor.classList.remove('is-visible'), { signal });
           paint();
           cleanupTasks.push(() => cancelAnimationFrame(cursorFrame));
+        }
+
+        // Silk background video: ensure playback after page swaps (some
+        // browsers pause cloned/hidden videos on SPA navigation). Reduced
+        // motion users keep the static poster frame instead.
+        const silkVideo = document.querySelector<HTMLVideoElement>('.silk-bg__video');
+        if (silkVideo && !reducedMotion) {
+          const playSilk = () => silkVideo.play().catch(() => {});
+          playSilk();
+          // Re-assert on visibility change: tab restore can leave it paused.
+          document.addEventListener('visibilitychange', () => {
+            if (!document.hidden) playSilk();
+          }, { signal });
         }
 
         siteWindow.__mogwaiSiteCleanup = () => {
