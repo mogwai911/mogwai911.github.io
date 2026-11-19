@@ -2,14 +2,14 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 ---
-<BaseLayout lang="zh" title="404 — Kylian" description="页面未找到。" canonicalPath="/404.html" alternatePath="/en/">
+<BaseLayout lang="en" title="404 — Kylian" description="Page not found." canonicalPath="/404.html" alternatePath="/zh/">
   <div class="site-shell">
-    <SiteHeader lang="zh" alternatePath="/en/" compact />
+    <SiteHeader lang="en" alternatePath="/zh/" compact />
     <main id="content" class="not-found">
       <p class="section-label">Lost coordinates</p>
       <h1>404</h1>
-      <p>这组坐标没有对应的页面。<br />The coordinates lead nowhere.</p>
-      <a class="button-link" href="/">返回 Kylian 的主页 <span>→</span></a>
+      <p>The coordinates lead nowhere.</p>
+      <a class="button-link" href="/">Back to Kylian’s home <span>→</span></a>
     </main>
   </div>
 </BaseLayout>

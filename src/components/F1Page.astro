@@ -7,8 +7,8 @@ import SiteHeader from './SiteHeader.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const canonicalPath = isZh ? '/f1/' : '/en/f1/';
-const alternatePath = isZh ? '/en/f1/' : '/f1/';
+const canonicalPath = isZh ? '/zh/f1/' : '/f1/';
+const alternatePath = isZh ? '/f1/' : '/zh/f1/';
 const description = isZh ? 'Kylian 关于 F1 赛事、产业与技术的长期观点短札。' : 'Kylian’s durable notes on F1 as sport, business, and technology.';
 ---
 
@@ -40,7 +40,7 @@ const description = isZh ? 'Kylian 关于 F1 赛事、产业与技术的长期�
         ))}
       </div>
 
-      <nav class="next-note content-width"><p>{isZh ? 'F1 Notes 属于工作之外的长期兴趣。' : 'F1 Notes belongs to the interests I keep beyond work.'}</p><a class="quiet-link" href={isZh ? '/hobbies/' : '/en/hobbies/'}>← {isZh ? '返回 Hobbies' : 'Back to Hobbies'}</a></nav>
+      <nav class="next-note content-width"><p>{isZh ? 'F1 Notes 属于工作之外的长期兴趣。' : 'F1 Notes belongs to the interests I keep beyond work.'}</p><a class="quiet-link" href={isZh ? '/zh/hobbies/' : '/hobbies/'}>← {isZh ? '返回 Hobbies' : 'Back to Hobbies'}</a></nav>
     </main>
     <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>F1 Notes</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>
   </div>

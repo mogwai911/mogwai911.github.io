@@ -6,9 +6,9 @@ import SiteHeader from './SiteHeader.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const canonicalPath = isZh ? '/pet/' : '/en/pet/';
-const alternatePath = isZh ? '/en/pet/' : '/pet/';
-const hobbiesPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const canonicalPath = isZh ? '/zh/pet/' : '/pet/';
+const alternatePath = isZh ? '/pet/' : '/zh/pet/';
+const hobbiesPath = isZh ? '/zh/hobbies/' : '/hobbies/';
 const description = isZh
   ? '不用安装，直接在浏览器里体验 Kylian 制作的 Codex 桌宠陈千语。'
   : 'Meet Chen Qianyu, Kylian’s Codex desktop pet, directly in the browser with no installation.';

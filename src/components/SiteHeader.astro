@@ -10,10 +10,10 @@ interface Props {
 
 const { lang, alternatePath, compact = false } = Astro.props;
 const isZh = lang === 'zh';
-const home = isZh ? '/' : '/en/';
-const work = isZh ? '/work/' : '/en/work/';
-const sideProjects = isZh ? '/hobbies/' : '/en/hobbies/';
-const about = isZh ? '/about/' : '/en/about/';
+const home = isZh ? '/zh/' : '/';
+const work = isZh ? '/zh/work/' : '/work/';
+const sideProjects = isZh ? '/zh/hobbies/' : '/hobbies/';
+const about = isZh ? '/zh/about/' : '/about/';
 const path = Astro.url.pathname;
 const isSideProject = path.includes('/projects/aigc-pov/');
 const section = (path.includes('/projects/') && !isSideProject) || path.includes('/work/')

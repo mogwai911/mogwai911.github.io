@@ -7,9 +7,9 @@ import SiteHeader from './SiteHeader.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const canonicalPath = isZh ? '/work/' : '/en/work/';
-const alternatePath = isZh ? '/en/work/' : '/work/';
-const projectBase = isZh ? '/projects' : '/en/projects';
+const canonicalPath = isZh ? '/zh/work/' : '/work/';
+const alternatePath = isZh ? '/work/' : '/zh/work/';
+const projectBase = isZh ? '/zh/projects' : '/projects';
 const description = isZh ? 'Kylian 的 AI 应用、Agent 评测与 GIS 项目记录。' : 'Kylian’s project notes on AI applications, agent evaluation, and GIS.';
 const workOrder = ['tb2-diagnostics', 'fomo-firewall', 'geoagent'];
 const workProjects = workOrder.map((slug) => projects.find((project) => project.slug === slug)).filter(Boolean);
@@ -65,7 +65,7 @@ const posterLabels = {
 
       <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
         <p>{isZh ? '主线之外，还有一些只是因为好奇而做的东西。' : 'Outside this main line are things made simply from curiosity.'}</p>
-        <a class="quiet-link" href={isZh ? '/hobbies/' : '/en/hobbies/'}>{isZh ? '去看兴趣' : 'Explore hobbies'} <span>→</span></a>
+        <a class="quiet-link" href={isZh ? '/zh/hobbies/' : '/hobbies/'}>{isZh ? '去看兴趣' : 'Explore hobbies'} <span>→</span></a>
       </nav>
     </main>
     <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Work</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>

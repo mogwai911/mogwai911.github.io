@@ -7,11 +7,11 @@ import SiteHeader from './SiteHeader.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const canonicalPath = isZh ? '/hobbies/' : '/en/hobbies/';
-const alternatePath = isZh ? '/en/hobbies/' : '/hobbies/';
-const petPath = isZh ? '/pet/' : '/en/pet/';
-const f1Path = isZh ? '/f1/' : '/en/f1/';
-const projectBase = isZh ? '/projects' : '/en/projects';
+const canonicalPath = isZh ? '/zh/hobbies/' : '/hobbies/';
+const alternatePath = isZh ? '/hobbies/' : '/zh/hobbies/';
+const petPath = isZh ? '/zh/pet/' : '/pet/';
+const f1Path = isZh ? '/zh/f1/' : '/f1/';
+const projectBase = isZh ? '/zh/projects' : '/projects';
 const aigc = projects.find((project) => project.slug === 'aigc-pov')!;
 const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头影像与 Codex 桌宠。' : 'Kylian’s hobbies: long-form F1 notes, multi-shot AIGC film, and a Codex desktop pet.';
 ---
@@ -83,7 +83,7 @@ const description = isZh ? 'Kylian 的兴趣：F1 长期观察、AIGC 多镜头�
 
       <nav class="next-note content-width" aria-label={isZh ? '继续浏览' : 'Continue browsing'}>
         <p>{isZh ? '教育背景和现在关心的问题放在 About。' : 'Education and the questions I care about now live in About.'}</p>
-        <a class="quiet-link" href={isZh ? '/about/' : '/en/about/'}>{isZh ? '去 About' : 'Go to About'} <span>→</span></a>
+        <a class="quiet-link" href={isZh ? '/zh/about/' : '/about/'}>{isZh ? '去 About' : 'Go to About'} <span>→</span></a>
       </nav>
     </main>
     <footer class="site-footer content-width"><p>© {new Date().getFullYear()} Kylian</p><p>Hobbies</p><a href="#content">{isZh ? '回到顶部' : 'Back to top'} ↑</a></footer>

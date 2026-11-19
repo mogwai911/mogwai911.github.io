@@ -7,9 +7,9 @@ import SiteHeader from './SiteHeader.astro';
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const isZh = lang === 'zh';
-const canonicalPath = isZh ? '/about/' : '/en/about/';
-const alternatePath = isZh ? '/en/about/' : '/about/';
-const hobbiesPath = isZh ? '/hobbies/' : '/en/hobbies/';
+const canonicalPath = isZh ? '/zh/about/' : '/about/';
+const alternatePath = isZh ? '/about/' : '/zh/about/';
+const hobbiesPath = isZh ? '/zh/hobbies/' : '/hobbies/';
 const description = isZh ? '关于 Kylian：空间数据背景、正在做的事与教育经历。' : 'About Kylian: a spatial-data background, current work, and education.';
 ---
 
